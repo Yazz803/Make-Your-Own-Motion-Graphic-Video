@@ -1,0 +1,6 @@
+{
+  "name": "Gerak Studio",
+  "description": "Studio prompt dan katalog gaya visual motion graphic berbasis lemo-opuscar dan bang-motion untuk membuat naskah voice over, storyboard, dan animasi melalui Gemini Web.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
