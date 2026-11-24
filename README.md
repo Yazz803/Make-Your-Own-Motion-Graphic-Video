@@ -87,7 +87,7 @@ Aplikasi ini berjalan sepenuhnya di sisi klien sebagai pendamping akun Gemini We
 ## Sumber & Lisensi
 
 - Skill & katalog gaya visual bersumber dari [`bangtutorial/bang-motion`](https://github.com/bangtutorial/bang-motion) dan [`lemomo-ai/lemo-opuscar`](https://github.com/lemomo-ai/lemo-opuscar) untuk dijalankan di [Gemini Web](https://gemini.google.com/app).
-- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.6.0.md`](docs/changelog/PATCH-V0.6.0.md).
+- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.6.1.md`](docs/changelog/PATCH-V0.6.1.md).
 - Dirilis di bawah [MIT License](LICENSE) — Copyright (c) 2026 Muhammad Yazid Akbar.
 
 ## Support Developer

@@ -85,6 +85,7 @@ describe('support developer & repository links', () => {
       'public/assets/images/logo.jpg',
       'public/assets/images/lockup-logo.jpg',
       'public/assets/images/logo-mark.png',
+      'public/assets/images/og-lockup.jpg',
       'src/app/icon.png',
       'src/app/apple-icon.png',
     ]) {
@@ -100,5 +101,15 @@ describe('support developer & repository links', () => {
       'utf8'
     );
     assert.match(navbar, /\/assets\/images\/logo-mark\.png/);
+
+    const layout = fs.readFileSync(
+      path.join(ROOT, 'src/app/layout.tsx'),
+      'utf8'
+    );
+    assert.match(layout, /\/assets\/images\/og-lockup\.jpg/);
+    assert.match(layout, /width:\s*1200/);
+    assert.match(layout, /height:\s*630/);
+    assert.match(layout, /openGraph:\s*\{[\s\S]*images:/);
+    assert.match(layout, /twitter:\s*\{[\s\S]*images:/);
   });
 });
