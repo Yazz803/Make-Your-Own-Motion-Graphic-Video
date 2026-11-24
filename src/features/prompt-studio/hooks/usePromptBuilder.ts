@@ -1,12 +1,14 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { type SetStateAction, useCallback, useMemo } from 'react';
+import { useStudioConfig } from '@/hooks';
 import { MOTION_STYLES, QUICK_BRIEF_PRESETS } from '@/lib/constants';
 import {
   buildMotionPrompt,
   buildPhase2FollowUpPrompt,
   estimateSceneCount,
 } from '@/lib/prompt-engine';
+import { parseStudioConfig } from '@/lib/studio-config';
 import type {
   AspectRatio,
   DurationSec,
@@ -30,28 +32,146 @@ export function usePromptBuilder({
   aspectRatio,
   onChangeAspectRatio,
 }: UsePromptBuilderParams) {
-  const [durationSec, setDurationSec] = useState<DurationSec>(30);
-  const [topic, setTopic] = useState<string>(QUICK_BRIEF_PRESETS[0].topic);
-  const [targetAudience, setTargetAudience] = useState<string>(
-    QUICK_BRIEF_PRESETS[0].audience
+  const { config, updateConfig } = useStudioConfig();
+
+  const {
+    durationSec,
+    topic,
+    targetAudience,
+    voiceOver,
+    antiSlideEnforcement,
+    includeInlineStyleRules,
+  } = config;
+
+  const {
+    enabled: voEnabled,
+    language: voLanguage,
+    tone: voTone,
+    ttsTarget,
+    includeTimecodes,
+    includeIntonationCues,
+    includeSfx,
+    includeRunningText,
+  } = voiceOver;
+
+  const setDurationSec = useCallback(
+    (next: DurationSec) => {
+      updateConfig((prev) => ({ ...prev, durationSec: next }));
+    },
+    [updateConfig]
   );
 
-  // Voice Over, SFX & Word-by-Word Running Text
-  const [voEnabled, setVoEnabled] = useState<boolean>(true);
-  const [voLanguage, setVoLanguage] = useState<VoLanguage>('id');
-  const [voTone, setVoTone] = useState<VoTone>('storytelling');
-  const [ttsTarget, setTtsTarget] = useState<TtsTarget>('elevenlabs');
-  const [includeTimecodes, setIncludeTimecodes] = useState<boolean>(true);
-  const [includeIntonationCues, setIncludeIntonationCues] =
-    useState<boolean>(true);
-  const [includeSfx, setIncludeSfx] = useState<boolean>(true);
-  const [includeRunningText, setIncludeRunningText] = useState<boolean>(true);
+  const setTopic = useCallback(
+    (next: string) => {
+      updateConfig((prev) => ({ ...prev, topic: next }));
+    },
+    [updateConfig]
+  );
 
-  // Director controls
-  const [antiSlideEnforcement, setAntiSlideEnforcement] =
-    useState<boolean>(true);
-  const [includeInlineStyleRules, setIncludeInlineStyleRules] =
-    useState<boolean>(true);
+  const setTargetAudience = useCallback(
+    (next: string) => {
+      updateConfig((prev) => ({ ...prev, targetAudience: next }));
+    },
+    [updateConfig]
+  );
+
+  const setVoEnabled = useCallback(
+    (next: SetStateAction<boolean>) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: {
+          ...prev.voiceOver,
+          enabled:
+            typeof next === 'function' ? next(prev.voiceOver.enabled) : next,
+        },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setVoLanguage = useCallback(
+    (next: VoLanguage) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, language: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setVoTone = useCallback(
+    (next: VoTone) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, tone: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setTtsTarget = useCallback(
+    (next: TtsTarget) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, ttsTarget: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setIncludeTimecodes = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, includeTimecodes: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setIncludeIntonationCues = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, includeIntonationCues: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setIncludeSfx = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, includeSfx: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setIncludeRunningText = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        voiceOver: { ...prev.voiceOver, includeRunningText: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setAntiSlideEnforcement = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({ ...prev, antiSlideEnforcement: next }));
+    },
+    [updateConfig]
+  );
+
+  const setIncludeInlineStyleRules = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({ ...prev, includeInlineStyleRules: next }));
+    },
+    [updateConfig]
+  );
 
   const generatedPrompt = useMemo(
     () =>
@@ -113,37 +233,27 @@ export function usePromptBuilder({
       const foundStyle = MOTION_STYLES.find((s) => s.id === preset.styleId);
       if (foundStyle) onSelectStyle(foundStyle);
       onChangeAspectRatio(preset.aspectRatio);
-      setDurationSec(preset.durationSec);
-      setTopic(preset.topic);
-      setTargetAudience(preset.audience);
+      updateConfig((prev) => ({
+        ...prev,
+        styleId: foundStyle ? foundStyle.id : prev.styleId,
+        aspectRatio: preset.aspectRatio,
+        durationSec: preset.durationSec,
+        topic: preset.topic,
+        targetAudience: preset.audience,
+      }));
     },
-    [onChangeAspectRatio, onSelectStyle]
+    [onChangeAspectRatio, onSelectStyle, updateConfig]
   );
 
   const loadDraft = useCallback(
     (draft: SavedDraft) => {
-      const foundStyle = MOTION_STYLES.find(
-        (s) => s.id === draft.configSnapshot.styleId
-      );
+      const sanitized = parseStudioConfig(JSON.stringify(draft.configSnapshot));
+      const foundStyle = MOTION_STYLES.find((s) => s.id === sanitized.styleId);
       if (foundStyle) onSelectStyle(foundStyle);
-      onChangeAspectRatio(draft.configSnapshot.aspectRatio);
-      setDurationSec(draft.configSnapshot.durationSec);
-      setTopic(draft.configSnapshot.topic);
-      setTargetAudience(draft.configSnapshot.targetAudience);
-      setVoEnabled(draft.configSnapshot.voiceOver.enabled);
-      setVoLanguage(draft.configSnapshot.voiceOver.language);
-      setVoTone(draft.configSnapshot.voiceOver.tone);
-      setTtsTarget(draft.configSnapshot.voiceOver.ttsTarget);
-      setIncludeTimecodes(draft.configSnapshot.voiceOver.includeTimecodes);
-      setIncludeIntonationCues(
-        draft.configSnapshot.voiceOver.includeIntonationCues
-      );
-      setIncludeSfx(draft.configSnapshot.voiceOver.includeSfx);
-      setIncludeRunningText(draft.configSnapshot.voiceOver.includeRunningText);
-      setAntiSlideEnforcement(draft.configSnapshot.antiSlideEnforcement);
-      setIncludeInlineStyleRules(draft.configSnapshot.includeInlineStyleRules);
+      onChangeAspectRatio(sanitized.aspectRatio);
+      updateConfig(() => sanitized);
     },
-    [onChangeAspectRatio, onSelectStyle]
+    [onChangeAspectRatio, onSelectStyle, updateConfig]
   );
 
   const createDraftEntry = useCallback((): SavedDraft => {

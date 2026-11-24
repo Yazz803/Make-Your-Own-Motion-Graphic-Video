@@ -12,7 +12,7 @@ Aplikasi web pendamping 100% sisi klien (*browser-only*) untuk menjelajahi **110
 - **Studio Prompt Mode Tugas Gemini Web (`#studio`)**
   - Menyediakan 4 preset brief cepat, pilihan rasio aspek (`9:16` 1080×1920, `16:9` 1920×1080, `1:1` 1080×1080), dan durasi (`15s`, `30s`, `45s`, `60s` dengan estimasi 4–10 adegan).
   - Mendukung **alur 2 tahap berbasis Voice Over** (bahasa `id`/`en`, gaya narasi `santai`/`formal`/`storytelling`/`enerjik`, target TTS `ElevenLabs V4` dengan 40 Audio Tags resmi dari `docs/eleven-labs/tags-eleven-labs-v4.json` & panduan **Stability 60%**, `CapCut TTS / Voice`, atau `Umum / Dubbing Manual`, timecode, catatan intonasi, blok teks siap tempel ke TTS, serta Prompt Tahap 2 untuk sinkronisasi audio VO dengan SFX dan running text per kata).
-  - Menyertakan opsi **Aturan Anti-Slide**, penyisipan detail gaya inline otomatis, dan penyimpanan **Draft Tersimpan** di `localStorage` browser (maksimal 12 draft, tanpa login atau database).
+  - Menyertakan opsi **Aturan Anti-Slide**, penyisipan detail gaya inline otomatis, persistensi otomatis seluruh konfigurasi aktif Studio Prompt di `localStorage` browser (`motion_graphic_studio_config_v1`) agar tetap terjaga saat halaman di-refresh, serta penyimpanan **Draft Tersimpan** (maksimal 12 draft, tanpa login atau database).
 - **Live Stage Preview HTML (`#preview`)**
   - Editor kode HTML dan pratinjau `iframe` ter-sandbox (`sandbox="allow-scripts"`) untuk menguji output `index.html` (misalnya dari `@bang-motion`) dalam rasio `9:16`, `16:9`, atau `1:1`, lengkap dengan demo bawaan, tombol putar ulang, dan unduh `.html`.
 - **Panduan Instalasi Skill (`#panduan`)**
@@ -87,7 +87,7 @@ Aplikasi ini berjalan sepenuhnya di sisi klien sebagai pendamping akun Gemini We
 ## Sumber & Lisensi
 
 - Skill & katalog gaya visual bersumber dari [`bangtutorial/bang-motion`](https://github.com/bangtutorial/bang-motion) dan [`lemomo-ai/lemo-opuscar`](https://github.com/lemomo-ai/lemo-opuscar) untuk dijalankan di [Gemini Web](https://gemini.google.com/app).
-- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.4.0.md`](docs/changelog/PATCH-V0.4.0.md).
+- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.5.0.md`](docs/changelog/PATCH-V0.5.0.md).
 - Dirilis di bawah [MIT License](LICENSE) — Copyright (c) 2026 Muhammad Yazid Akbar.
 
 ## Support Developer

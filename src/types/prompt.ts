@@ -28,6 +28,10 @@ export interface PromptConfig {
   includeInlineStyleRules: boolean;
 }
 
+export type StudioConfigSnapshot = Omit<PromptConfig, 'style'> & {
+  styleId: string;
+};
+
 export interface SavedDraft {
   id: string;
   createdAt: string;
@@ -39,5 +43,5 @@ export interface SavedDraft {
   durationSec: DurationSec;
   voEnabled: boolean;
   prompt: string;
-  configSnapshot: Omit<PromptConfig, 'style'> & { styleId: string };
+  configSnapshot: StudioConfigSnapshot;
 }

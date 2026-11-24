@@ -11,6 +11,7 @@ export type {
 export type {
   PromptConfig,
   SavedDraft,
+  StudioConfigSnapshot,
   TtsTarget,
   VoLanguage,
   VoiceOverConfig,

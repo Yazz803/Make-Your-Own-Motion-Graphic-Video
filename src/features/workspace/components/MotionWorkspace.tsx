@@ -1,22 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Footer, Navbar, StarfieldCanvas } from '@/components/layout';
 import { StyleCatalog } from '@/features/catalog';
 import { PromptStudio } from '@/features/prompt-studio';
 import { SkillGuideSection } from '@/features/skill-guide';
 import { LiveStagePreview } from '@/features/stage-preview';
 import { SupportDeveloperSection } from '@/features/support';
-import { MOTION_STYLES } from '@/lib/constants';
+import { useStudioConfig } from '@/hooks';
+import { resolveMotionStyleById } from '@/lib/studio-config';
 import type { AspectRatio, MotionStyle } from '@/types';
 import HeroSection from './HeroSection';
 
 export default function MotionWorkspace() {
-  const [selectedStyle, setSelectedStyle] = useState<MotionStyle>(
-    MOTION_STYLES[0]
+  const { config, updateConfig } = useStudioConfig();
+  const selectedStyle = useMemo(
+    () => resolveMotionStyleById(config.styleId),
+    [config.styleId]
   );
-  const [aspectRatio, setAspectRatio] = useState<AspectRatio>('9:16');
   const [ambientMotion, setAmbientMotion] = useState<boolean>(true);
+
+  const handleSelectStyle = useCallback(
+    (style: MotionStyle) => {
+      updateConfig((prev) => ({ ...prev, styleId: style.id }));
+    },
+    [updateConfig]
+  );
+
+  const handleChangeAspectRatio = useCallback(
+    (aspectRatio: AspectRatio) => {
+      updateConfig((prev) => ({ ...prev, aspectRatio }));
+    },
+    [updateConfig]
+  );
 
   return (
     <>
@@ -30,25 +46,25 @@ export default function MotionWorkspace() {
       <main id="top" className="relative z-10">
         <HeroSection
           selectedStyle={selectedStyle}
-          aspectRatio={aspectRatio}
+          aspectRatio={config.aspectRatio}
           ambientMotion={ambientMotion}
         />
 
         <StyleCatalog
           selectedStyleId={selectedStyle.id}
-          onSelectStyle={setSelectedStyle}
+          onSelectStyle={handleSelectStyle}
         />
 
         <PromptStudio
           selectedStyle={selectedStyle}
-          onSelectStyle={setSelectedStyle}
-          aspectRatio={aspectRatio}
-          onChangeAspectRatio={setAspectRatio}
+          onSelectStyle={handleSelectStyle}
+          aspectRatio={config.aspectRatio}
+          onChangeAspectRatio={handleChangeAspectRatio}
         />
 
         <LiveStagePreview
-          aspectRatio={aspectRatio}
-          onChangeAspectRatio={setAspectRatio}
+          aspectRatio={config.aspectRatio}
+          onChangeAspectRatio={handleChangeAspectRatio}
         />
 
         <SkillGuideSection />
