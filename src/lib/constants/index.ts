@@ -21,3 +21,9 @@ export {
   GEMINI_WEB_INSTALL_STEPS,
   INSTALL_SKILL_PROMPT,
 } from './skill-guides';
+export {
+  ELEVENLABS_V4_ALL_TAGS,
+  ELEVENLABS_V4_STABILITY_PERCENT,
+  ELEVENLABS_V4_TAG_FORMAT,
+  ELEVENLABS_V4_TAG_GROUPS,
+} from './elevenlabs-v4-tags';

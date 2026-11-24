@@ -3,6 +3,7 @@
 import { LuCaptions, LuMic, LuVolume2 } from 'react-icons/lu';
 import { cn } from '@/lib/utils';
 import type { TtsTarget, VoLanguage, VoTone } from '@/types';
+import ElevenLabsV4Guidance from './ElevenLabsV4Guidance';
 
 interface VoiceOverControlsSectionProps {
   voEnabled: boolean;
@@ -136,7 +137,7 @@ export default function VoiceOverControlsSection({
               onChange={(e) => onChangeTtsTarget(e.target.value as TtsTarget)}
               className="mt-1.5 h-10 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
-              <option value="elevenlabs">ElevenLabs</option>
+              <option value="elevenlabs">ElevenLabs V4</option>
               <option value="capcut">CapCut TTS / Voice</option>
               <option value="general">Umum / Dubbing Manual</option>
             </select>
@@ -162,9 +163,15 @@ export default function VoiceOverControlsSection({
                 }
                 className="h-4 w-4 rounded border-zinc-700 bg-[#09090B] accent-[#33E092]"
               />
-              <span>Catatan intonasi + blok teks bersih TTS</span>
+              <span>
+                {ttsTarget === 'elevenlabs'
+                  ? 'Catatan intonasi + blok siap tempel ElevenLabs V4 (dengan tag)'
+                  : 'Catatan intonasi + blok teks bersih TTS'}
+              </span>
             </label>
           </div>
+
+          {ttsTarget === 'elevenlabs' && <ElevenLabsV4Guidance />}
         </div>
       )}
 

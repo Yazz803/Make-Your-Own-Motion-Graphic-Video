@@ -6,14 +6,15 @@ import {
   LuCopy,
   LuExternalLink,
 } from 'react-icons/lu';
-import { REPO_LINKS } from '@/lib/constants';
-import type { AspectRatio, MotionStyle } from '@/types';
+import { ELEVENLABS_V4_STABILITY_PERCENT, REPO_LINKS } from '@/lib/constants';
+import type { AspectRatio, MotionStyle, TtsTarget } from '@/types';
 
 interface PromptOutputPanelProps {
   selectedStyle: MotionStyle;
   aspectRatio: AspectRatio;
   sceneCount: number;
   voEnabled: boolean;
+  ttsTarget: TtsTarget;
   generatedPrompt: string;
   phase2Prompt: string;
   copiedPrompt: boolean;
@@ -29,6 +30,7 @@ export default function PromptOutputPanel({
   aspectRatio,
   sceneCount,
   voEnabled,
+  ttsTarget,
   generatedPrompt,
   phase2Prompt,
   copiedPrompt,
@@ -141,14 +143,37 @@ export default function PromptOutputPanel({
               </li>
               {voEnabled && (
                 <li>
-                  <span className="font-mono text-[#33E092]">03.</span> Generate
-                  audio VO dari naskah tersebut di layanan TTS pilihanmu, lalu{' '}
-                  <strong className="font-medium text-zinc-200">
-                    upload file audio VO ke chat Mode Tugas yang sama
-                  </strong>{' '}
-                  agar Gemini langsung merender video final{' '}
-                  <code className="font-mono text-zinc-200">.mp4</code> lengkap
-                  dengan SFX &amp; running text per kata.
+                  <span className="font-mono text-[#33E092]">03.</span>{' '}
+                  {ttsTarget === 'elevenlabs' ? (
+                    <>
+                      Tempel naskah VO bertag ke{' '}
+                      <strong className="font-medium text-zinc-200">
+                        ElevenLabs V4
+                      </strong>
+                      , ubah slider{' '}
+                      <strong className="font-medium text-[#33E092]">
+                        Stability menjadi {ELEVENLABS_V4_STABILITY_PERCENT}%
+                      </strong>{' '}
+                      (rentang Creative → Robust), generate audio, lalu{' '}
+                      <strong className="font-medium text-zinc-200">
+                        upload file audio VO ke chat Mode Tugas yang sama
+                      </strong>{' '}
+                      agar Gemini langsung merender video final{' '}
+                      <code className="font-mono text-zinc-200">.mp4</code>{' '}
+                      lengkap dengan SFX &amp; running text per kata.
+                    </>
+                  ) : (
+                    <>
+                      Generate audio VO dari naskah tersebut di layanan TTS
+                      pilihanmu, lalu{' '}
+                      <strong className="font-medium text-zinc-200">
+                        upload file audio VO ke chat Mode Tugas yang sama
+                      </strong>{' '}
+                      agar Gemini langsung merender video final{' '}
+                      <code className="font-mono text-zinc-200">.mp4</code>{' '}
+                      lengkap dengan SFX &amp; running text per kata.
+                    </>
+                  )}
                 </li>
               )}
             </ol>

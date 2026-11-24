@@ -156,6 +156,7 @@ export default function PromptStudio({
             aspectRatio={aspectRatio}
             sceneCount={builder.sceneCount}
             voEnabled={builder.voEnabled}
+            ttsTarget={builder.ttsTarget}
             generatedPrompt={builder.generatedPrompt}
             phase2Prompt={builder.phase2Prompt}
             copiedPrompt={copiedKey === 'main-prompt'}

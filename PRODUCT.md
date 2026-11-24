@@ -22,7 +22,7 @@ Pendamping 100% sisi klien (browser-only) khusus untuk **Mode Tugas Gemini Web**
 
 - Lingkungan eksekusi utama pengguna adalah **Gemini Web** (`gemini.google.com/app`) menggunakan **Mode Tugas** (bukan Obrolan) dan menu **Keahlian / Keterampilan** (pengganti Gem/Canvas pada antarmuka Gemini Web terbaru).
 - Pengguna mengunduh berkas ZIP repositori `bangtutorial/bang-motion` dan `lemomo-ai/lemo-opuscar`, mengunggahnya ke Mode Tugas dengan prompt instalasi `"Tolong install kedua skill ini"`, lalu memanggil skill lewat `@bang-motion` atau `@lemo-opuscar`.
-- Untuk alur dengan Voice Over, pengguna memakai layanan TTS pihak ketiga (seperti ElevenLabs, CapCut TTS/Voice, atau dubbing manual) untuk menghasilkan file audio `.mp3`/`.wav` dari naskah Tahap 1 sebelum mengirim Prompt Tahap 2 bersama file audio tersebut.
+- Untuk alur dengan Voice Over, pengguna memakai layanan TTS pihak ketiga (seperti ElevenLabs V4 dengan 40 Audio Tags resmi dan pengaturan Stability 60%, CapCut TTS/Voice, atau dubbing manual) untuk menghasilkan file audio `.mp3`/`.wav` dari naskah Tahap 1 sebelum mengirim Prompt Tahap 2 bersama file audio tersebut.
 - Jika Gemini Web menghasilkan berkas `index.html` (misalnya dari `@bang-motion`), pengguna dapat menempel dan mengujinya di **Live Stage Preview** dalam rasio `9:16`, `16:9`, atau `1:1` lalu mengunduhnya sebagai `.html`.
 - Jalur alternatif **Gemini CLI / Lokal** (`npx skills add`, `git clone`, Node.js 18+, Python 3.10+, FFmpeg) didokumentasikan sebagai tab panduan sekunder bagi pengguna teknis.
 

@@ -1,3 +1,9 @@
+import {
+  ELEVENLABS_V4_ALL_TAGS,
+  ELEVENLABS_V4_STABILITY_PERCENT,
+  ELEVENLABS_V4_TAG_FORMAT,
+  ELEVENLABS_V4_TAG_GROUPS,
+} from '@/lib/constants';
 import type {
   AspectRatio,
   DurationSec,
@@ -43,11 +49,11 @@ const TONE_LABELS: Record<VoTone, string> = {
 
 const TTS_TARGET_NOTES: Record<TtsTarget, string> = {
   elevenlabs:
-    'Optimalkan untuk ElevenLabs: gunakan tanda baca natural, jeda elipsis (...) seperlunya, dan hindari singkatan ambigu agar pelafalan stabil.',
+    'Optimalkan untuk ElevenLabs V4: WAJIB menyisipkan Audio Tags resmi ElevenLabs V4 (format persis dengan tanda kurung siku [...]) langsung di dalam naskah Voice Over secara kontekstual, gunakan tanda baca natural, dan hindari singkatan ambigu agar pelafalan stabil.',
   capcut:
     'Optimalkan untuk CapCut Voice / TTS: pecah menjadi kalimat pendek per 3–5 detik agar ritme bacaan rapi.',
   general:
-    'Format bersih siap salin ke layanan Voice Over pihak ketiga mana pun (ElevenLabs, CapCut, Murf, atau rekaman suara manual).',
+    'Format bersih siap salin ke layanan Voice Over pihak ketiga mana pun (ElevenLabs V4, CapCut, Murf, atau rekaman suara manual).',
 };
 
 export function estimateSceneCount(durationSec: DurationSec): number {
@@ -138,6 +144,8 @@ export function buildMotionPrompt(config: PromptConfig): string {
         ? 'Bahasa Indonesia alami'
         : 'English (natural spoken rhythm)';
 
+    const isElevenLabsV4 = config.voiceOver.ttsTarget === 'elevenlabs';
+
     const voLines = [
       `## ${nextStep}. ALUR 2 TAHAP DENGAN VOICE OVER (WAJIB DIIKUTI)`,
       '**PENTING — JANGAN LANGSUNG MEMBUAT FILE VIDEO (.MP4) ATAU FILE HTML TERLEBIH DAHULU!**',
@@ -148,20 +156,39 @@ export function buildMotionPrompt(config: PromptConfig): string {
       `   - Kompatibilitas TTS Pihak Ketiga: ${TTS_TARGET_NOTES[config.voiceOver.ttsTarget]}`,
     ];
 
+    if (isElevenLabsV4) {
+      voLines.push(
+        `   - **WAJIB Audio Tags ElevenLabs V4 (${ELEVENLABS_V4_ALL_TAGS.length} Tag Resmi):** Naskah Voice Over **HARUS** menyisipkan tag audio resmi ElevenLabs V4 secara kontekstual sesuai emosi, ritme, dan adegan (pilih yang paling relevan, jangan memaksakan semua tag sekaligus, dan **DILARANG** mengarang tag di luar daftar resmi berikut). ${ELEVENLABS_V4_TAG_FORMAT}`,
+        ...ELEVENLABS_V4_TAG_GROUPS.map(
+          (group) => `     - ${group.label}: ${group.tags.join(', ')}`
+        )
+      );
+    }
+
     if (config.voiceOver.includeTimecodes) {
       voLines.push(
         '   - Sertakan timecode presisi per segmen (contoh: [00:00 - 00:04]) agar mudah ditinjau.'
       );
     }
     if (config.voiceOver.includeIntonationCues) {
-      voLines.push(
-        '   - Sertakan catatan jeda & intonasi, LALU berikan juga satu blok **"Naskah Bersih Siap Tempel ke TTS"** tanpa tag apa pun agar saya bisa langsung meng-generate audio VO.'
-      );
+      if (isElevenLabsV4) {
+        voLines.push(
+          '   - Sertakan catatan jeda & intonasi, LALU berikan juga satu blok **"Naskah Siap Tempel ke ElevenLabs V4"** yang bersih dari timecode/label adegan namun **WAJIB mempertahankan Audio Tags `[...]`** di dalam teks agar saya bisa langsung meng-generate audio VO.'
+        );
+      } else {
+        voLines.push(
+          '   - Sertakan catatan jeda & intonasi, LALU berikan juga satu blok **"Naskah Bersih Siap Tempel ke TTS"** tanpa tag apa pun agar saya bisa langsung meng-generate audio VO.'
+        );
+      }
     }
+
+    const ttsStepInstruction = isElevenLabsV4
+      ? `di **ElevenLabs V4** (pastikan slider **Stability** diatur ke **${ELEVENLABS_V4_STABILITY_PERCENT}%** pada rentang Creative → Robust)`
+      : 'di layanan pihak ketiga';
 
     voLines.push(
       `2. Sajikan **Ringkasan Storyboard (${sceneCount} Adegan)** dalam bentuk tabel (Adegan | Perkiraan Timecode | Visual & Gerak Kamera | Daftar SFX | Teks Layar).`,
-      '3. **BERHENTI DI TAHAP INI.** Minta saya untuk men-generate audio Voice Over terlebih dahulu di layanan pihak ketiga menggunakan naskah di atas, lalu **meng-upload file audio Voice Over (.mp3 / .wav)** tersebut ke chat Mode Tugas ini.',
+      `3. **BERHENTI DI TAHAP INI.** Minta saya untuk men-generate audio Voice Over terlebih dahulu ${ttsStepInstruction} menggunakan naskah di atas, lalu **meng-upload file audio Voice Over (.mp3 / .wav)** tersebut ke chat Mode Tugas ini.`,
       '',
       '### TAHAP 2 (SETELAH SAYA UPLOAD FILE AUDIO VOICE OVER):',
       `- Begitu saya mengunggah file audio Voice Over, langsung analisis timestamp setiap kata dari audio tersebut dan render **video motion graphic final dalam format \`.mp4\`** (${ratio.resolution}, ${config.aspectRatio}) yang 100% sinkron dengan durasi serta ritme audio VO yang saya upload.`,
