@@ -41,7 +41,10 @@ export default function PromptOutputPanel({
   onCopyPhase2,
 }: PromptOutputPanelProps) {
   return (
-    <div className="space-y-5 lg:sticky lg:top-20 lg:col-span-5">
+    <div
+      data-tour-target="studio-output"
+      className="space-y-5 lg:sticky lg:top-20 lg:col-span-5"
+    >
       <div className="overflow-hidden rounded-lg border border-zinc-800 bg-[#111114]/90">
         {/* Top metadata bar */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 px-5 py-4">

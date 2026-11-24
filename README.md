@@ -18,6 +18,9 @@ Aplikasi web pendamping 100% sisi klien (*browser-only*) untuk menjelajahi **110
 - **Panduan Instalasi Skill (`#panduan`)**
   - **Gemini Web (Mode Tugas):** panduan 4 langkah mengunduh ZIP kedua repositori, mengaktifkan Mode Tugas, mengunggah ZIP dengan prompt `"Tolong install kedua skill ini"`, dan memeriksa menu **Keahlian → Keterampilan** beserta tangkapan layar referensi.
   - **Gemini CLI / Lokal:** perintah `npx skills add` untuk `bang-motion` dan `git clone` untuk `lemo-opuscar`.
+- **Tour Guide Interaktif (`Navbar` & `TourGuideOverlay`)**
+  - Panduan langkah-demi-langkah otomatis untuk pengunjung baru dari bagian paling atas (`Navbar`) hingga bagian paling bawah (`Footer`) dalam 10 langkah berurutan dengan sorotan spotlight emerald, tombol **Lewati Tur**, navigasi **Sebelumnya** / **Lanjut** / **Selesai**, serta pintasan keyboard (`ArrowLeft`, `ArrowRight`, `Escape`).
+  - Status tur disimpan di `localStorage` browser (`motion_graphic_studio_tour_v1`) dan dapat diputar ulang kapan saja melalui tombol ikon informasi (`i`) di `Navbar`.
 
 ## Alur Kerja 4 Langkah
 
@@ -71,7 +74,7 @@ Aplikasi ini berjalan sepenuhnya di sisi klien sebagai pendamping akun Gemini We
 ├── src/
 │   ├── app/               # Entry point Next.js App Router, font lokal, dan styling global
 │   ├── components/        # Komponen layout (Navbar, Footer, StarfieldCanvas) & UI (Modal)
-│   ├── features/          # Modul fitur: workspace, catalog, prompt-studio, stage-preview, skill-guide
+│   ├── features/          # Modul fitur: workspace, catalog, prompt-studio, stage-preview, skill-guide, support, tour-guide
 │   ├── hooks/             # Custom React hooks
 │   ├── lib/               # Prompt engine, konstanta 110 gaya visual, demo HTML, dan utilitas
 │   └── types/             # Kontrak tipe TypeScript
@@ -87,7 +90,7 @@ Aplikasi ini berjalan sepenuhnya di sisi klien sebagai pendamping akun Gemini We
 ## Sumber & Lisensi
 
 - Skill & katalog gaya visual bersumber dari [`bangtutorial/bang-motion`](https://github.com/bangtutorial/bang-motion) dan [`lemomo-ai/lemo-opuscar`](https://github.com/lemomo-ai/lemo-opuscar) untuk dijalankan di [Gemini Web](https://gemini.google.com/app).
-- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.6.1.md`](docs/changelog/PATCH-V0.6.1.md).
+- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.7.0.md`](docs/changelog/PATCH-V0.7.0.md).
 - Dirilis di bawah [MIT License](LICENSE) — Copyright (c) 2026 Muhammad Yazid Akbar.
 
 ## Support Developer

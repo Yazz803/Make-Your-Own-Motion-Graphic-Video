@@ -30,3 +30,11 @@ export type {
   SocialLinkItem,
   SocialPlatformId,
 } from './support';
+
+export type {
+  TourGuideStatus,
+  TourGuideStep,
+  TourGuideStorageState,
+  TourPlacement,
+  TourStepId,
+} from './tour';

@@ -102,7 +102,10 @@ export default function PromptControlsForm({
     .replace(/^Bang Motion\s*·\s*/, '');
 
   return (
-    <div className="space-y-8 rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-7 lg:col-span-7">
+    <div
+      data-tour-target="studio-form"
+      className="space-y-8 rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-7 lg:col-span-7"
+    >
       {/* Quick-start presets */}
       <div>
         <span className="block text-xs font-medium text-zinc-400">

@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef, useState, type RefObject } from 'react';
 import {
   LuArrowUpRight,
   LuExternalLink,
+  LuInfo,
   LuMenu,
   LuOrbit,
   LuPause,
@@ -18,15 +19,22 @@ import {
   STUDIO_EASE,
   useGSAP,
 } from '@/lib/gsap-config';
+import { cn } from '@/lib/utils';
 
 interface NavbarProps {
   ambientMotion: boolean;
   onToggleAmbientMotion: () => void;
+  isTourOpen?: boolean;
+  onStartTour?: () => void;
+  tourTriggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
 export default function Navbar({
   ambientMotion,
   onToggleAmbientMotion,
+  isTourOpen = false,
+  onStartTour,
+  tourTriggerRef,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -76,15 +84,16 @@ export default function Navbar({
   return (
     <header
       ref={headerRef}
+      data-tour-target="navbar"
       className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#09090B]/85 backdrop-blur-md"
     >
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-2 sm:gap-4 xl:gap-6 px-4 sm:px-6 lg:px-8">
         {/* Zone 1: Brand mark + wordmark */}
         <a
           href="#top"
-          className="group inline-flex items-center gap-2 sm:gap-2.5 font-display text-sm sm:text-lg xl:text-xl font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          className="group inline-flex items-center gap-1.5 sm:gap-2.5 font-display text-xs min-[375px]:text-sm sm:text-lg xl:text-xl font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
         >
-          <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-zinc-800/90 bg-[#09090B] p-1 transition-colors group-hover:border-[#33E092]/60">
+          <span className="relative flex h-7 w-7 sm:h-9 sm:w-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-zinc-800/90 bg-[#09090B] p-1 transition-colors group-hover:border-[#33E092]/60">
             <Image
               src="/assets/images/logo-mark.png"
               alt=""
@@ -94,7 +103,10 @@ export default function Navbar({
               className="h-full w-full object-contain"
             />
           </span>
-          <span>Motion Graphic Studio</span>
+          <span>
+            Motion Graphic{' '}
+            <span className="hidden min-[360px]:inline">Studio</span>
+          </span>
         </a>
 
         {/* Zone 2: 4 centered navigation links */}
@@ -113,8 +125,27 @@ export default function Navbar({
           ))}
         </nav>
 
-        {/* Zone 3: Circular emerald ambient toggle + GitHub repo + primary Gemini Web CTA */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        {/* Zone 3: Tour info icon + ambient toggle + GitHub repo + primary Gemini Web CTA */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {onStartTour && (
+            <button
+              ref={tourTriggerRef}
+              type="button"
+              onClick={onStartTour}
+              aria-expanded={isTourOpen}
+              aria-label="Mulai ulang panduan tur website"
+              title="Panduan Tur Website (klik untuk mulai ulang)"
+              className={cn(
+                'inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-md border bg-[#111114] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
+                isTourOpen
+                  ? 'border-[#33E092] text-[#33E092]'
+                  : 'border-zinc-800 text-zinc-300 hover:border-[#33E092]/60 hover:bg-zinc-900 hover:text-[#33E092]'
+              )}
+            >
+              <LuInfo className="h-4 w-4" aria-hidden="true" />
+            </button>
+          )}
+
           <button
             type="button"
             onClick={onToggleAmbientMotion}
@@ -129,7 +160,7 @@ export default function Navbar({
                 ? 'Animasi latar kosmik aktif (klik untuk jeda)'
                 : 'Animasi latar kosmik dijeda (klik untuk aktifkan)'
             }
-            className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-zinc-800 bg-[#111114] text-[#33E092] transition-colors duration-150 hover:border-[#33E092]/60 hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full border border-zinc-800 bg-[#111114] text-[#33E092] transition-colors duration-150 hover:border-[#33E092]/60 hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             {ambientMotion ? (
               <LuOrbit className="h-4 w-4" aria-hidden="true" />
@@ -153,9 +184,12 @@ export default function Navbar({
             href={REPO_LINKS.geminiWeb}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-[36px] sm:min-h-[38px] items-center gap-1.5 sm:gap-2 rounded-md bg-[#33E092] px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#0CCE6B] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            className="inline-flex min-h-[34px] sm:min-h-[38px] items-center gap-1.5 sm:gap-2 rounded-md bg-[#33E092] px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#0CCE6B] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
-            <span className="sm:hidden">Gemini Web</span>
+            <span className="min-[375px]:hidden">Gemini</span>
+            <span className="hidden min-[375px]:inline sm:hidden">
+              Gemini Web
+            </span>
             <span className="hidden sm:inline">Buka Gemini Web</span>
             <LuExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           </a>
@@ -204,6 +238,34 @@ export default function Navbar({
                 {item.label}
               </a>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                onToggleAmbientMotion();
+                setMobileOpen(false);
+              }}
+              aria-pressed={ambientMotion}
+              className="mt-1 flex min-h-[44px] items-center justify-between gap-2 border-t border-zinc-800/80 px-3 pt-2 text-left text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-900 hover:text-[#33E092] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              <span className="inline-flex items-center gap-2">
+                {ambientMotion ? (
+                  <LuOrbit
+                    className="h-4 w-4 text-[#33E092]"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <LuPause
+                    className="h-4 w-4 text-zinc-400"
+                    aria-hidden="true"
+                  />
+                )}
+                <span>
+                  {ambientMotion
+                    ? 'Jeda Animasi Latar Kosmik'
+                    : 'Aktifkan Animasi Latar Kosmik'}
+                </span>
+              </span>
+            </button>
             <a
               href={REPO_LINKS.projectRepo}
               target="_blank"

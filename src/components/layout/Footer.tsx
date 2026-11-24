@@ -4,7 +4,10 @@ import { FOOTER_ANCHOR_LINKS, REPO_LINKS } from '@/lib/constants';
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-zinc-800/80 bg-[#09090B]/90 py-10">
+    <footer
+      data-tour-target="footer"
+      className="relative z-10 border-t border-zinc-800/80 bg-[#09090B]/90 py-10"
+    >
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           {/* Left: Built-with / Source attribution row matching reference footer */}

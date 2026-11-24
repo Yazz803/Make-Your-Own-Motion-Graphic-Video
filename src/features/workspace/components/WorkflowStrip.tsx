@@ -29,7 +29,10 @@ const WORKFLOW_STEPS = [
 
 export default function WorkflowStrip() {
   return (
-    <div className="workflow-strip mt-14 grid grid-cols-1 gap-4 border-t border-zinc-800/80 pt-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div
+      data-tour-target="workflow"
+      className="workflow-strip mt-14 grid grid-cols-1 gap-4 border-t border-zinc-800/80 pt-8 sm:grid-cols-2 lg:grid-cols-4"
+    >
       {WORKFLOW_STEPS.map((item) => (
         <div
           key={item.index}

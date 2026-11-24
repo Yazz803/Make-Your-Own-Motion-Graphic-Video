@@ -80,7 +80,10 @@ export default function HeroSection({
   return (
     <section ref={heroScopeRef} className="relative py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
+        <div
+          data-tour-target="hero"
+          className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12"
+        >
           {/* Left Column: Squared Geometric Display Typography + Pipe Subtitle + Inline Links */}
           <div className="flex flex-col justify-center lg:col-span-7">
             <h1 className="hero-reveal font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-zinc-50 sm:text-5xl lg:text-[52px] [text-wrap:balance]">

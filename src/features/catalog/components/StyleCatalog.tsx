@@ -56,63 +56,65 @@ export default function StyleCatalog({
       className="scroll-mt-16 border-t border-zinc-800/80 py-16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="max-w-2xl">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
-            Katalog {MOTION_STYLES.length} Gaya Visual
-          </h2>
-          <p className="mt-3 text-sm sm:text-base leading-relaxed text-zinc-400">
-            Menampilkan foto pratinjau langsung dari sumber repositori untuk{' '}
-            {BANG_MOTION_COUNT} gaya resmi{' '}
-            <code className="font-mono text-zinc-200">@bang-motion</code> (6
-            Explainer + 5 Opener &amp; Promo) dan {LEMO_OPUSCAR_COUNT} gaya
-            resmi{' '}
-            <code className="font-mono text-zinc-200">@lemo-opuscar</code> (15
-            kategori lengkap).
-          </p>
-        </div>
-
-        {/* Contribution-Graph-inspired Station Matrix + Vertical Repo Selector */}
-        <StationMatrix
-          repoFilter={repoFilter}
-          stationFilter={stationFilter}
-          onSelectRepo={handleRepoChange}
-          onSelectStation={handleStationChange}
-        />
-
-        {/* Search & Station Filter Toolbar */}
-        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-12">
-          <div className="relative sm:col-span-7">
-            <LuSearch
-              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
-              aria-hidden="true"
-            />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => handleQueryChange(e.target.value)}
-              aria-label="Cari gaya visual"
-              placeholder="Cari gaya (Ukiyo-e, Teardown, Pixel)..."
-              className="h-11 w-full rounded-md border border-zinc-800 bg-[#111114]/90 pl-10 pr-4 text-sm text-zinc-100 placeholder:text-zinc-400 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-            />
+        <div data-tour-target="catalog">
+          {/* Section header */}
+          <div className="max-w-2xl">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
+              Katalog {MOTION_STYLES.length} Gaya Visual
+            </h2>
+            <p className="mt-3 text-sm sm:text-base leading-relaxed text-zinc-400">
+              Menampilkan foto pratinjau langsung dari sumber repositori untuk{' '}
+              {BANG_MOTION_COUNT} gaya resmi{' '}
+              <code className="font-mono text-zinc-200">@bang-motion</code> (6
+              Explainer + 5 Opener &amp; Promo) dan {LEMO_OPUSCAR_COUNT} gaya
+              resmi{' '}
+              <code className="font-mono text-zinc-200">@lemo-opuscar</code> (15
+              kategori lengkap).
+            </p>
           </div>
 
-          <div className="sm:col-span-5">
-            <select
-              aria-label="Filter kategori stasiun gaya"
-              value={stationFilter}
-              onChange={(e) => handleStationChange(e.target.value)}
-              className="h-11 w-full rounded-md border border-zinc-800 bg-[#111114]/90 px-3.5 text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-            >
-              <option value="all">
-                Semua Kategori ({availableStations.length} kategori)
-              </option>
-              {availableStations.map((station) => (
-                <option key={station} value={station}>
-                  {station}
+          {/* Contribution-Graph-inspired Station Matrix + Vertical Repo Selector */}
+          <StationMatrix
+            repoFilter={repoFilter}
+            stationFilter={stationFilter}
+            onSelectRepo={handleRepoChange}
+            onSelectStation={handleStationChange}
+          />
+
+          {/* Search & Station Filter Toolbar */}
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-12">
+            <div className="relative sm:col-span-7">
+              <LuSearch
+                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
+                aria-hidden="true"
+              />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => handleQueryChange(e.target.value)}
+                aria-label="Cari gaya visual"
+                placeholder="Cari gaya (Ukiyo-e, Teardown, Pixel)..."
+                className="h-11 w-full rounded-md border border-zinc-800 bg-[#111114]/90 pl-10 pr-4 text-sm text-zinc-100 placeholder:text-zinc-400 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+              />
+            </div>
+
+            <div className="sm:col-span-5">
+              <select
+                aria-label="Filter kategori stasiun gaya"
+                value={stationFilter}
+                onChange={(e) => handleStationChange(e.target.value)}
+                className="h-11 w-full rounded-md border border-zinc-800 bg-[#111114]/90 px-3.5 text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+              >
+                <option value="all">
+                  Semua Kategori ({availableStations.length} kategori)
                 </option>
-              ))}
-            </select>
+                {availableStations.map((station) => (
+                  <option key={station} value={station}>
+                    {station}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 

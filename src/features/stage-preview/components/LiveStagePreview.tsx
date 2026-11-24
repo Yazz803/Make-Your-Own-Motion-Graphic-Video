@@ -80,7 +80,10 @@ export default function LiveStagePreview({
       id="preview"
       className="scroll-mt-16 border-t border-zinc-800/80 py-16 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div
+        data-tour-target="preview"
+        className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <h2 className="font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">

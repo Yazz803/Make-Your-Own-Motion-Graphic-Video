@@ -39,7 +39,10 @@ export default function SupportDeveloperSection() {
       id="support"
       className="scroll-mt-16 border-t border-zinc-800/80 bg-[#09090B]/60 py-16 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div
+        data-tour-target="support"
+        className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8"
+      >
         <div className="max-w-2xl">
           <h2 className="font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
             Support Developer

@@ -21,7 +21,10 @@ export default function SkillGuideSection() {
       id="panduan"
       className="scroll-mt-16 border-t border-zinc-800/80 bg-[#09090B]/60 py-16 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div
+        data-tour-target="panduan"
+        className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8"
+      >
         {/* Section Header + Path Switch */}
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
