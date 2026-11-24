@@ -23,3 +23,9 @@ export type {
   GuideStep,
   GuideTab,
 } from './guide';
+
+export type {
+  DeveloperSupportInfo,
+  SocialLinkItem,
+  SocialPlatformId,
+} from './support';

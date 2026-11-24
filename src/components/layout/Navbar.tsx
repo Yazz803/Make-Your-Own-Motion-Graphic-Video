@@ -2,12 +2,14 @@
 
 import { useRef, useState } from 'react';
 import {
+  LuArrowUpRight,
   LuExternalLink,
   LuMenu,
   LuOrbit,
   LuPause,
   LuX,
 } from 'react-icons/lu';
+import { SiGithub } from 'react-icons/si';
 import { NAV_LINKS, REPO_LINKS } from '@/lib/constants';
 import {
   gsap,
@@ -126,6 +128,17 @@ export default function Navbar({
           </button>
 
           <a
+            href={REPO_LINKS.projectRepo}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Repositori GitHub Motion Graphic Studio"
+            title={`Repositori GitHub (${REPO_LINKS.projectRepoSlug})`}
+            className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 bg-[#111114] text-zinc-300 transition-colors duration-150 hover:border-[#33E092]/60 hover:bg-zinc-900 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          >
+            <SiGithub className="h-4 w-4" aria-hidden="true" />
+          </a>
+
+          <a
             href={REPO_LINKS.geminiWeb}
             target="_blank"
             rel="noopener noreferrer"
@@ -180,6 +193,22 @@ export default function Navbar({
                 {item.label}
               </a>
             ))}
+            <a
+              href={REPO_LINKS.projectRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className="mt-1 flex min-h-[44px] items-center justify-between gap-2 border-t border-zinc-800/80 px-3 pt-2 text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-900 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              <span className="inline-flex items-center gap-2">
+                <SiGithub className="h-4 w-4 text-zinc-400" aria-hidden="true" />
+                <span>Repositori GitHub</span>
+              </span>
+              <LuArrowUpRight
+                className="h-4 w-4 text-zinc-400"
+                aria-hidden="true"
+              />
+            </a>
           </div>
         </nav>
       )}

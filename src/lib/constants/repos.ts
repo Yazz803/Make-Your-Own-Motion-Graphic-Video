@@ -1,4 +1,7 @@
 export const REPO_LINKS = {
+  projectRepo:
+    'https://github.com/Yazz803/Make-Your-Own-Motion-Graphic-Video',
+  projectRepoSlug: 'Yazz803/Make-Your-Own-Motion-Graphic-Video',
   bangMotion: 'https://github.com/bangtutorial/bang-motion',
   bangMotionZip:
     'https://github.com/bangtutorial/bang-motion/archive/refs/heads/main.zip',
@@ -19,4 +22,9 @@ export const NAV_LINKS = [
   { href: '#studio', label: 'Studio Prompt' },
   { href: '#preview', label: 'Live Preview' },
   { href: '#panduan', label: 'Panduan Skill' },
+] as const;
+
+export const FOOTER_ANCHOR_LINKS = [
+  ...NAV_LINKS,
+  { href: '#support', label: 'Support Developer' },
 ] as const;

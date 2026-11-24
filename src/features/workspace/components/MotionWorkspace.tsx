@@ -6,6 +6,7 @@ import { StyleCatalog } from '@/features/catalog';
 import { PromptStudio } from '@/features/prompt-studio';
 import { SkillGuideSection } from '@/features/skill-guide';
 import { LiveStagePreview } from '@/features/stage-preview';
+import { SupportDeveloperSection } from '@/features/support';
 import { MOTION_STYLES } from '@/lib/constants';
 import type { AspectRatio, MotionStyle } from '@/types';
 import HeroSection from './HeroSection';
@@ -51,6 +52,8 @@ export default function MotionWorkspace() {
         />
 
         <SkillGuideSection />
+
+        <SupportDeveloperSection />
       </main>
 
       <Footer />

@@ -87,5 +87,19 @@ Aplikasi ini berjalan sepenuhnya di sisi klien sebagai pendamping akun Gemini We
 ## Sumber & Lisensi
 
 - Skill & katalog gaya visual bersumber dari [`bangtutorial/bang-motion`](https://github.com/bangtutorial/bang-motion) dan [`lemomo-ai/lemo-opuscar`](https://github.com/lemomo-ai/lemo-opuscar) untuk dijalankan di [Gemini Web](https://gemini.google.com/app).
-- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.2.0.md`](docs/changelog/PATCH-V0.2.0.md).
+- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.3.0.md`](docs/changelog/PATCH-V0.3.0.md).
 - Dirilis di bawah [MIT License](LICENSE) — Copyright (c) 2026 Muhammad Yazid Akbar.
+
+## Support Developer
+
+Motion Graphic Studio dikembangkan dan dirawat secara terbuka oleh **Muhammad Yazid Akbar**. Jika proyek ini membantu alur produksi video motion graphic kamu, dukungan dapat diberikan melalui QRIS atau dengan terhubung lewat kanal berikut:
+
+<img src="public/assets/images/support-qris.jpg" alt="QRIS Support Developer — Muhammad Yazid Akbar" width="320" />
+
+- **Repositori Proyek:** [github.com/Yazz803/Make-Your-Own-Motion-Graphic-Video](https://github.com/Yazz803/Make-Your-Own-Motion-Graphic-Video)
+- **Instagram:** [instagram.com/_akbyzd](https://instagram.com/_akbyzd)
+- **LinkedIn:** [linkedin.com/in/yazidakbar](https://linkedin.com/in/yazidakbar)
+- **GitHub:** [github.com/Yazz803](https://github.com/Yazz803)
+- **WhatsApp:** [wa.me/6281290215655](https://wa.me/6281290215655)
+- **Threads:** [threads.com/@_akbyzd](https://threads.com/@_akbyzd)
+- **Facebook:** [facebook.com/Lolsecz501](https://facebook.com/Lolsecz501)

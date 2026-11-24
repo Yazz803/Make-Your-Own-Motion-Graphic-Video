@@ -1,4 +1,10 @@
-export { HERO_GALLERY_IMAGE, NAV_LINKS, REPO_LINKS } from './repos';
+export {
+  FOOTER_ANCHOR_LINKS,
+  HERO_GALLERY_IMAGE,
+  NAV_LINKS,
+  REPO_LINKS,
+} from './repos';
+export { DEVELOPER_SUPPORT } from './support';
 export { BANG_MOTION_STYLES } from './bang-motion-styles';
 export { LEMO_OPUSCAR_STYLES } from './lemo-opuscar-styles';
 export {

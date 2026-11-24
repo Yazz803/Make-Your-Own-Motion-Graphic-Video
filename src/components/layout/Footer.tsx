@@ -1,5 +1,6 @@
+import { LuArrowUpRight } from 'react-icons/lu';
 import { SiGithub, SiGooglegemini } from 'react-icons/si';
-import { NAV_LINKS, REPO_LINKS } from '@/lib/constants';
+import { FOOTER_ANCHOR_LINKS, REPO_LINKS } from '@/lib/constants';
 
 export default function Footer() {
   return (
@@ -53,16 +54,39 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-zinc-800/60 pt-5 text-xs text-zinc-400">
-          {NAV_LINKS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-            >
-              {item.label}
-            </a>
-          ))}
+        <div className="mt-6 flex flex-col gap-4 border-t border-zinc-800/60 pt-5 text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            {FOOTER_ANCHOR_LINKS.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          <a
+            href={REPO_LINKS.projectRepo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-sm font-mono text-xs text-zinc-300 transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          >
+            <SiGithub
+              className="h-3.5 w-3.5 shrink-0 text-zinc-400"
+              aria-hidden="true"
+            />
+            <span>
+              Yazz803/
+              <wbr />
+              Make-Your-Own-Motion-Graphic-Video
+            </span>
+            <LuArrowUpRight
+              className="h-3.5 w-3.5 shrink-0"
+              aria-hidden="true"
+            />
+          </a>
         </div>
       </div>
     </footer>
