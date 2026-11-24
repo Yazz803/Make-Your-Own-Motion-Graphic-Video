@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { gitlabMono, incognito, inter } from './fonts';
 import './globals.css';
+import Script from 'next/script'
 
 function resolveMetadataBase(): URL {
   const raw = process.env.APP_URL?.trim();
@@ -63,6 +64,18 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${incognito.variable} ${inter.variable} ${gitlabMono.variable}`}
     >
+      <head>
+        <Script
+          src="https://umami.yazidakbar.my.id/script.js"
+          data-website-id="956c954c-3adc-4d99-97f7-b933a9102e01"
+          strategy="afterInteractive"
+        />
+        <Script
+          src="https://umami.yazidakbar.my.id/recorder.js"
+          data-website-id="956c954c-3adc-4d99-97f7-b933a9102e01"
+          strategy="afterInteractive"
+        />
+      </head>
       <body
         suppressHydrationWarning
         className="min-h-screen bg-[#09090B] text-[#FAFAFA] font-sans selection:bg-[#33E092] selection:text-[#09090B]"
