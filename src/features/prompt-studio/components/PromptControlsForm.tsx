@@ -1,11 +1,14 @@
 'use client';
 
-import { LuMonitor, LuSmartphone, LuSquare } from 'react-icons/lu';
+import { useState } from 'react';
 import {
-  ALL_STATIONS,
-  MOTION_STYLES,
-  QUICK_BRIEF_PRESETS,
-} from '@/lib/constants';
+  LuLayoutGrid,
+  LuMonitor,
+  LuSmartphone,
+  LuSquare,
+} from 'react-icons/lu';
+import { StyleCatalogModal, StylePreviewThumb } from '@/features/catalog';
+import { MOTION_STYLES, QUICK_BRIEF_PRESETS } from '@/lib/constants';
 import { estimateSceneCount } from '@/lib/prompt-engine';
 import { cn } from '@/lib/utils';
 import type {
@@ -93,6 +96,11 @@ export default function PromptControlsForm({
   onChangeIncludeInlineStyleRules,
   onApplyPreset,
 }: PromptControlsFormProps) {
+  const [isCatalogModalOpen, setIsCatalogModalOpen] = useState<boolean>(false);
+  const stationLabel = selectedStyle.station
+    .replace(/^\d+\s*·\s*/, '')
+    .replace(/^Bang Motion\s*·\s*/, '');
+
   return (
     <div className="space-y-8 rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-7 lg:col-span-7">
       {/* Quick-start presets */}
@@ -114,38 +122,82 @@ export default function PromptControlsForm({
         </div>
       </div>
 
-      {/* Style selector covering all styles grouped by station */}
+      {/* Selected style preview card opening the 110-style catalog modal */}
       <div className="border-t border-zinc-800/80 pt-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <label
-            htmlFor="style-select"
+          <span
+            id="style-picker-label"
             className="text-sm font-semibold text-zinc-100"
           >
             Gaya Visual &amp; Pemanggil Keahlian ({MOTION_STYLES.length} gaya)
-          </label>
+          </span>
           <span className="font-mono text-xs text-[#33E092]">
             Awalan Prompt: {selectedStyle.skillHandle}
           </span>
         </div>
-        <select
-          id="style-select"
-          value={selectedStyle.id}
-          onChange={(e) => {
-            const found = MOTION_STYLES.find((s) => s.id === e.target.value);
-            if (found) onSelectStyle(found);
-          }}
-          className="mt-2.5 h-11 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3.5 text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+
+        <button
+          type="button"
+          onClick={() => setIsCatalogModalOpen(true)}
+          aria-labelledby="style-picker-label"
+          aria-describedby="style-picker-summary"
+          className="group mt-2.5 flex w-full flex-col gap-3.5 rounded-lg border border-zinc-800 bg-[#09090B] p-3.5 text-left transition-colors duration-150 hover:border-[#33E092]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B] sm:flex-row sm:items-center sm:gap-4"
         >
-          {ALL_STATIONS.map((station) => (
-            <optgroup key={station} label={station}>
-              {MOTION_STYLES.filter((s) => s.station === station).map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name} ({s.skillHandle})
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
+          <div className="w-full shrink-0 overflow-hidden rounded-md border border-zinc-800/80 sm:w-52">
+            <StylePreviewThumb style={selectedStyle} />
+          </div>
+
+          <div
+            id="style-picker-summary"
+            className="flex min-w-0 flex-1 flex-col justify-between"
+          >
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2 text-xs text-zinc-400">
+                  <span className="font-mono text-[#33E092]">
+                    {selectedStyle.skillHandle}
+                  </span>
+                  <span aria-hidden="true">·</span>
+                  <span className="truncate">{stationLabel}</span>
+                </div>
+
+                <div
+                  className="flex shrink-0 items-center gap-1"
+                  aria-label="Palet warna gaya"
+                >
+                  {selectedStyle.palette.slice(0, 4).map((hex) => (
+                    <span
+                      key={hex}
+                      style={{ backgroundColor: hex }}
+                      className="h-2.5 w-2.5 rounded-[2px] border border-white/15"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-1.5 font-display text-base font-bold tracking-tight text-zinc-50 sm:text-lg">
+                {selectedStyle.name}
+              </div>
+
+              <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-zinc-400">
+                {selectedStyle.shortDesc}
+              </p>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-800/80 pt-2.5">
+              <span className="truncate text-[11px] text-zinc-400">
+                Cocok: {selectedStyle.bestFor.slice(0, 2).join(' · ')}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#33E092] transition-colors group-hover:text-[#0CCE6B] whitespace-nowrap">
+                <LuLayoutGrid
+                  className="h-3.5 w-3.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>Pilih dari Katalog</span>
+              </span>
+            </div>
+          </div>
+        </button>
       </div>
 
       {/* Aspect Ratio & Duration */}
@@ -316,6 +368,13 @@ export default function PromptControlsForm({
           </span>
         </label>
       </div>
+
+      <StyleCatalogModal
+        isOpen={isCatalogModalOpen}
+        selectedStyle={selectedStyle}
+        onClose={() => setIsCatalogModalOpen(false)}
+        onSelectStyle={onSelectStyle}
+      />
     </div>
   );
 }

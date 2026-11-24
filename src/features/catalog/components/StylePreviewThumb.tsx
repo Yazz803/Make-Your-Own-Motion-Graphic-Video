@@ -2,16 +2,19 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 import type { MotionStyle } from '@/types';
 
 interface StylePreviewThumbProps {
   style: MotionStyle;
   priority?: boolean;
+  className?: string;
 }
 
 export default function StylePreviewThumb({
   style,
   priority = false,
+  className,
 }: StylePreviewThumbProps) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const showFallback = failedUrl === style.imageUrl;
@@ -21,7 +24,10 @@ export default function StylePreviewThumb({
   return (
     <div
       style={{ backgroundColor: bg }}
-      className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900"
+      className={cn(
+        'relative aspect-[16/10] w-full overflow-hidden bg-zinc-900',
+        className
+      )}
     >
       {!showFallback ? (
         <Image

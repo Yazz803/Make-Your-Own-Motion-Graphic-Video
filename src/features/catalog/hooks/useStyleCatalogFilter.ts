@@ -12,11 +12,11 @@ export type CatalogRepoFilter = 'all' | RepoSource;
 const INITIAL_PAGE_SIZE = 9;
 const PAGE_INCREMENT = 12;
 
-export function useStyleCatalogFilter() {
+export function useStyleCatalogFilter(initialPageSize = INITIAL_PAGE_SIZE) {
   const [repoFilter, setRepoFilter] = useState<CatalogRepoFilter>('all');
   const [stationFilter, setStationFilter] = useState<string>('all');
   const [query, setQuery] = useState<string>('');
-  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_PAGE_SIZE);
+  const [visibleCount, setVisibleCount] = useState<number>(initialPageSize);
 
   const availableStations = useMemo(() => {
     if (repoFilter === 'all') return ALL_STATIONS;
@@ -52,17 +52,17 @@ export function useStyleCatalogFilter() {
   const handleRepoChange = (next: CatalogRepoFilter) => {
     setRepoFilter(next);
     setStationFilter('all');
-    setVisibleCount(INITIAL_PAGE_SIZE);
+    setVisibleCount(initialPageSize);
   };
 
   const handleStationChange = (next: string) => {
     setStationFilter(next);
-    setVisibleCount(INITIAL_PAGE_SIZE);
+    setVisibleCount(initialPageSize);
   };
 
   const handleQueryChange = (next: string) => {
     setQuery(next);
-    setVisibleCount(INITIAL_PAGE_SIZE);
+    setVisibleCount(initialPageSize);
   };
 
   const showMore = () => {
@@ -77,7 +77,7 @@ export function useStyleCatalogFilter() {
     setQuery('');
     setStationFilter('all');
     setRepoFilter('all');
-    setVisibleCount(INITIAL_PAGE_SIZE);
+    setVisibleCount(initialPageSize);
   };
 
   return {
