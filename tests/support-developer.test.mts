@@ -79,4 +79,26 @@ describe('support developer & repository links', () => {
       'SupportDeveloperSection must sit below SkillGuideSection and above Footer'
     );
   });
+
+  it('includes brand logo assets, app icons, and Navbar brand mark', () => {
+    for (const relPath of [
+      'public/assets/images/logo.jpg',
+      'public/assets/images/lockup-logo.jpg',
+      'public/assets/images/logo-mark.png',
+      'src/app/icon.png',
+      'src/app/apple-icon.png',
+    ]) {
+      assert.equal(
+        fs.existsSync(path.join(ROOT, relPath)),
+        true,
+        `Missing brand asset at ${relPath}`
+      );
+    }
+
+    const navbar = fs.readFileSync(
+      path.join(ROOT, 'src/components/layout/Navbar.tsx'),
+      'utf8'
+    );
+    assert.match(navbar, /\/assets\/images\/logo-mark\.png/);
+  });
 });

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import {
   LuArrowUpRight,
@@ -77,19 +78,29 @@ export default function Navbar({
       ref={headerRef}
       className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#09090B]/85 backdrop-blur-md"
     >
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-        {/* Zone 1: Brand wordmark */}
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-2 sm:gap-4 xl:gap-6 px-4 sm:px-6 lg:px-8">
+        {/* Zone 1: Brand mark + wordmark */}
         <a
           href="#top"
-          className="font-display text-lg sm:text-xl font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          className="group inline-flex items-center gap-2 sm:gap-2.5 font-display text-sm sm:text-lg xl:text-xl font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
         >
-          Motion Graphic Studio
+          <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-zinc-800/90 bg-[#09090B] p-1 transition-colors group-hover:border-[#33E092]/60">
+            <Image
+              src="/assets/images/logo-mark.png"
+              alt=""
+              width={28}
+              height={28}
+              priority
+              className="h-full w-full object-contain"
+            />
+          </span>
+          <span>Motion Graphic Studio</span>
         </a>
 
         {/* Zone 2: 4 centered navigation links */}
         <nav
           aria-label="Navigasi utama"
-          className="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300"
+          className="hidden lg:flex items-center gap-4 xl:gap-7 text-sm font-medium text-zinc-300"
         >
           {NAV_LINKS.map((item) => (
             <a
@@ -102,8 +113,8 @@ export default function Navbar({
           ))}
         </nav>
 
-        {/* Zone 3: Circular emerald ambient toggle + primary Gemini Web CTA */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Zone 3: Circular emerald ambient toggle + GitHub repo + primary Gemini Web CTA */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <button
             type="button"
             onClick={onToggleAmbientMotion}
@@ -118,7 +129,7 @@ export default function Navbar({
                 ? 'Animasi latar kosmik aktif (klik untuk jeda)'
                 : 'Animasi latar kosmik dijeda (klik untuk aktifkan)'
             }
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-zinc-800 bg-[#111114] text-[#33E092] transition-colors duration-150 hover:border-[#33E092]/60 hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-zinc-800 bg-[#111114] text-[#33E092] transition-colors duration-150 hover:border-[#33E092]/60 hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             {ambientMotion ? (
               <LuOrbit className="h-4 w-4" aria-hidden="true" />
@@ -142,7 +153,7 @@ export default function Navbar({
             href={REPO_LINKS.geminiWeb}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-[38px] items-center gap-1.5 sm:gap-2 rounded-md bg-[#33E092] px-3 sm:px-3.5 py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#0CCE6B] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            className="inline-flex min-h-[36px] sm:min-h-[38px] items-center gap-1.5 sm:gap-2 rounded-md bg-[#33E092] px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#0CCE6B] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             <span className="sm:hidden">Gemini Web</span>
             <span className="hidden sm:inline">Buka Gemini Web</span>
@@ -154,7 +165,7 @@ export default function Navbar({
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 bg-[#111114] text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50 md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-md border border-zinc-800 bg-[#111114] text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50 lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             {mobileOpen ? (
               <LuX className="h-5 w-5" aria-hidden="true" />
@@ -180,7 +191,7 @@ export default function Navbar({
         <nav
           ref={mobileMenuRef}
           aria-label="Navigasi seluler"
-          className="border-t border-zinc-800 bg-[#09090B] px-4 py-3 md:hidden"
+          className="border-t border-zinc-800 bg-[#09090B] px-4 py-3 lg:hidden"
         >
           <div className="flex flex-col gap-1">
             {NAV_LINKS.map((item) => (
