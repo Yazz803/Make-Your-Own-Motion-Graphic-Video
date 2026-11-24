@@ -31,9 +31,9 @@ Rules:
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 - A committed graphify-out/graph.json is rewritten whole on every build, so a large diff to it in a pull request is expected. Do not flag it as churn or suggest skipping the graph rebuild or its hooks.
 
-## Mandatory Changelog, Release Documentation & Automated Git Commit / Tag Workflow
+## Mandatory Changelog, Release Documentation & Automated Git Commit / Tag / Release Workflow
 
-Setiap kali AI agent menyelesaikan pekerjaan di repository ini — implementasi fitur, perbaikan bug, refactoring, optimasi, styling, penyesuaian instruksi, hingga konfigurasi repo — agent **WAJIB** mendokumentasikan perubahan (bila relevan), melakukan verifikasi, dan **secara otomatis menjalankan `git add` serta `git commit`** sebelum menyatakan pekerjaan selesai. Bila pekerjaan tersebut menaikkan versi aplikasi, agent juga **WAJIB membuat Git Tag rilis** untuk commit tersebut (Bagian 7).
+Setiap kali AI agent menyelesaikan pekerjaan di repository ini — implementasi fitur, perbaikan bug, refactoring, optimasi, styling, penyesuaian instruksi, hingga konfigurasi repo — agent **WAJIB** mendokumentasikan perubahan (bila relevan), melakukan verifikasi, dan **secara otomatis menjalankan `git add` serta `git commit`** sebelum menyatakan pekerjaan selesai. Bila pekerjaan tersebut menaikkan versi aplikasi, agent juga **WAJIB membuat Git Tag rilis** untuk commit tersebut (Bagian 7), dan — bila project menggunakan GitHub Release dan tag sudah ter-push — **menerbitkan GitHub Release** dari tag tersebut (Bagian 8).
 
 Pengecualian: pekerjaan yang masih berupa eksplorasi, investigasi, atau diskusi tanpa perubahan berkas tidak memerlukan changelog maupun commit.
 
@@ -126,7 +126,8 @@ Perubahan murni dokumentasi atau instruksi agent yang tidak memengaruhi aplikasi
 7. **Git Staging (`git add`)**: stage seluruh berkas perubahan yang relevan (`git add .` atau per berkas). Pastikan berkas sensitif (`.env`, kredensial, token, secret) tidak ikut ter-stage.
 8. **Git Commit (`git commit`)**: buat commit dengan pesan informatif berstandar Conventional Commits (Bagian 6).
 9. **Git Tag (`git tag`)**: bila commit ini adalah commit rilis (ada kenaikan versi), buat *annotated tag* untuk commit tersebut mengikuti Bagian 7. Lewati bila tidak ada kenaikan versi.
-10. **Verifikasi Status Git**: jalankan `git status` dan `git tag -l "v<version>"` untuk memastikan commit dan tag (bila ada) berhasil tercatat, tag menunjuk ke commit rilis yang benar, dan tidak ada perubahan relevan yang tertinggal.
+10. **GitHub Release (bila berlaku)**: bila push diizinkan dan tag sudah ter-push, terbitkan GitHub Release dari tag tersebut mengikuti Bagian 8. Lewati bila project tidak menggunakan GitHub Release atau push tidak diizinkan — dalam kasus terakhir, laporkan bahwa Release belum dapat diterbitkan karena tag masih lokal.
+11. **Verifikasi Status Git**: jalankan `git status` dan `git tag -l "v<version>"` untuk memastikan commit dan tag (bila ada) berhasil tercatat, tag menunjuk ke commit rilis yang benar, dan tidak ada perubahan relevan yang tertinggal.
 
 Jangan menjalankan `git push` — termasuk `git push origin v<version>` untuk tag — kecuali pengguna atau instruksi project secara eksplisit memintanya. Tag yang belum di-push hanya ada di lokal dan belum muncul di GitHub; laporkan status tersebut apa adanya dalam kesimpulan akhir.
 
@@ -189,8 +190,64 @@ Git Tag adalah penanda permanen pada satu commit tertentu — fungsinya menandai
   ```
   Bila push tidak diizinkan, tag cukup dibuat di lokal dan statusnya dilaporkan ke pengguna.
 
-- **GitHub Release (bila project menggunakannya):**
-  Bila project menerbitkan GitHub Release dari tag, buat release dari tag yang sama dengan judul dan isi catatan rilis yang diambil dari `docs/changelog/PATCH-V<version>.md` yang bersangkutan. Bila project tidak menggunakan GitHub Release, lewati langkah ini — tag saja sudah cukup.
+- **Lanjutan ke GitHub Release:**
+  Bila project menerbitkan GitHub Release, lanjutkan ke Bagian 8 setelah tag ter-push. Bila project tidak menggunakan GitHub Release, tag saja sudah cukup.
 
 - **Konfirmasi akhir:**
   Dalam kesimpulan akhir ke pengguna, sebutkan nomor versi, hash commit rilis, dan nama tag yang dibuat, beserta status push-nya (sudah ter-push ke GitHub atau masih lokal).
+
+### 8. Aturan GitHub Release
+
+GitHub Release adalah halaman rilis resmi yang dibangun di atas Git Tag: tag adalah penanda versi di kode, Release adalah pengumumannya — berisi judul, catatan perubahan, dan file hasil build yang dapat diunduh. Halaman Release juga otomatis menyediakan unduhan **Source code (zip)** dan **Source code (tar.gz)** dari tag yang bersangkutan.
+
+Alur lengkapnya selalu berurutan: **naikkan versi → tulis `PATCH-V<version>.md` → commit → tag `v<version>` → push tag → terbitkan Release**. Release tidak dapat diterbitkan sebelum tag-nya ada di GitHub.
+
+- **Prasyarat:**
+  - Commit rilis sudah dibuat dan terverifikasi (Bagian 5 dan 6).
+  - Annotated tag `v<version>` sudah dibuat dan menunjuk ke commit rilis tersebut (Bagian 7).
+  - Tag sudah ter-push secara spesifik: `git push origin v<version>`. Bila push tidak diizinkan, **BERHENTI di sini** — jangan menerbitkan Release, dan laporkan ke pengguna bahwa Release menunggu tag ter-push.
+
+- **Cara menerbitkan — pilih satu jalur yang tersedia di project:**
+
+  **Jalur A: GitHub CLI (`gh`) — diutamakan bila `gh` tersedia dan sudah terautentikasi:**
+  ```bash
+  gh release create v<version> --title "v<version> — <Judul Ringkas Rilis>" --notes-file docs/changelog/PATCH-V<version>.md
+  ```
+  Bila ada file hasil build yang harus dibagikan (arsip `.zip`, installer, binary, dan sejenisnya), tambahkan path file tersebut di akhir perintah:
+  ```bash
+  gh release create v<version> --title "v<version> — <Judul Ringkas Rilis>" --notes-file docs/changelog/PATCH-V<version>.md ./dist/<file-hasil-build>
+  ```
+  Tambahkan `--prerelease` bila rilis ini belum stabil (beta / RC). Tanpa flag tersebut, `gh` menandai rilis ini sebagai *latest release* secara otomatis.
+
+  **Jalur B: Website GitHub — bila `gh` tidak tersedia:**
+  1. Buka repository di GitHub → **Releases** → **Draft a new release**.
+  2. **Choose a tag** → pilih `v<version>` yang sudah ter-push. Jangan membuat tag baru dari halaman ini bila tag lokal sudah dibuat mengikuti Bagian 7 — pastikan tag yang dipilih sama.
+  3. Isi **Release title**: `v<version> — <Judul Ringkas Rilis>`.
+  4. Isi catatan rilis dari `docs/changelog/PATCH-V<version>.md` (lihat aturan isi di bawah). Tombol **Generate release notes** boleh digunakan sebagai draf awal, tetapi hasil akhirnya harus diselaraskan dengan file PATCH tersebut.
+  5. Lampirkan file hasil build (bila ada) ke kotak **Attach binaries**.
+  6. Centang **Set as pre-release** bila rilis belum stabil; centang **Set as the latest release** bila rilis ini adalah rilis stabil terbaru.
+  7. Klik **Publish release**. Gunakan **Save draft** bila rilis belum siap diterbitkan — draft tidak terlihat oleh publik dan tidak dihitung sebagai rilis selesai.
+
+- **Isi catatan rilis:**
+  - Sumber kebenaran catatan rilis adalah `docs/changelog/PATCH-V<version>.md` untuk versi tersebut — gunakan isinya, jangan menulis catatan berbeda yang tidak sesuai dengan file PATCH maupun dengan perubahan yang benar-benar masuk ke commit rilis.
+  - Judul Release mengikuti pola: `v<version> — <Judul Ringkas Rilis>`, dengan judul yang sama seperti judul pada file PATCH.
+
+- **Aturan pre-release dan latest:**
+  - Versi belum stabil (contoh: `v2.0.0-beta.1`, `v2.0.0-rc.1`) **WAJIB** diterbitkan sebagai *pre-release* dan tidak boleh ditandai sebagai *latest release*.
+  - Hanya rilis stabil terbaru yang boleh menjadi *latest release*. Jangan menandai versi lama yang diterbitkan ulang sebagai *latest*.
+
+- **Yang dilarang:**
+  - Dilarang menghapus, memindahkan, atau membuat ulang tag yang sudah memiliki Release yang terbit (mengikuti larangan pada Bagian 7).
+  - Dilarang menerbitkan Release dari tag yang tidak sesuai dengan versi di file versi project dan file PATCH.
+  - Dilarang melampirkan file yang mengandung secret, kredensial, `.env`, data pengguna, atau hasil build yang belum terverifikasi.
+
+- **Verifikasi setelah terbit:**
+  - Pastikan halaman Release untuk `v<version>` benar-benar muncul di GitHub, dengan judul, tag, dan status (*latest* / *pre-release*) yang sesuai.
+  - Pastikan file lampiran (bila ada) terdaftar di halaman Release tersebut dan dapat diunduh.
+  - Bila penerbitan gagal di tengah jalan (contoh: tag ter-push tetapi Release gagal dibuat), laporkan keadaan sebenarnya secara terpisah — jangan menyatakan rilis selesai hanya karena salah satu langkah berhasil.
+
+- **Mengedit Release yang sudah terbit:**
+  Judul dan catatan rilis boleh diedit setelah terbit bila ada koreksi. Mengubah isi kode rilis tidak dilakukan lewat edit Release — perubahan kode memerlukan versi baru, commit baru, tag baru, dan Release baru.
+
+- **Konfirmasi akhir:**
+  Dalam kesimpulan akhir ke pengguna, sebutkan nomor versi, nama tag, dan tautan / status GitHub Release-nya (terbit sebagai *latest*, terbit sebagai *pre-release*, masih *draft*, atau belum diterbitkan beserta alasannya).
