@@ -8,3 +8,5 @@ coverage/
 .hermes
 graphify-out
 tsconfig.tsbuildinfo
+.impeccable/review/
+.impeccable/questions/

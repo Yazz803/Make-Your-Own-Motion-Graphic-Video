@@ -40,15 +40,15 @@ export default function PromptOutputPanel({
 }: PromptOutputPanelProps) {
   return (
     <div className="space-y-5 lg:sticky lg:top-20 lg:col-span-5">
-      <div className="overflow-hidden rounded-xl border border-zinc-800 bg-[#121215]">
+      <div className="overflow-hidden rounded-lg border border-zinc-800 bg-[#111114]/90">
         {/* Top metadata bar */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 px-5 py-4">
           <div>
-            <h3 className="font-display text-base font-semibold text-zinc-50">
+            <h3 className="font-display text-base font-bold text-zinc-50">
               Prompt Siap Tempel · Mode Tugas
             </h3>
             <p className="mt-0.5 font-mono text-xs text-zinc-400 tabular-nums">
-              <span className="text-[#F2B705]">
+              <span className="text-[#33E092]">
                 {selectedStyle.skillHandle}
               </span>{' '}
               · {selectedStyle.name} · {aspectRatio} · ~{sceneCount} adegan
@@ -58,12 +58,12 @@ export default function PromptOutputPanel({
           <button
             type="button"
             onClick={onSaveDraft}
-            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50 whitespace-nowrap"
+            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md border border-zinc-800 bg-[#18181B] px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-[#33E092]/60 hover:text-zinc-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             {savedFeedback ? (
               <>
                 <LuCheck
-                  className="h-3.5 w-3.5 text-[#F2B705]"
+                  className="h-3.5 w-3.5 text-[#33E092]"
                   aria-hidden="true"
                 />
                 <span>Tersimpan</span>
@@ -79,7 +79,7 @@ export default function PromptOutputPanel({
 
         {/* Prompt output block */}
         <div className="p-5">
-          <pre className="max-h-[320px] overflow-y-auto whitespace-pre-wrap rounded-lg border border-zinc-800/90 bg-[#09090B] p-4 font-mono text-xs leading-relaxed text-zinc-200">
+          <pre className="max-h-[320px] overflow-y-auto whitespace-pre-wrap rounded-md border border-zinc-800/90 bg-[#09090B] p-4 font-mono text-xs leading-relaxed text-zinc-200">
             {generatedPrompt}
           </pre>
 
@@ -88,7 +88,7 @@ export default function PromptOutputPanel({
             <button
               type="button"
               onClick={onCopyPrompt}
-              className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg bg-[#F2B705] px-4 py-2.5 text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#FFD038] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705]"
+              className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-md bg-[#33E092] px-4 py-2.5 text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#0CCE6B] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               {copiedPrompt ? (
                 <>
@@ -108,7 +108,7 @@ export default function PromptOutputPanel({
               target="_blank"
               rel="noopener noreferrer"
               onClick={onCopyPrompt}
-              className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-zinc-100 transition-colors duration-150 hover:border-zinc-500 hover:bg-zinc-800 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705]"
+              className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-md border border-zinc-800 bg-[#18181B] px-4 py-2.5 text-sm font-semibold text-zinc-100 transition-colors duration-150 hover:border-[#33E092]/60 hover:text-[#33E092] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <span>Salin &amp; Buka Gemini</span>
               <LuExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -122,16 +122,16 @@ export default function PromptOutputPanel({
             </p>
             <ol className="mt-2.5 space-y-2 text-xs leading-relaxed text-zinc-400">
               <li>
-                <span className="font-mono text-zinc-200">01.</span> Buka Gemini
+                <span className="font-mono text-[#33E092]">01.</span> Buka Gemini
                 Web dengan akun Google milikmu, lalu pastikan toggle di bawah
                 kolom input berada di{' '}
                 <strong className="font-medium text-zinc-200">Tugas</strong>{' '}
                 (bukan Obrolan).
               </li>
               <li>
-                <span className="font-mono text-zinc-200">02.</span> Tempel
+                <span className="font-mono text-[#33E092]">02.</span> Tempel
                 prompt di atas (sudah diawali{' '}
-                <code className="font-mono text-[#F2B705]">
+                <code className="font-mono text-[#33E092]">
                   {selectedStyle.skillHandle}
                 </code>
                 ).{' '}
@@ -141,7 +141,7 @@ export default function PromptOutputPanel({
               </li>
               {voEnabled && (
                 <li>
-                  <span className="font-mono text-zinc-200">03.</span> Generate
+                  <span className="font-mono text-[#33E092]">03.</span> Generate
                   audio VO dari naskah tersebut di layanan TTS pilihanmu, lalu{' '}
                   <strong className="font-medium text-zinc-200">
                     upload file audio VO ke chat Mode Tugas yang sama
@@ -158,10 +158,10 @@ export default function PromptOutputPanel({
 
       {/* Phase 2 Follow-Up Prompt Card (when VO is enabled) */}
       {voEnabled && (
-        <div className="rounded-xl border border-zinc-800 bg-[#121215] p-5">
+        <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h4 className="font-display text-sm font-semibold text-zinc-100">
+              <h4 className="font-display text-sm font-bold text-zinc-100">
                 Prompt Tahap 2 (Setelah Upload Audio VO)
               </h4>
               <p className="mt-0.5 text-xs text-zinc-400">
@@ -171,12 +171,12 @@ export default function PromptOutputPanel({
             <button
               type="button"
               onClick={onCopyPhase2}
-              className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-100 transition-colors hover:border-zinc-500 whitespace-nowrap"
+              className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-md border border-zinc-800 bg-[#18181B] px-3 py-1.5 text-xs font-medium text-zinc-100 transition-colors hover:border-[#33E092]/60 hover:text-[#33E092] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               {copiedPhase2 ? (
                 <>
                   <LuCheck
-                    className="h-3.5 w-3.5 text-[#F2B705]"
+                    className="h-3.5 w-3.5 text-[#33E092]"
                     aria-hidden="true"
                   />
                   <span>Tersalin</span>
@@ -189,7 +189,7 @@ export default function PromptOutputPanel({
               )}
             </button>
           </div>
-          <pre className="mt-3 max-h-[140px] overflow-y-auto whitespace-pre-wrap rounded-lg border border-zinc-800/80 bg-[#09090B] p-3 font-mono text-[11px] leading-relaxed text-zinc-300">
+          <pre className="mt-3 max-h-[140px] overflow-y-auto whitespace-pre-wrap rounded-md border border-zinc-800/80 bg-[#09090B] p-3 font-mono text-xs leading-relaxed text-zinc-300">
             {phase2Prompt}
           </pre>
         </div>

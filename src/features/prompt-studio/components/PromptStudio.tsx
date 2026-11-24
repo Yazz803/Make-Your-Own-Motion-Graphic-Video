@@ -64,21 +64,18 @@ export default function PromptStudio({
   return (
     <section
       id="studio"
-      className="border-t border-zinc-800/80 bg-[#0C0C0F] py-16 sm:py-20 lg:py-24"
+      className="scroll-mt-16 border-t border-zinc-800/80 bg-[#09090B]/60 py-16 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="text-xs font-medium tracking-wide text-[#F2B705]">
-              02. Studio Prompt &amp; Pendamping Gemini Web
-            </p>
-            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
-              Rakit brief motion graphic untuk Mode Tugas Gemini Web
+            <h2 className="font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
+              Studio Prompt Mode Tugas Gemini Web
             </h2>
             <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
               Prompt otomatis diawali dengan{' '}
-              <code className="font-mono text-[#F2B705]">
+              <code className="font-mono text-[#33E092]">
                 {selectedStyle.skillHandle}
               </code>{' '}
               untuk memanggil keahlian yang sudah terpasang. Gunakan selalu{' '}
@@ -90,14 +87,14 @@ export default function PromptStudio({
           <button
             type="button"
             onClick={() => setShowDrafts((prev) => !prev)}
-            className="inline-flex min-h-[42px] items-center gap-2 self-start rounded-lg border border-zinc-800 bg-[#121215] px-4 py-2 text-xs sm:text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-700 hover:text-zinc-50 whitespace-nowrap sm:self-auto"
+            className="inline-flex min-h-[42px] items-center gap-2 self-start rounded-md border border-zinc-800 bg-[#111114]/90 px-4 py-2 text-xs sm:text-sm font-medium text-zinc-200 transition-colors hover:border-[#33E092]/60 hover:text-zinc-50 whitespace-nowrap sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             <LuFolderClock
               className="h-4 w-4 text-zinc-400"
               aria-hidden="true"
             />
             <span>Draft Tersimpan</span>
-            <span className="font-mono text-xs text-[#F2B705] tabular-nums">
+            <span className="font-mono text-xs text-[#33E092] tabular-nums">
               ({drafts.length})
             </span>
           </button>

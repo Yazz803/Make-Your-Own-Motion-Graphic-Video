@@ -16,7 +16,7 @@ export default function StylePreviewThumb({
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const showFallback = failedUrl === style.imageUrl;
 
-  const [bg = '#121215', , accent = '#F2B705'] = style.palette;
+  const [bg = '#111114', , accent = '#33E092'] = style.palette;
 
   return (
     <div
@@ -30,26 +30,22 @@ export default function StylePreviewThumb({
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={priority}
+          loading={priority ? undefined : 'eager'}
           referrerPolicy="no-referrer"
           onError={() => setFailedUrl(style.imageUrl)}
           className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
         />
       ) : (
-        <div className="flex h-full w-full flex-col justify-between bg-[#121215] p-5 text-zinc-100">
-          <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400">
-            {style.station}
-          </span>
-          <div>
-            <div
-              style={{ backgroundColor: accent }}
-              className="mb-2 h-1 w-10"
-            />
-            <div className="font-display text-lg font-bold tracking-tight">
-              {style.name}
-            </div>
-            <div className="mt-0.5 font-mono text-[10px] text-zinc-400">
-              {style.skillHandle}
-            </div>
+        <div className="flex h-full w-full flex-col justify-end bg-[#111114] p-5 text-zinc-100">
+          <div
+            style={{ backgroundColor: accent }}
+            className="mb-2.5 h-1 w-10"
+          />
+          <div className="font-display text-lg font-bold tracking-tight">
+            {style.name}
+          </div>
+          <div className="mt-1 font-mono text-[11px] text-zinc-400">
+            {style.skillHandle} · {style.station}
           </div>
         </div>
       )}

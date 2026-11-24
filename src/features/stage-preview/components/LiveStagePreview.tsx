@@ -70,24 +70,21 @@ export default function LiveStagePreview({
 
   const stageAspectClass =
     aspectRatio === '9:16'
-      ? 'aspect-[9/16] max-w-[300px] sm:max-w-[330px]'
+      ? 'aspect-[9/16] w-full max-w-[300px] sm:max-w-[330px]'
       : aspectRatio === '1:1'
-        ? 'aspect-square max-w-[440px]'
+        ? 'aspect-square w-full max-w-[440px]'
         : 'aspect-video w-full';
 
   return (
     <section
       id="preview"
-      className="border-t border-zinc-800/80 py-16 sm:py-20 lg:py-24"
+      className="scroll-mt-16 border-t border-zinc-800/80 py-16 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <p className="text-xs font-medium tracking-wide text-[#F2B705]">
-              03. Live Stage Preview (Opsional HTML)
-            </p>
-            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
-              Putar &amp; uji pratinjau HTML motion graphic secara instan
+            <h2 className="font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl lg:text-4xl [text-wrap:balance]">
+              Live Stage Preview HTML
             </h2>
             <p className="mt-3 text-sm sm:text-base leading-relaxed text-zinc-400">
               Jika Mode Tugas Gemini Web juga memberikan berkas{' '}
@@ -100,7 +97,7 @@ export default function LiveStagePreview({
           </div>
 
           {/* Aspect ratio switcher */}
-          <div className="inline-flex items-center gap-1 self-start rounded-lg border border-zinc-800 bg-zinc-950 p-1 md:self-auto">
+          <div className="inline-flex items-center gap-1.5 self-start rounded-md border border-zinc-800 bg-[#111114]/90 p-1 md:self-auto">
             {ASPECT_RATIO_OPTIONS.map(({ id, label, Icon }) => {
               const active = aspectRatio === id;
               return (
@@ -112,10 +109,10 @@ export default function LiveStagePreview({
                     setReplayKey((k) => k + 1);
                   }}
                   className={cn(
-                    'inline-flex min-h-[38px] items-center gap-1.5 rounded-md px-3 py-1.5 font-mono text-xs font-medium transition-colors whitespace-nowrap shrink-0 tabular-nums',
+                    'inline-flex min-h-[38px] items-center gap-1.5 rounded-md px-3 py-1.5 font-mono text-xs font-medium transition-colors whitespace-nowrap shrink-0 tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
                     active
-                      ? 'bg-zinc-800 text-zinc-50'
-                      : 'text-zinc-400 hover:text-zinc-100'
+                      ? 'bg-[#33E092] font-semibold text-[#09090B]'
+                      : 'text-zinc-300 hover:text-[#33E092]'
                   )}
                 >
                   <Icon className="h-3.5 w-3.5" aria-hidden="true" />
@@ -129,10 +126,10 @@ export default function LiveStagePreview({
         {/* 2-column stage & code workspace */}
         <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Code input pane */}
-          <div className="flex flex-col overflow-hidden rounded-xl border border-zinc-800 bg-[#121215] lg:col-span-5">
+          <div className="flex flex-col overflow-hidden rounded-lg border border-zinc-800 bg-[#111114]/90 lg:col-span-5">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 px-4 py-3">
               <div className="flex items-center gap-2 text-xs font-medium text-zinc-300">
-                <LuCode className="h-4 w-4 text-zinc-400" aria-hidden="true" />
+                <LuCode className="h-4 w-4 text-[#33E092]" aria-hidden="true" />
                 <span>Kode HTML Motion Graphic</span>
               </div>
 
@@ -140,7 +137,7 @@ export default function LiveStagePreview({
                 <button
                   type="button"
                   onClick={handleLoadDemo}
-                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-md border border-zinc-800 px-2.5 py-1 text-xs font-medium text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50 whitespace-nowrap"
+                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-md border border-zinc-800 bg-[#18181B] px-2.5 py-1 text-xs font-medium text-zinc-300 transition-colors hover:border-[#33E092]/60 hover:text-[#33E092] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <LuPlay className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Muat Demo</span>
@@ -149,7 +146,7 @@ export default function LiveStagePreview({
                   type="button"
                   onClick={handleClear}
                   aria-label="Bersihkan kode HTML"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-zinc-800 text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-zinc-800 bg-[#18181B] text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <LuTrash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
@@ -162,12 +159,12 @@ export default function LiveStagePreview({
               onChange={(e) => handleCodeChange(e.target.value)}
               spellCheck={false}
               placeholder="Tempel seluruh kode <!DOCTYPE html>... dari Gemini Web di sini untuk langsung melihat pratinjau animasinya."
-              className="min-h-[320px] flex-1 resize-none bg-[#09090B] p-4 font-mono text-xs leading-relaxed text-zinc-200 placeholder:text-zinc-500 focus:outline-none lg:min-h-[460px]"
+              className="min-h-[320px] flex-1 resize-none bg-[#09090B] p-4 font-mono text-xs leading-relaxed text-zinc-200 placeholder:text-zinc-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#33E092] lg:min-h-[460px]"
             />
           </div>
 
           {/* Sandboxed Stage Viewport */}
-          <div className="flex flex-col overflow-hidden rounded-xl border border-zinc-800 bg-[#121215] lg:col-span-7">
+          <div className="flex flex-col overflow-hidden rounded-lg border border-zinc-800 bg-[#111114]/90 lg:col-span-7">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 px-4 py-3">
               <div className="font-mono text-xs text-zinc-400 tabular-nums">
                 Stage {aspectRatio} · {hasCustomCode ? 'Kode Kustom' : 'Demo Bawaan'}
@@ -177,7 +174,7 @@ export default function LiveStagePreview({
                 <button
                   type="button"
                   onClick={() => setReplayKey((k) => k + 1)}
-                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-md border border-zinc-800 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:border-zinc-700 hover:text-zinc-50 whitespace-nowrap"
+                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-md border border-zinc-800 bg-[#18181B] px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:border-[#33E092]/60 hover:text-[#33E092] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <LuRotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Putar Ulang</span>
@@ -187,7 +184,7 @@ export default function LiveStagePreview({
                   type="button"
                   onClick={handleDownloadHtml}
                   disabled={!activeHtml.trim()}
-                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-md bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-100 transition-colors hover:bg-zinc-700 disabled:opacity-40 whitespace-nowrap"
+                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-md bg-[#33E092] px-3 py-1 text-xs font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] disabled:opacity-40 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <LuDownload className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Unduh .html</span>
@@ -199,7 +196,7 @@ export default function LiveStagePreview({
               {activeHtml.trim() ? (
                 <div
                   className={cn(
-                    'relative mx-auto overflow-hidden rounded-lg border border-zinc-800 bg-black shadow-2xl',
+                    'relative mx-auto overflow-hidden rounded-md border border-zinc-800 bg-black shadow-2xl',
                     stageAspectClass
                   )}
                 >
@@ -223,7 +220,7 @@ export default function LiveStagePreview({
                   <button
                     type="button"
                     onClick={handleLoadDemo}
-                    className="mt-4 inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-[#F2B705] px-4 py-2 text-xs font-semibold text-[#09090B] hover:bg-[#FFD038]"
+                    className="mt-4 inline-flex min-h-[40px] items-center gap-2 rounded-md bg-[#33E092] px-4 py-2 text-xs font-semibold text-[#09090B] hover:bg-[#0CCE6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                   >
                     <LuPlay className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>Muat Contoh Animasi</span>

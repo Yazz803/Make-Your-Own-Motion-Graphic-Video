@@ -94,7 +94,7 @@ export default function PromptControlsForm({
   onApplyPreset,
 }: PromptControlsFormProps) {
   return (
-    <div className="space-y-8 rounded-xl border border-zinc-800 bg-[#121215] p-5 sm:p-7 lg:col-span-7">
+    <div className="space-y-8 rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-7 lg:col-span-7">
       {/* Quick-start presets */}
       <div>
         <span className="block text-xs font-medium text-zinc-400">
@@ -106,7 +106,7 @@ export default function PromptControlsForm({
               key={preset.id}
               type="button"
               onClick={() => onApplyPreset(preset.id)}
-              className="min-h-[38px] rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-zinc-600 hover:text-zinc-50 whitespace-nowrap"
+              className="min-h-[38px] rounded-md border border-zinc-800 bg-[#18181B] px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-[#33E092]/60 hover:text-[#33E092] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               {preset.label}
             </button>
@@ -123,7 +123,7 @@ export default function PromptControlsForm({
           >
             Gaya Visual &amp; Pemanggil Keahlian ({MOTION_STYLES.length} gaya)
           </label>
-          <span className="font-mono text-xs text-[#F2B705]">
+          <span className="font-mono text-xs text-[#33E092]">
             Awalan Prompt: {selectedStyle.skillHandle}
           </span>
         </div>
@@ -134,7 +134,7 @@ export default function PromptControlsForm({
             const found = MOTION_STYLES.find((s) => s.id === e.target.value);
             if (found) onSelectStyle(found);
           }}
-          className="mt-2.5 h-11 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 text-sm text-zinc-100 focus:border-[#F2B705] focus:outline-none"
+          className="mt-2.5 h-11 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3.5 text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
         >
           {ALL_STATIONS.map((station) => (
             <optgroup key={station} label={station}>
@@ -163,17 +163,24 @@ export default function PromptControlsForm({
                   type="button"
                   onClick={() => onChangeAspectRatio(id)}
                   className={cn(
-                    'flex min-h-[60px] flex-col items-center justify-center rounded-lg border px-2 py-2.5 text-center transition-colors',
+                    'flex min-h-[60px] flex-col items-center justify-center rounded-md border px-2 py-2.5 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
                     active
-                      ? 'border-[#F2B705] bg-[#F2B705]/10 text-[#F2B705]'
-                      : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                      ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
+                      : 'border-zinc-800 bg-[#18181B] text-zinc-300 hover:border-zinc-700 hover:text-zinc-50'
                   )}
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
                   <span className="mt-1 font-mono text-xs font-semibold tabular-nums">
                     {label}
                   </span>
-                  <span className="text-[11px] opacity-80">{sub}</span>
+                  <span
+                    className={cn(
+                      'text-[11px]',
+                      active ? 'text-[#09090B]/80 font-medium' : 'text-zinc-400'
+                    )}
+                  >
+                    {sub}
+                  </span>
                 </button>
               );
             })}
@@ -193,14 +200,19 @@ export default function PromptControlsForm({
                   type="button"
                   onClick={() => onChangeDurationSec(sec)}
                   className={cn(
-                    'flex min-h-[60px] flex-col items-center justify-center rounded-lg border px-2 py-2 font-mono transition-colors tabular-nums',
+                    'flex min-h-[60px] flex-col items-center justify-center rounded-md border px-1 sm:px-2 py-2 font-mono transition-colors tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
                     active
-                      ? 'border-[#F2B705] bg-[#F2B705]/10 text-[#F2B705]'
-                      : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                      ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
+                      : 'border-zinc-800 bg-[#18181B] text-zinc-300 hover:border-zinc-700 hover:text-zinc-50'
                   )}
                 >
                   <span className="text-sm font-semibold">{sec}s</span>
-                  <span className="mt-0.5 font-sans text-[10px] opacity-75">
+                  <span
+                    className={cn(
+                      'mt-0.5 font-sans text-[11px] whitespace-nowrap',
+                      active ? 'text-[#09090B]/80 font-medium' : 'text-zinc-400'
+                    )}
+                  >
                     ~{estimateSceneCount(sec)} scene
                   </span>
                 </button>
@@ -221,11 +233,11 @@ export default function PromptControlsForm({
           </label>
           <textarea
             id="topic-input"
-            rows={3}
+            rows={4}
             value={topic}
             onChange={(e) => onChangeTopic(e.target.value)}
             placeholder="Contoh: Jelaskan cara kerja panel surya dalam 30 detik dengan alur yang mudah dipahami pemula..."
-            className="mt-2 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm leading-relaxed text-zinc-100 placeholder:text-zinc-500 focus:border-[#F2B705] focus:outline-none"
+            className="mt-2 min-h-[104px] w-full rounded-md border border-zinc-800 bg-[#09090B] px-3.5 py-2.5 text-sm leading-relaxed text-zinc-100 placeholder:text-zinc-400 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           />
         </div>
 
@@ -242,7 +254,7 @@ export default function PromptControlsForm({
             value={targetAudience}
             onChange={(e) => onChangeTargetAudience(e.target.value)}
             placeholder="Contoh: Penonton Reels & TikTok usia 18-30 tahun"
-            className="mt-2 h-11 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-[#F2B705] focus:outline-none"
+            className="mt-2 h-11 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3.5 text-sm text-zinc-100 placeholder:text-zinc-400 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           />
         </div>
       </div>
@@ -273,7 +285,7 @@ export default function PromptControlsForm({
             type="checkbox"
             checked={antiSlideEnforcement}
             onChange={(e) => onChangeAntiSlideEnforcement(e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-zinc-700 bg-zinc-950 accent-[#F2B705]"
+            className="mt-1 h-4 w-4 rounded border-zinc-700 bg-[#09090B] accent-[#33E092]"
           />
           <span className="text-xs sm:text-sm text-zinc-300">
             <strong className="font-semibold text-zinc-100">
@@ -289,7 +301,7 @@ export default function PromptControlsForm({
             type="checkbox"
             checked={includeInlineStyleRules}
             onChange={(e) => onChangeIncludeInlineStyleRules(e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-zinc-700 bg-zinc-950 accent-[#F2B705]"
+            className="mt-1 h-4 w-4 rounded border-zinc-700 bg-[#09090B] accent-[#33E092]"
           />
           <span className="text-xs sm:text-sm text-zinc-300">
             <strong className="font-semibold text-zinc-100">

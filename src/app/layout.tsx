@@ -1,28 +1,6 @@
 import type { Metadata } from 'next';
-import {
-  Bricolage_Grotesque,
-  JetBrains_Mono,
-  Plus_Jakarta_Sans,
-} from 'next/font/google';
+import { gitlabMono, incognito, inter } from './fonts';
 import './globals.css';
-
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  variable: '--font-bricolage',
-  display: 'swap',
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-jakarta',
-  display: 'swap',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-  display: 'swap',
-});
 
 function resolveMetadataBase(): URL {
   const raw = process.env.APP_URL?.trim();
@@ -64,11 +42,11 @@ export default function RootLayout({
     <html
       lang="id"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      className={`${incognito.variable} ${inter.variable} ${gitlabMono.variable}`}
     >
       <body
         suppressHydrationWarning
-        className="min-h-screen bg-[#09090B] text-[#FAFAFA] font-sans selection:bg-[#F2B705] selection:text-[#09090B]"
+        className="min-h-screen bg-[#09090B] text-[#FAFAFA] font-sans selection:bg-[#33E092] selection:text-[#09090B]"
       >
         {children}
       </body>

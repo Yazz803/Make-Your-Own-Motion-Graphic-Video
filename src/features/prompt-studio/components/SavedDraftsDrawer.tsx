@@ -21,15 +21,15 @@ export default function SavedDraftsDrawer({
   onDeleteDraft,
 }: SavedDraftsDrawerProps) {
   return (
-    <div className="mt-6 rounded-xl border border-zinc-800 bg-[#121215] p-5">
+    <div className="mt-6 rounded-lg border border-zinc-800 bg-[#111114]/95 p-5">
       <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
-        <h3 className="font-display text-base font-semibold text-zinc-100">
+        <h3 className="font-display text-base font-bold text-zinc-100">
           Riwayat Draft Lokal di Perangkat Ini
         </h3>
         <button
           type="button"
           onClick={onClose}
-          className="text-xs font-medium text-zinc-400 hover:text-zinc-100"
+          className="rounded-sm text-xs font-medium text-zinc-400 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
         >
           Tutup
         </button>
@@ -62,14 +62,14 @@ export default function SavedDraftsDrawer({
                 <button
                   type="button"
                   onClick={() => onLoadDraft(draft)}
-                  className="min-h-[36px] rounded-md border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:border-zinc-500 hover:text-zinc-50 whitespace-nowrap"
+                  className="min-h-[36px] rounded-md border border-zinc-800 bg-[#18181B] px-3 py-1.5 text-xs font-medium text-zinc-200 hover:border-[#33E092]/60 hover:text-[#33E092] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   Muat
                 </button>
                 <button
                   type="button"
                   onClick={() => onCopyDraft(draft)}
-                  className="min-h-[36px] rounded-md bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-100 hover:bg-zinc-700 whitespace-nowrap"
+                  className="min-h-[36px] rounded-md bg-[#33E092] px-3 py-1.5 text-xs font-semibold text-[#09090B] hover:bg-[#0CCE6B] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   {copiedDraftId === draft.id ? 'Tersalin' : 'Salin'}
                 </button>
@@ -77,7 +77,7 @@ export default function SavedDraftsDrawer({
                   type="button"
                   onClick={() => onDeleteDraft(draft.id)}
                   aria-label={`Hapus draft ${draft.title}`}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-800 hover:text-red-400"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <LuTrash2 className="h-4 w-4" aria-hidden="true" />
                 </button>

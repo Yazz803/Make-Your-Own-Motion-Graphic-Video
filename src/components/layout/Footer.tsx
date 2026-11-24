@@ -1,85 +1,68 @@
-import { LuArrowUpRight } from 'react-icons/lu';
+import { SiGithub, SiGooglegemini } from 'react-icons/si';
 import { NAV_LINKS, REPO_LINKS } from '@/lib/constants';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-800/80 bg-[#09090B] py-12">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-md">
-            <span className="font-display text-lg font-bold tracking-tight text-zinc-50">
-              Motion Graphic Studio
+    <footer className="relative z-10 border-t border-zinc-800/80 bg-[#09090B]/90 py-10">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          {/* Left: Built-with / Source attribution row matching reference footer */}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+            <span className="font-medium text-zinc-400">
+              Sumber &amp; Platform:
             </span>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-              Katalog lengkap gaya visual dari bang-motion dan lemo-opuscar
-              beserta studio prompt untuk memproduksi naskah voice over, SFX,
-              running text, dan video MP4 melalui Mode Tugas di Gemini Web.
-            </p>
+
+            <a
+              href={REPO_LINKS.bangMotion}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-sm font-medium text-zinc-100 transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              <SiGithub className="h-4 w-4 text-zinc-300" aria-hidden="true" />
+              <span>bang-motion</span>
+            </a>
+
+            <a
+              href={REPO_LINKS.lemoOpuscar}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-sm font-medium text-zinc-100 transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              <SiGithub className="h-4 w-4 text-zinc-300" aria-hidden="true" />
+              <span>lemo-opuscar</span>
+            </a>
+
+            <a
+              href={REPO_LINKS.geminiWeb}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-sm font-medium text-zinc-100 transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              <SiGooglegemini
+                className="h-4 w-4 text-[#33E092]"
+                aria-hidden="true"
+              />
+              <span>Gemini Web</span>
+            </a>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 text-sm sm:gap-12">
-            <div>
-              <h4 className="text-xs font-semibold text-zinc-200">Navigasi</h4>
-              <ul className="mt-3 space-y-2 text-zinc-400">
-                {NAV_LINKS.map((item) => (
-                  <li key={item.href}>
-                    <a href={item.href} className="hover:text-zinc-100">
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-semibold text-zinc-200">
-                Sumber Referensi
-              </h4>
-              <ul className="mt-3 space-y-2 text-zinc-400">
-                <li>
-                  <a
-                    href={REPO_LINKS.bangMotion}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-zinc-100"
-                  >
-                    <span>bangtutorial/bang-motion</span>
-                    <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={REPO_LINKS.lemoOpuscar}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-zinc-100"
-                  >
-                    <span>lemomo-ai/lemo-opuscar</span>
-                    <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={REPO_LINKS.geminiWeb}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-zinc-100"
-                  >
-                    <span>Gemini Web</span>
-                    <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {/* Right: Copyright & runtime note */}
+          <p className="text-xs text-zinc-400">
+            Copyright © Motion Graphic Studio {new Date().getFullYear()} ·
+            Berjalan di Mode Tugas Gemini Web pengguna
+          </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-zinc-800/80 pt-6 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Motion Graphic Studio.</p>
-          <p>
-            Seluruh pemrosesan naskah VO, storyboard, dan render video MP4
-            berjalan di Mode Tugas akun Gemini Web pengguna.
-          </p>
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-zinc-800/60 pt-5 text-xs text-zinc-400">
+          {NAV_LINKS.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              {item.label}
+            </a>
+          ))}
         </div>
       </div>
     </footer>

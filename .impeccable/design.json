@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T08:14:00Z",
+  "title": "Design System: Motion Graphic Studio",
+  "extensions": {
+    "colorMeta": {
+      "emerald-accent": {
+        "role": "primary",
+        "displayName": "Emerald Accent",
+        "canonical": "oklch(80.4% 0.176 157.9)",
+        "tonalRamp": [
+          "oklch(15% 0.176 157.9)",
+          "oklch(26% 0.176 157.9)",
+          "oklch(38% 0.176 157.9)",
+          "oklch(50% 0.176 157.9)",
+          "oklch(62% 0.176 157.9)",
+          "oklch(74% 0.176 157.9)",
+          "oklch(85% 0.176 157.9)",
+          "oklch(95% 0.176 157.9)"
+        ]
+      },
+      "emerald-hover": {
+        "role": "primary",
+        "displayName": "Emerald Hover",
+        "canonical": "oklch(74.6% 0.195 152.0)",
+        "tonalRamp": [
+          "oklch(15% 0.195 152.0)",
+          "oklch(26% 0.195 152.0)",
+          "oklch(38% 0.195 152.0)",
+          "oklch(50% 0.195 152.0)",
+          "oklch(62% 0.195 152.0)",
+          "oklch(74% 0.195 152.0)",
+          "oklch(85% 0.195 152.0)",
+          "oklch(95% 0.195 152.0)"
+        ]
+      },
+      "emerald-deep": {
+        "role": "primary",
+        "displayName": "Emerald Deep",
+        "canonical": "oklch(62.7% 0.170 149.2)",
+        "tonalRamp": [
+          "oklch(15% 0.170 149.2)",
+          "oklch(26% 0.170 149.2)",
+          "oklch(38% 0.170 149.2)",
+          "oklch(50% 0.170 149.2)",
+          "oklch(62% 0.170 149.2)",
+          "oklch(74% 0.170 149.2)",
+          "oklch(85% 0.170 149.2)",
+          "oklch(95% 0.170 149.2)"
+        ]
+      },
+      "space-ground": {
+        "role": "neutral",
+        "displayName": "Space Ground",
+        "canonical": "oklch(14.1% 0.004 285.8)",
+        "tonalRamp": [
+          "oklch(15% 0.004 285.8)",
+          "oklch(26% 0.004 285.8)",
+          "oklch(38% 0.004 285.8)",
+          "oklch(50% 0.004 285.8)",
+          "oklch(62% 0.004 285.8)",
+          "oklch(74% 0.004 285.8)",
+          "oklch(85% 0.004 285.8)",
+          "oklch(95% 0.004 285.8)"
+        ]
+      },
+      "space-surface": {
+        "role": "neutral",
+        "displayName": "Space Surface",
+        "canonical": "oklch(17.9% 0.006 285.8)",
+        "tonalRamp": [
+          "oklch(15% 0.006 285.8)",
+          "oklch(26% 0.006 285.8)",
+          "oklch(38% 0.006 285.8)",
+          "oklch(50% 0.006 285.8)",
+          "oklch(62% 0.006 285.8)",
+          "oklch(74% 0.006 285.8)",
+          "oklch(85% 0.006 285.8)",
+          "oklch(95% 0.006 285.8)"
+        ]
+      },
+      "space-elevated": {
+        "role": "neutral",
+        "displayName": "Space Elevated",
+        "canonical": "oklch(21.0% 0.006 285.9)",
+        "tonalRamp": [
+          "oklch(15% 0.006 285.9)",
+          "oklch(26% 0.006 285.9)",
+          "oklch(38% 0.006 285.9)",
+          "oklch(50% 0.006 285.9)",
+          "oklch(62% 0.006 285.9)",
+          "oklch(74% 0.006 285.9)",
+          "oklch(85% 0.006 285.9)",
+          "oklch(95% 0.006 285.9)"
+        ]
+      },
+      "space-border": {
+        "role": "neutral",
+        "displayName": "Space Border",
+        "canonical": "oklch(27.4% 0.005 286.0)",
+        "tonalRamp": [
+          "oklch(15% 0.005 286.0)",
+          "oklch(26% 0.005 286.0)",
+          "oklch(38% 0.005 286.0)",
+          "oklch(50% 0.005 286.0)",
+          "oklch(62% 0.005 286.0)",
+          "oklch(74% 0.005 286.0)",
+          "oklch(85% 0.005 286.0)",
+          "oklch(95% 0.005 286.0)"
+        ]
+      },
+      "border-hover": {
+        "role": "neutral",
+        "displayName": "Border Hover",
+        "canonical": "oklch(37.0% 0.012 285.8)",
+        "tonalRamp": [
+          "oklch(15% 0.012 285.8)",
+          "oklch(26% 0.012 285.8)",
+          "oklch(38% 0.012 285.8)",
+          "oklch(50% 0.012 285.8)",
+          "oklch(62% 0.012 285.8)",
+          "oklch(74% 0.012 285.8)",
+          "oklch(85% 0.012 285.8)",
+          "oklch(95% 0.012 285.8)"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "canonical": "oklch(71.2% 0.013 286.1)",
+        "tonalRamp": [
+          "oklch(15% 0.013 286.1)",
+          "oklch(26% 0.013 286.1)",
+          "oklch(38% 0.013 286.1)",
+          "oklch(50% 0.013 286.1)",
+          "oklch(62% 0.013 286.1)",
+          "oklch(74% 0.013 286.1)",
+          "oklch(85% 0.013 286.1)",
+          "oklch(95% 0.013 286.1)"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Text Secondary",
+        "canonical": "oklch(87.1% 0.005 286.3)",
+        "tonalRamp": [
+          "oklch(15% 0.005 286.3)",
+          "oklch(26% 0.005 286.3)",
+          "oklch(38% 0.005 286.3)",
+          "oklch(50% 0.005 286.3)",
+          "oklch(62% 0.005 286.3)",
+          "oklch(74% 0.005 286.3)",
+          "oklch(85% 0.005 286.3)",
+          "oklch(95% 0.005 286.3)"
+        ]
+      },
+      "text-emphasis": {
+        "role": "neutral",
+        "displayName": "Text Emphasis",
+        "canonical": "oklch(92.0% 0.004 286.3)",
+        "tonalRamp": [
+          "oklch(15% 0.004 286.3)",
+          "oklch(26% 0.004 286.3)",
+          "oklch(38% 0.004 286.3)",
+          "oklch(50% 0.004 286.3)",
+          "oklch(62% 0.004 286.3)",
+          "oklch(74% 0.004 286.3)",
+          "oklch(85% 0.004 286.3)",
+          "oklch(95% 0.004 286.3)"
+        ]
+      },
+      "text-bright": {
+        "role": "neutral",
+        "displayName": "Text Bright",
+        "canonical": "oklch(96.7% 0.001 286.4)",
+        "tonalRamp": [
+          "oklch(15% 0.001 286.4)",
+          "oklch(26% 0.001 286.4)",
+          "oklch(38% 0.001 286.4)",
+          "oklch(50% 0.001 286.4)",
+          "oklch(62% 0.001 286.4)",
+          "oklch(74% 0.001 286.4)",
+          "oklch(85% 0.001 286.4)",
+          "oklch(95% 0.001 286.4)"
+        ]
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Text Primary",
+        "canonical": "oklch(98.5% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(38% 0.000 89.9)",
+          "oklch(50% 0.000 89.9)",
+          "oklch(62% 0.000 89.9)",
+          "oklch(74% 0.000 89.9)",
+          "oklch(85% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero h1 headline only (36px mobile, 48px sm, 52px lg) in Incognito 800."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Major section h2 headings (24px mobile, 30px sm, 36px lg) in Incognito 700."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Navbar wordmark, modal headers, catalog card titles, and panel headings (16px-20px) in Incognito 700."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Primary UI prose, descriptions, form inputs, and primary button labels (14px base, 16px sm leads) in Inter."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form field labels, station matrix chip names, compact buttons, and footer links (12px) in Inter."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Skill handles, tabular counts, aspect ratios, durations, step indices, and prompt output blocks (12px) in GitLab Mono."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Micro-sublabels inside aspect-ratio/duration tiles, SFX/Running Text helper descriptions, and fallback card metadata (11px) in Inter."
+      }
+    },
+    "shadows": [
+      {
+        "name": "stage-frame",
+        "value": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        "purpose": "Anchors the sandboxed Live Stage Preview iframe inside the #070709 recessed viewport well."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 2px #33E092",
+        "purpose": "Keyboard focus-visible outline on inputs, chips, tabs, and secondary buttons."
+      },
+      {
+        "name": "focus-ring-offset",
+        "value": "0 0 0 2px #09090B, 0 0 0 4px #33E092",
+        "purpose": "Offset keyboard focus-visible ring on solid Emerald Accent primary CTA buttons."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-smooth",
+        "value": "power3.out",
+        "purpose": "GSAP STUDIO_EASE.smooth for hero reveal (0.55s), showcase (0.6s), and workflow strip stagger (0.45s, 0.07s stagger)."
+      },
+      {
+        "name": "ease-snappy",
+        "value": "power2.out",
+        "purpose": "GSAP STUDIO_EASE.snappy for mobile navigation drawer entrance (0.2s)."
+      },
+      {
+        "name": "ease-expo",
+        "value": "expo.out",
+        "purpose": "GSAP STUDIO_EASE.expo registered studio easing preset for crisp deceleration."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Color, border, and text transitions on buttons, links, tabs, and station chips."
+      },
+      {
+        "name": "duration-medium",
+        "value": "200ms",
+        "purpose": "Card border transitions and Gemini Web screenshot thumbnail hover scale (1.03)."
+      },
+      {
+        "name": "duration-slow",
+        "value": "300ms",
+        "purpose": "Catalog style thumbnail hover zoom (scale 1.03, ease-out)."
+      },
+      {
+        "name": "scroll-scrub",
+        "value": "0.15",
+        "purpose": "GSAP ScrollTrigger scrub factor driving the 1.5px emerald scroll progress hairline in Navbar."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "(prefers-reduced-motion: no-preference)",
+        "purpose": "Gates GSAP timelines, smooth scrolling, StarfieldCanvas animation, and IsometricCubeCanvas motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1536px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid Emerald Accent CTA with Space Ground ink for primary studio and Gemini Web actions.",
+      "html": "<button type=\"button\" class=\"ds-btn-primary\"><span>Mulai Buat Prompt</span><svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 6px; background-color: var(--color-emerald-accent, #33E092); color: var(--color-space-ground, #09090B); padding: 10px 20px; font-family: var(--font-sans, Inter, ui-sans-serif, system-ui, sans-serif); font-size: 14px; font-weight: 600; line-height: 1.25; white-space: nowrap; cursor: pointer; transition: background-color 150ms ease, transform 150ms ease; } .ds-btn-primary:hover { background-color: var(--color-emerald-hover, #0CCE6B); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #09090B, 0 0 0 4px #33E092; } .ds-btn-icon { width: 16px; height: 16px; flex-shrink: 0; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Elevated dark-zinc button with 1px hairline border for secondary actions like Detail, Replay, and Salin & Buka Gemini.",
+      "html": "<button type=\"button\" class=\"ds-btn-secondary\"><svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg><span>Detail</span></button>",
+      "css": ".ds-btn-secondary { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--color-space-border, #27272A); border-radius: 6px; background-color: var(--color-space-elevated, #18181B); color: #D4D4D8; padding: 8px 14px; font-family: var(--font-sans, Inter, ui-sans-serif, system-ui, sans-serif); font-size: 14px; font-weight: 500; line-height: 1.25; white-space: nowrap; cursor: pointer; transition: border-color 150ms ease, color 150ms ease; } .ds-btn-secondary:hover { border-color: rgba(51, 224, 146, 0.6); color: var(--color-emerald-accent, #33E092); } .ds-btn-secondary:active { border-color: var(--color-emerald-accent, #33E092); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-btn-icon { width: 16px; height: 16px; flex-shrink: 0; }"
+    },
+    {
+      "name": "Search Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Recessed Space Ground search input with leading icon and emerald focus border shift.",
+      "html": "<div class=\"ds-input-wrap\"><svg class=\"ds-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input type=\"search\" class=\"ds-input-field\" aria-label=\"Cari gaya visual\" placeholder=\"Cari gaya (Ukiyo-e, Teardown, Pixel)...\" /></div>",
+      "css": ".ds-input-wrap { position: relative; width: 100%; } .ds-input-icon { position: absolute; left: 14px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: #A1A1AA; pointer-events: none; } .ds-input-field { width: 100%; height: 44px; border: 1px solid var(--color-space-border, #27272A); border-radius: 6px; background-color: rgba(17, 17, 20, 0.9); color: #F4F4F5; padding: 0 16px 0 40px; font-family: var(--font-sans, Inter, ui-sans-serif, system-ui, sans-serif); font-size: 14px; transition: border-color 150ms ease; } .ds-input-field::placeholder { color: #A1A1AA; } .ds-input-field:hover { border-color: #3F3F46; } .ds-input-field:focus, .ds-input-field:focus-visible { outline: none; border-color: var(--color-emerald-accent, #33E092); }"
+    },
+    {
+      "name": "Sticky Cosmic Navbar",
+      "kind": "nav",
+      "refersTo": "navbar-shell",
+      "description": "Three-zone sticky header with Incognito wordmark, centered anchor links, circular ambient toggle, Gemini Web CTA, and 1.5px emerald scroll hairline.",
+      "html": "<header class=\"ds-navbar\"><div class=\"ds-navbar-inner\"><a href=\"#top\" class=\"ds-navbar-brand\">Motion Graphic Studio</a><nav class=\"ds-navbar-links\" aria-label=\"Navigasi utama\"><a href=\"#katalog\" class=\"ds-navbar-link\">Katalog Gaya</a><a href=\"#studio\" class=\"ds-navbar-link\">Studio Prompt</a><a href=\"#preview\" class=\"ds-navbar-link\">Live Preview</a><a href=\"#panduan\" class=\"ds-navbar-link\">Panduan Skill</a></nav><div class=\"ds-navbar-actions\"><button type=\"button\" class=\"ds-navbar-orbit\" aria-label=\"Jeda animasi latar kosmik\"><svg class=\"ds-navbar-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><ellipse cx=\"12\" cy=\"12\" rx=\"10\" ry=\"4\" transform=\"rotate(-30 12 12)\"/></svg></button><a href=\"#studio\" class=\"ds-navbar-cta\"><span>Buka Gemini Web</span><svg class=\"ds-navbar-cta-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/></svg></a></div></div><div class=\"ds-navbar-progress\" aria-hidden=\"true\"><div class=\"ds-navbar-progress-fill\"></div></div></header>",
+      "css": ".ds-navbar { position: relative; border-bottom: 1px solid rgba(39, 39, 42, 0.8); background-color: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px); } .ds-navbar-inner { display: flex; height: 64px; max-width: 1200px; margin: 0 auto; padding: 0 24px; align-items: center; justify-content: space-between; gap: 24px; } .ds-navbar-brand { font-family: var(--font-display, Incognito, Inter, sans-serif); font-size: 20px; font-weight: 700; letter-spacing: -0.025em; color: #FAFAFA; text-decoration: none; white-space: nowrap; border-radius: 4px; transition: color 150ms ease; } .ds-navbar-brand:hover { color: var(--color-emerald-accent, #33E092); } .ds-navbar-brand:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-navbar-links { display: flex; align-items: center; gap: 28px; } .ds-navbar-link { font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; font-weight: 500; color: #D4D4D8; text-decoration: none; white-space: nowrap; padding: 4px 0; transition: color 150ms ease; } .ds-navbar-link:hover, .ds-navbar-link:focus-visible { outline: none; color: var(--color-emerald-accent, #33E092); } .ds-navbar-actions { display: flex; align-items: center; gap: 10px; } .ds-navbar-orbit { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 9999px; border: 1px solid var(--color-space-border, #27272A); background-color: var(--color-space-surface, #111114); color: var(--color-emerald-accent, #33E092); cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease; } .ds-navbar-orbit:hover { border-color: rgba(51, 224, 146, 0.6); background-color: var(--color-space-elevated, #18181B); } .ds-navbar-orbit:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-navbar-svg { width: 16px; height: 16px; } .ds-navbar-cta { display: inline-flex; min-height: 38px; align-items: center; gap: 8px; border-radius: 6px; background-color: var(--color-emerald-accent, #33E092); color: var(--color-space-ground, #09090B); padding: 8px 14px; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: background-color 150ms ease; } .ds-navbar-cta:hover { background-color: var(--color-emerald-hover, #0CCE6B); } .ds-navbar-cta:focus-visible { outline: none; box-shadow: 0 0 0 2px #09090B, 0 0 0 4px #33E092; } .ds-navbar-cta-svg { width: 14px; height: 14px; } .ds-navbar-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background-color: rgba(39, 39, 42, 0.4); } .ds-navbar-progress-fill { width: 42%; height: 100%; background-color: rgba(51, 224, 146, 0.9); }"
+    },
+    {
+      "name": "Station Matrix Chip",
+      "kind": "chip",
+      "refersTo": "station-chip",
+      "description": "Contribution-graph station filter chip pairing a 2px-radius emerald intensity square with label and tabular count.",
+      "html": "<div class=\"ds-chip-row\"><button type=\"button\" class=\"ds-chip\" aria-pressed=\"false\"><span class=\"ds-chip-swatch ds-chip-swatch-high\" aria-hidden=\"true\"></span><span class=\"ds-chip-label\">Editorial &amp; Collage</span><span class=\"ds-chip-count\">8</span></button><button type=\"button\" class=\"ds-chip ds-chip-active\" aria-pressed=\"true\"><span class=\"ds-chip-swatch ds-chip-swatch-active\" aria-hidden=\"true\"></span><span class=\"ds-chip-label\">BM · Explainer</span><span class=\"ds-chip-count\">6</span></button></div>",
+      "css": ".ds-chip-row { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { display: inline-flex; align-items: center; gap: 8px; border-radius: 6px; border: 1px solid rgba(39, 39, 42, 0.9); background-color: rgba(24, 24, 27, 0.7); color: #D4D4D8; padding: 6px 10px; font-family: var(--font-sans, Inter, sans-serif); cursor: pointer; transition: border-color 150ms ease, color 150ms ease, background-color 150ms ease; } .ds-chip:hover { border-color: #3F3F46; color: #FAFAFA; } .ds-chip:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-chip-active { border-color: var(--color-emerald-accent, #33E092); background-color: rgba(51, 224, 146, 0.1); color: #FAFAFA; } .ds-chip-active:hover { border-color: var(--color-emerald-accent, #33E092); } .ds-chip-swatch { width: 10px; height: 10px; border-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.1); flex-shrink: 0; } .ds-chip-swatch-high { background-color: #26A641; } .ds-chip-swatch-active { background-color: var(--color-emerald-accent, #33E092); } .ds-chip-label { font-size: 12px; font-weight: 500; white-space: nowrap; } .ds-chip-count { font-family: var(--font-mono, GitLab Mono, monospace); font-size: 12px; color: #A1A1AA; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Catalog Style Card",
+      "kind": "card",
+      "refersTo": "style-card",
+      "description": "Style catalog card with 16:10 preview stage, @handle metadata, 2px palette swatches, Incognito title, and dual action footer.",
+      "html": "<article class=\"ds-style-card\"><div class=\"ds-style-thumb\"><div class=\"ds-style-thumb-bar\"></div><div class=\"ds-style-thumb-title\">Cartoon Collage</div><div class=\"ds-style-thumb-meta\">@bang-motion · Explainer</div><div class=\"ds-style-thumb-scrim\"></div></div><div class=\"ds-style-body\"><div class=\"ds-style-meta-row\"><div class=\"ds-style-handle-group\"><span class=\"ds-style-handle\">@bang-motion</span><span aria-hidden=\"true\">·</span><span>Explainer</span></div><div class=\"ds-style-swatches\" aria-label=\"Palet warna gaya\"><span class=\"ds-style-swatch\" style=\"background:#F5EFE0\"></span><span class=\"ds-style-swatch\" style=\"background:#1C1B18\"></span><span class=\"ds-style-swatch\" style=\"background:#F4C430\"></span><span class=\"ds-style-swatch\" style=\"background:#33E092\"></span></div></div><h3 class=\"ds-style-title\">Cartoon Collage</h3><p class=\"ds-style-desc\">Potongan kertas editorial bertekstur dengan gerak kamera kontinyu dan aksen tipografi kinetik.</p><div class=\"ds-style-footer\"><button type=\"button\" class=\"ds-style-use\"><svg class=\"ds-style-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg><span>Gaya Dipilih</span></button><button type=\"button\" class=\"ds-style-detail\"><svg class=\"ds-style-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg><span>Detail</span></button></div></div></article>",
+      "css": ".ds-style-card { display: flex; flex-direction: column; max-width: 360px; overflow: hidden; border-radius: 8px; border: 1px solid var(--color-emerald-accent, #33E092); background-color: rgba(17, 17, 20, 0.9); transition: border-color 200ms ease; } .ds-style-card:hover { border-color: var(--color-emerald-hover, #0CCE6B); } .ds-style-thumb { position: relative; aspect-ratio: 16 / 10; width: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: var(--color-space-surface, #111114); overflow: hidden; } .ds-style-thumb-bar { width: 40px; height: 4px; margin-bottom: 10px; background-color: var(--color-emerald-accent, #33E092); } .ds-style-thumb-title { font-family: var(--font-display, Incognito, Inter, sans-serif); font-size: 18px; font-weight: 700; letter-spacing: -0.025em; color: #F4F4F5; } .ds-style-thumb-meta { margin-top: 4px; font-family: var(--font-mono, GitLab Mono, monospace); font-size: 11px; color: #A1A1AA; } .ds-style-thumb-scrim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent); } .ds-style-body { display: flex; flex: 1; flex-direction: column; padding: 20px; } .ds-style-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; } .ds-style-handle-group { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #A1A1AA; } .ds-style-handle { font-family: var(--font-mono, GitLab Mono, monospace); color: var(--color-emerald-accent, #33E092); } .ds-style-swatches { display: flex; align-items: center; gap: 4px; } .ds-style-swatch { width: 10px; height: 10px; border-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.15); } .ds-style-title { margin: 10px 0 0; font-family: var(--font-display, Incognito, Inter, sans-serif); font-size: 18px; font-weight: 700; letter-spacing: -0.025em; color: #FAFAFA; } .ds-style-desc { margin: 8px 0 0; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; line-height: 1.625; color: #A1A1AA; } .ds-style-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(39, 39, 42, 0.8); display: flex; align-items: center; gap: 10px; } .ds-style-use { display: inline-flex; flex: 1; min-height: 40px; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 6px; background-color: var(--color-emerald-accent, #33E092); color: var(--color-space-ground, #09090B); padding: 8px 16px; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 150ms ease; } .ds-style-use:hover { background-color: var(--color-emerald-hover, #0CCE6B); } .ds-style-use:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-style-detail { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 6px; border-radius: 6px; border: 1px solid var(--color-space-border, #27272A); background-color: rgba(24, 24, 27, 0.6); color: #D4D4D8; padding: 8px 14px; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 150ms ease, color 150ms ease; } .ds-style-detail:hover { border-color: #3F3F46; color: #FAFAFA; } .ds-style-detail:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-style-svg { width: 16px; height: 16px; flex-shrink: 0; }"
+    },
+    {
+      "name": "Prompt Output Panel",
+      "kind": "custom",
+      "refersTo": "prompt-output-panel",
+      "description": "Sticky Mode Tugas prompt output card with telemetry header, recessed monospace pre block, and copy/launch actions.",
+      "html": "<div class=\"ds-output-panel\"><div class=\"ds-output-header\"><div><h3 class=\"ds-output-title\">Prompt Siap Tempel · Mode Tugas</h3><p class=\"ds-output-meta\"><span class=\"ds-output-handle\">@bang-motion</span> · Cartoon Collage · 9:16 · ~6 adegan</p></div><button type=\"button\" class=\"ds-output-save\"><svg class=\"ds-output-svg-sm\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z\"/></svg><span>Simpan Draft</span></button></div><div class=\"ds-output-body\"><pre class=\"ds-output-pre\">@bang-motion Buat naskah Voice Over &amp; storyboard 30 detik (9:16) dengan aturan Anti-Slide...</pre><div class=\"ds-output-actions\"><button type=\"button\" class=\"ds-output-copy\"><svg class=\"ds-output-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/></svg><span>Salin Prompt</span></button><a href=\"#studio\" class=\"ds-output-launch\"><span>Salin &amp; Buka Gemini</span><svg class=\"ds-output-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/></svg></a></div></div></div>",
+      "css": ".ds-output-panel { max-width: 480px; overflow: hidden; border-radius: 8px; border: 1px solid var(--color-space-border, #27272A); background-color: rgba(17, 17, 20, 0.9); } .ds-output-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--color-space-border, #27272A); padding: 16px 20px; } .ds-output-title { margin: 0; font-family: var(--font-display, Incognito, Inter, sans-serif); font-size: 16px; font-weight: 700; color: #FAFAFA; } .ds-output-meta { margin: 2px 0 0; font-family: var(--font-mono, GitLab Mono, monospace); font-size: 12px; color: #A1A1AA; font-variant-numeric: tabular-nums; } .ds-output-handle { color: var(--color-emerald-accent, #33E092); } .ds-output-save { display: inline-flex; min-height: 36px; align-items: center; gap: 6px; border-radius: 6px; border: 1px solid var(--color-space-border, #27272A); background-color: var(--color-space-elevated, #18181B); color: #D4D4D8; padding: 6px 12px; font-family: var(--font-sans, Inter, sans-serif); font-size: 12px; font-weight: 500; cursor: pointer; transition: border-color 150ms ease, color 150ms ease; } .ds-output-save:hover { border-color: rgba(51, 224, 146, 0.6); color: #FAFAFA; } .ds-output-save:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-output-body { padding: 20px; } .ds-output-pre { margin: 0; max-height: 220px; overflow-y: auto; white-space: pre-wrap; border-radius: 6px; border: 1px solid rgba(39, 39, 42, 0.9); background-color: var(--color-space-ground, #09090B); padding: 16px; font-family: var(--font-mono, GitLab Mono, monospace); font-size: 12px; line-height: 1.625; color: #E4E4E7; } .ds-output-actions { margin-top: 16px; display: flex; gap: 10px; } .ds-output-copy { display: inline-flex; flex: 1; min-height: 44px; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 6px; background-color: var(--color-emerald-accent, #33E092); color: var(--color-space-ground, #09090B); padding: 10px 16px; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 150ms ease; } .ds-output-copy:hover { background-color: var(--color-emerald-hover, #0CCE6B); } .ds-output-copy:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-output-launch { display: inline-flex; flex: 1; min-height: 44px; align-items: center; justify-content: center; gap: 8px; border-radius: 6px; border: 1px solid var(--color-space-border, #27272A); background-color: var(--color-space-elevated, #18181B); color: #F4F4F5; padding: 10px 16px; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; font-weight: 600; text-decoration: none; transition: border-color 150ms ease, color 150ms ease; } .ds-output-launch:hover { border-color: rgba(51, 224, 146, 0.6); color: var(--color-emerald-accent, #33E092); } .ds-output-launch:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-output-svg { width: 16px; height: 16px; flex-shrink: 0; } .ds-output-svg-sm { width: 14px; height: 14px; flex-shrink: 0; }"
+    },
+    {
+      "name": "Skill Timeline Step",
+      "kind": "custom",
+      "refersTo": "timeline-step",
+      "description": "Vertical installation timeline step pairing a 48px rounded-lg icon box and 1px connector line with monospace step index.",
+      "html": "<div class=\"ds-timeline-card\"><div class=\"ds-timeline-step\"><div class=\"ds-timeline-rail\"><div class=\"ds-timeline-icon-box\"><svg class=\"ds-timeline-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/></svg></div><div class=\"ds-timeline-line\" aria-hidden=\"true\"></div></div><div class=\"ds-timeline-content\"><h3 class=\"ds-timeline-title\"><span class=\"ds-timeline-num\">01.</span>Download file ZIP dari kedua repositori GitHub</h3><p class=\"ds-timeline-desc\">Unduh berkas ZIP resmi bang-motion dan lemo-opuscar tanpa perlu diekstrak terlebih dahulu.</p><p class=\"ds-timeline-tip\">Catatan: Gunakan Mode Tugas di Gemini Web terbaru.</p></div></div></div>",
+      "css": ".ds-timeline-card { max-width: 560px; border-radius: 8px; border: 1px solid var(--color-space-border, #27272A); background-color: rgba(17, 17, 20, 0.9); padding: 24px; transition: border-color 150ms ease; } .ds-timeline-card:hover { border-color: #3F3F46; } .ds-timeline-card:focus-visible { outline: none; box-shadow: 0 0 0 2px #33E092; } .ds-timeline-step { display: flex; gap: 20px; } .ds-timeline-rail { display: flex; flex-direction: column; align-items: center; } .ds-timeline-icon-box { display: flex; width: 48px; height: 48px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--color-space-border, #27272A); background-color: var(--color-space-elevated, #18181B); color: var(--color-emerald-accent, #33E092); transition: border-color 150ms ease; } .ds-timeline-step:hover .ds-timeline-icon-box { border-color: rgba(51, 224, 146, 0.6); } .ds-timeline-svg { width: 20px; height: 20px; } .ds-timeline-line { width: 1px; flex: 1; min-height: 28px; margin-top: 8px; background-color: var(--color-space-border, #27272A); } .ds-timeline-content { min-width: 0; padding-top: 2px; } .ds-timeline-title { margin: 0; font-family: var(--font-display, Incognito, Inter, sans-serif); font-size: 18px; font-weight: 700; color: #FAFAFA; } .ds-timeline-num { margin-right: 8px; font-family: var(--font-mono, GitLab Mono, monospace); font-size: 14px; color: var(--color-emerald-accent, #33E092); font-variant-numeric: tabular-nums; } .ds-timeline-desc { margin: 6px 0 0; font-family: var(--font-sans, Inter, sans-serif); font-size: 14px; line-height: 1.625; color: #A1A1AA; } .ds-timeline-tip { margin: 10px 0 0; font-family: var(--font-sans, Inter, sans-serif); font-size: 12px; line-height: 1.625; color: #D4D4D8; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Cosmic Emerald Workbench",
+    "overview": "Motion Graphic Studio is a calm, high-precision creator workbench modeled after a cosmic-emerald developer portfolio rather than a noisy video-editing timeline or generic dark-amber SaaS template. Set over a deep space-black canvas (`#09090B`) animated by subtle star particles, constellation lines, and faint cyan-indigo meteor trails, the interface frames 110 official motion graphic styles (`@bang-motion` and `@lemo-opuscar`), a two-stage Voice Over prompt studio, a sandboxed HTML stage preview, and a vertical skill-installation timeline inside crisp zinc containers (`#111114`) bounded by `1px` hairline borders (`#27272A`).\n\nEvery visual decision prioritizes operational clarity and scanability for Indonesian creators working alongside Gemini Web Task Mode (`Mode Tugas`). A single vibrant emerald accent (`#33E092`) signals active selections, primary actions, skill handles, and telemetry indices, while squared geometric display typography (`Incognito`), neutral UI prose (`Inter`), and tabular monospace metadata (`GitLab Mono`) keep dense controls legible without visual clutter. Confirmed rejections include warm amber studio themes, decorative multi-color gradients, circular status dots, native browser alert/confirm dialogs, and raw inline SVG icons inside application source files.",
+    "keyCharacteristics": [
+      "Deep space-black ground (`#09090B`) with a fixed, pauseable cosmic starfield canvas and an interactive 3D isometric emerald wireframe cube cluster in the hero.",
+      "Single-accent emerald hierarchy (`#33E092` resting, `#0CCE6B` hover, `#16A34A` deep anchor) paired with dark `#09090B` ink on active fills.",
+      "Flat-by-default tonal layering (`#09090B` → `#111114` → `#18181B`) separated by `1px` zinc hairlines (`#27272A`) instead of heavy drop shadows.",
+      "Three-font technical pairing: `Incognito` for geometric display headings, `Inter` for readable Indonesian UI copy, and `GitLab Mono` for handles, counts, ratios, and prompt output.",
+      "Contribution-graph-inspired 17-station activity matrix and vertical timeline installation guide with `prefers-reduced-motion` support throughout."
+    ],
+    "rules": [
+      {
+        "name": "The Single Emerald Voice Rule",
+        "body": "Emerald Accent (`#33E092`) is the sole interactive brand accent across the entire workspace; never introduce secondary amber, purple, or multi-hue brand gradients into the UI shell.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark-Ink-On-Emerald Rule",
+        "body": "Whenever Emerald Accent (`#33E092`) or Emerald Hover (`#0CCE6B`) fills a button, active tab, or selected ratio tile, pair it exclusively with Space Ground (`#09090B`) text and icons to preserve crisp contrast.",
+        "section": "colors"
+      },
+      {
+        "name": "The Geometric Display Anchor Rule",
+        "body": "Reserve Incognito strictly for headings, card titles, and the navbar wordmark; keep all body copy, form controls, and helper captions in Inter so dense prompt controls remain effortless to scan.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Telemetry Rule",
+        "body": "Render every skill handle (`@bang-motion`, `@lemo-opuscar`), style count, aspect ratio, duration, timecode, and generated prompt block in GitLab Mono (`12px`) with tabular numerals so telemetry aligns cleanly across cards and panels.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline-Over-Shadow Rule",
+        "body": "Surfaces are flat by default and separated by `1px` Space Border (`#27272A`) hairlines and tonal steps (`#09090B` → `#111114` → `#18181B`); reserve box shadows strictly for the sandboxed Live Stage Preview frame and keyboard focus rings.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square-Swatch Discipline Rule",
+        "body": "Use crisp `2px`-radius micro-squares for heatmap cells and style palette swatches, and reserve full pill radii (`9999px`) exclusively for the circular ambient motion toggle and the Voice Over switch.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do layer translucent Space Surface (`#111114` at `85%`–`95%` opacity) cards with `1px` Space Border (`#27272A`) hairlines over the fixed `#09090B` cosmic starfield canvas.",
+      "Do pair active Emerald Accent (`#33E092`) fills with Space Ground (`#09090B`) foreground text and shift hover fills to Emerald Hover (`#0CCE6B`).",
+      "Do bind all headings to `Incognito`, body copy and controls to `Inter`, and skill handles, counts, ratios, and prompt blocks to `GitLab Mono` (`12px`) with tabular numerals.",
+      "Do use the documented `11px` caption step for micro-sublabels inside aspect-ratio and duration tiles, SFX and Running Text helper descriptions, and fallback card metadata.",
+      "Do honor `prefers-reduced-motion` across GSAP timelines, smooth scrolling, the starfield canvas, and the isometric cube canvas, alongside the manual navbar pause toggle.",
+      "Do use `react-icons` in application source components and keep modal dismissal wired to backdrop click plus `Escape` key handling."
+    ],
+    "donts": [
+      "Don't reintroduce warm amber accents, decorative multi-color gradients, or heavy drop shadows onto cards, buttons, or navigation bars.",
+      "Don't use full pill (`9999px`) status dots anywhere in the catalog, matrix, or studio; use `2px`-radius or `4px`-radius squares for swatches and heatmap cells.",
+      "Don't invent unindexed micro font sizes (such as `9px` or `10px`) or arbitrary corner radii outside the `2px / 4px / 6px / 8px / 9999px` scale.",
+      "Don't embed raw inline `<svg>` elements, `lucide-react` imports, or native `window.alert()` / `window.confirm()` dialogs inside `src/`.",
+      "Don't place `motion`, `breakpoints`, or `shadows` keys at the top level of `DESIGN.md` YAML frontmatter; keep those extensions in `.impeccable/design.json`."
+    ]
+  }
+}

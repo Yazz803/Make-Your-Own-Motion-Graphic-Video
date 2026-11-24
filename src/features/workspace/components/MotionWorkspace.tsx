@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Footer } from '@/components/layout';
+import { Footer, Navbar, StarfieldCanvas } from '@/components/layout';
 import { StyleCatalog } from '@/features/catalog';
 import { PromptStudio } from '@/features/prompt-studio';
 import { SkillGuideSection } from '@/features/skill-guide';
@@ -15,31 +15,45 @@ export default function MotionWorkspace() {
     MOTION_STYLES[0]
   );
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('9:16');
+  const [ambientMotion, setAmbientMotion] = useState<boolean>(true);
 
   return (
-    <main id="top">
-      <HeroSection selectedStyle={selectedStyle} aspectRatio={aspectRatio} />
+    <>
+      <StarfieldCanvas animated={ambientMotion} />
 
-      <StyleCatalog
-        selectedStyleId={selectedStyle.id}
-        onSelectStyle={setSelectedStyle}
+      <Navbar
+        ambientMotion={ambientMotion}
+        onToggleAmbientMotion={() => setAmbientMotion((prev) => !prev)}
       />
 
-      <PromptStudio
-        selectedStyle={selectedStyle}
-        onSelectStyle={setSelectedStyle}
-        aspectRatio={aspectRatio}
-        onChangeAspectRatio={setAspectRatio}
-      />
+      <main id="top" className="relative z-10">
+        <HeroSection
+          selectedStyle={selectedStyle}
+          aspectRatio={aspectRatio}
+          ambientMotion={ambientMotion}
+        />
 
-      <LiveStagePreview
-        aspectRatio={aspectRatio}
-        onChangeAspectRatio={setAspectRatio}
-      />
+        <StyleCatalog
+          selectedStyleId={selectedStyle.id}
+          onSelectStyle={setSelectedStyle}
+        />
 
-      <SkillGuideSection />
+        <PromptStudio
+          selectedStyle={selectedStyle}
+          onSelectStyle={setSelectedStyle}
+          aspectRatio={aspectRatio}
+          onChangeAspectRatio={setAspectRatio}
+        />
+
+        <LiveStagePreview
+          aspectRatio={aspectRatio}
+          onChangeAspectRatio={setAspectRatio}
+        />
+
+        <SkillGuideSection />
+      </main>
 
       <Footer />
-    </main>
+    </>
   );
 }

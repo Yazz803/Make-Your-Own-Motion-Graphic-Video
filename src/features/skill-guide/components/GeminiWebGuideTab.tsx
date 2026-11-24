@@ -7,6 +7,9 @@ import {
   LuCopy,
   LuDownload,
   LuExternalLink,
+  LuFolderCheck,
+  LuUpload,
+  LuWandSparkles,
 } from 'react-icons/lu';
 import {
   GEMINI_SCREENSHOT_REFS,
@@ -22,6 +25,8 @@ interface GeminiWebGuideTabProps {
   onZoomScreenshot: (shot: GeminiScreenshotRef) => void;
 }
 
+const STEP_ICONS = [LuDownload, LuWandSparkles, LuUpload, LuFolderCheck] as const;
+
 export default function GeminiWebGuideTab({
   copiedId,
   onCopy,
@@ -30,38 +35,57 @@ export default function GeminiWebGuideTab({
   return (
     <div className="mt-10 space-y-8">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        {/* Steps list */}
-        <div className="divide-y divide-zinc-800/80 rounded-xl border border-zinc-800 bg-[#121215] px-5 sm:px-7 lg:col-span-7">
-          {GEMINI_WEB_INSTALL_STEPS.map((step) => (
-            <div key={step.number} className="py-6">
-              <div className="flex items-start gap-4">
-                <span className="font-mono text-sm font-semibold text-[#F2B705] tabular-nums">
-                  {step.number}.
-                </span>
-                <div className="min-w-0">
-                  <h3 className="font-display text-base sm:text-lg font-semibold text-zinc-50">
-                    {step.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">
-                    {step.description}
-                  </p>
-                  {step.tip && (
-                    <p className="mt-2.5 text-xs leading-relaxed text-zinc-300">
-                      Catatan: {step.tip}
+        {/* Timeline Steps list matching reference Experience Timeline */}
+        <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-6 sm:p-7 lg:col-span-7">
+          <div className="space-y-0">
+            {GEMINI_WEB_INSTALL_STEPS.map((step, index) => {
+              const StepIcon = STEP_ICONS[index] ?? LuWandSparkles;
+              const isLast = index === GEMINI_WEB_INSTALL_STEPS.length - 1;
+
+              return (
+                <div key={step.number} className="relative flex gap-5 pb-8 last:pb-0">
+                  {/* Left icon box + vertical timeline connector */}
+                  <div className="relative flex flex-col items-center">
+                    <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-[#18181B] text-[#33E092]">
+                      <StepIcon className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    {!isLast && (
+                      <div
+                        aria-hidden="true"
+                        className="mt-2 w-px flex-1 bg-zinc-800"
+                      />
+                    )}
+                  </div>
+
+                  {/* Right step content */}
+                  <div className="min-w-0 pt-0.5">
+                    <h3 className="font-display text-base sm:text-lg font-bold text-zinc-50">
+                      <span className="mr-2 font-mono text-sm text-[#33E092] tabular-nums">
+                        {step.number}.
+                      </span>
+                      {step.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">
+                      {step.description}
                     </p>
-                  )}
+                    {step.tip && (
+                      <p className="mt-2.5 text-xs leading-relaxed text-zinc-300">
+                        Catatan: {step.tip}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
 
         {/* Action Card: Download ZIPs + Copy Install Prompt */}
-        <div className="flex flex-col justify-between gap-6 rounded-xl border border-zinc-800 bg-[#121215] p-5 sm:p-6 lg:col-span-5">
+        <div className="flex flex-col justify-between gap-6 rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-6 lg:col-span-5">
           <div className="space-y-6">
             {/* Step A: Download both ZIPs */}
             <div>
-              <h3 className="font-display text-base font-semibold text-zinc-50">
+              <h3 className="font-display text-base font-bold text-zinc-50">
                 1. Unduh File ZIP Kedua Repositori
               </h3>
               <p className="mt-1 text-xs leading-relaxed text-zinc-400">
@@ -74,7 +98,7 @@ export default function GeminiWebGuideTab({
                   href={REPO_LINKS.bangMotionZip}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex min-h-[46px] items-center justify-between gap-3 rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:border-[#F2B705] hover:text-[#F2B705]"
+                  className="flex min-h-[46px] items-center justify-between gap-3 rounded-md border border-zinc-800 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:border-[#33E092] hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <span className="min-w-0 truncate">
                     <span className="block font-mono text-xs text-zinc-400">
@@ -89,7 +113,7 @@ export default function GeminiWebGuideTab({
                   href={REPO_LINKS.lemoOpuscarZip}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex min-h-[46px] items-center justify-between gap-3 rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:border-[#F2B705] hover:text-[#F2B705]"
+                  className="flex min-h-[46px] items-center justify-between gap-3 rounded-md border border-zinc-800 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:border-[#33E092] hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   <span className="min-w-0 truncate">
                     <span className="block font-mono text-xs text-zinc-400">
@@ -105,7 +129,7 @@ export default function GeminiWebGuideTab({
             {/* Step B: Copy exact installation prompt */}
             <div className="border-t border-zinc-800/80 pt-5">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="font-display text-base font-semibold text-zinc-50">
+                <h3 className="font-display text-base font-bold text-zinc-50">
                   2. Prompt Instalasi di Mode Tugas
                 </h3>
                 <button
@@ -113,7 +137,7 @@ export default function GeminiWebGuideTab({
                   onClick={() =>
                     onCopy('install-skill-prompt', INSTALL_SKILL_PROMPT)
                   }
-                  className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-lg bg-[#F2B705] px-3 py-1.5 text-xs font-semibold text-[#09090B] transition-colors hover:bg-[#FFD038] whitespace-nowrap"
+                  className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-md bg-[#33E092] px-3 py-1.5 text-xs font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
                   {copiedId === 'install-skill-prompt' ? (
                     <>
@@ -137,7 +161,7 @@ export default function GeminiWebGuideTab({
                 Gemini Web, lalu kirim teks berikut:
               </p>
 
-              <div className="mt-3 rounded-lg border border-zinc-800 bg-[#09090B] px-4 py-3.5 font-mono text-sm font-medium text-[#F2B705]">
+              <div className="mt-3 rounded-md border border-zinc-800 bg-[#09090B] px-4 py-3.5 font-mono text-sm font-medium text-[#33E092]">
                 {INSTALL_SKILL_PROMPT}
               </div>
             </div>
@@ -149,7 +173,7 @@ export default function GeminiWebGuideTab({
               href={REPO_LINKS.geminiWeb}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-[#F2B705] px-4 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#FFD038]"
+              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-md bg-[#33E092] px-4 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <span>Buka Gemini Web (Pilih Mode Tugas)</span>
               <LuExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -160,7 +184,7 @@ export default function GeminiWebGuideTab({
                 href={REPO_LINKS.bangMotion}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 hover:text-zinc-100"
+                className="inline-flex items-center gap-1 rounded-sm hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 <span>Repo bang-motion</span>
                 <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -169,7 +193,7 @@ export default function GeminiWebGuideTab({
                 href={REPO_LINKS.lemoOpuscar}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 hover:text-zinc-100"
+                className="inline-flex items-center gap-1 rounded-sm hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 <span>Repo lemo-opuscar</span>
                 <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -180,9 +204,9 @@ export default function GeminiWebGuideTab({
       </div>
 
       {/* Visual UI Reference Screenshots from Gemini Web */}
-      <div className="rounded-xl border border-zinc-800 bg-[#121215] p-5 sm:p-6">
+      <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-6">
         <div className="max-w-2xl">
-          <h3 className="font-display text-base sm:text-lg font-semibold text-zinc-50">
+          <h3 className="font-display text-base sm:text-lg font-bold text-zinc-50">
             Panduan Visual Antarmuka Gemini Web Terbaru
           </h3>
           <p className="mt-1 text-xs sm:text-sm text-zinc-400">
@@ -197,7 +221,7 @@ export default function GeminiWebGuideTab({
               <button
                 type="button"
                 onClick={() => onZoomScreenshot(shot)}
-                className="group relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-zinc-800 bg-[#09090B] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705]"
+                className="group relative aspect-[16/10] w-full overflow-hidden rounded-md border border-zinc-800 bg-[#09090B] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 aria-label={`Perbesar gambar ${shot.title}`}
               >
                 <Image

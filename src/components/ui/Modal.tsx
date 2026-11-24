@@ -54,7 +54,7 @@ export default function Modal({
     >
       <div
         className={cn(
-          'relative w-full overflow-hidden rounded-2xl border border-zinc-800 bg-[#121215]',
+          'relative w-full overflow-hidden rounded-lg border border-zinc-800 bg-[#111114]',
           maxWidthClassName,
           panelClassName
         )}

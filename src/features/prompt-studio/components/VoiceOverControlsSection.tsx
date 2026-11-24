@@ -46,7 +46,7 @@ export default function VoiceOverControlsSection({
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-start gap-2.5">
           <LuMic
-            className="mt-0.5 h-4 w-4 shrink-0 text-[#F2B705]"
+            className="mt-0.5 h-4 w-4 shrink-0 text-[#33E092]"
             aria-hidden="true"
           />
           <div>
@@ -68,10 +68,10 @@ export default function VoiceOverControlsSection({
           aria-label="Aktifkan alur 2 tahap Voice Over"
           onClick={onToggleVoEnabled}
           className={cn(
-            'relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors',
+            'relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
             voEnabled
-              ? 'border-[#F2B705] bg-[#F2B705]'
-              : 'border-zinc-700 bg-zinc-900'
+              ? 'border-[#33E092] bg-[#33E092]'
+              : 'border-zinc-700 bg-[#18181B]'
           )}
         >
           <span
@@ -96,7 +96,7 @@ export default function VoiceOverControlsSection({
               id="vo-lang"
               value={voLanguage}
               onChange={(e) => onChangeVoLanguage(e.target.value as VoLanguage)}
-              className="mt-1.5 h-10 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#F2B705] focus:outline-none"
+              className="mt-1.5 h-10 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <option value="id">Bahasa Indonesia</option>
               <option value="en">English</option>
@@ -114,7 +114,7 @@ export default function VoiceOverControlsSection({
               id="vo-tone"
               value={voTone}
               onChange={(e) => onChangeVoTone(e.target.value as VoTone)}
-              className="mt-1.5 h-10 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#F2B705] focus:outline-none"
+              className="mt-1.5 h-10 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <option value="storytelling">Storytelling</option>
               <option value="santai">Santai &amp; Akrab</option>
@@ -134,7 +134,7 @@ export default function VoiceOverControlsSection({
               id="vo-tts"
               value={ttsTarget}
               onChange={(e) => onChangeTtsTarget(e.target.value as TtsTarget)}
-              className="mt-1.5 h-10 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#F2B705] focus:outline-none"
+              className="mt-1.5 h-10 w-full rounded-md border border-zinc-800 bg-[#09090B] px-3 text-xs sm:text-sm text-zinc-100 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <option value="elevenlabs">ElevenLabs</option>
               <option value="capcut">CapCut TTS / Voice</option>
@@ -148,7 +148,7 @@ export default function VoiceOverControlsSection({
                 type="checkbox"
                 checked={includeTimecodes}
                 onChange={(e) => onChangeIncludeTimecodes(e.target.checked)}
-                className="h-4 w-4 rounded border-zinc-700 bg-zinc-950 accent-[#F2B705]"
+                className="h-4 w-4 rounded border-zinc-700 bg-[#09090B] accent-[#33E092]"
               />
               <span>Sertakan timecode (00:00–00:04)</span>
             </label>
@@ -160,7 +160,7 @@ export default function VoiceOverControlsSection({
                 onChange={(e) =>
                   onChangeIncludeIntonationCues(e.target.checked)
                 }
-                className="h-4 w-4 rounded border-zinc-700 bg-zinc-950 accent-[#F2B705]"
+                className="h-4 w-4 rounded border-zinc-700 bg-[#09090B] accent-[#33E092]"
               />
               <span>Catatan intonasi + blok teks bersih TTS</span>
             </label>
@@ -170,17 +170,17 @@ export default function VoiceOverControlsSection({
 
       {/* Mandatory SFX & Word-by-Word Running Text Controls */}
       <div className="mt-5 grid grid-cols-1 gap-3 border-t border-zinc-800/70 pt-5 sm:grid-cols-2">
-        <label className="flex min-h-[54px] cursor-pointer items-start gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+        <label className="flex min-h-[54px] cursor-pointer items-start gap-3 rounded-md border border-zinc-800 bg-[#09090B] p-3">
           <input
             type="checkbox"
             checked={includeSfx}
             onChange={(e) => onChangeIncludeSfx(e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-700 bg-zinc-900 accent-[#F2B705]"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-700 bg-[#18181B] accent-[#33E092]"
           />
           <span className="min-w-0">
             <span className="flex items-center gap-1.5 text-xs font-semibold text-zinc-100">
               <LuVolume2
-                className="h-3.5 w-3.5 shrink-0 text-[#F2B705]"
+                className="h-3.5 w-3.5 shrink-0 text-[#33E092]"
                 aria-hidden="true"
               />
               <span>Sound Effect (SFX)</span>
@@ -193,7 +193,7 @@ export default function VoiceOverControlsSection({
 
         <label
           className={cn(
-            'flex min-h-[54px] items-start gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3',
+            'flex min-h-[54px] items-start gap-3 rounded-md border border-zinc-800 bg-[#09090B] p-3',
             voEnabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-45'
           )}
         >
@@ -202,12 +202,12 @@ export default function VoiceOverControlsSection({
             disabled={!voEnabled}
             checked={voEnabled && includeRunningText}
             onChange={(e) => onChangeIncludeRunningText(e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-700 bg-zinc-900 accent-[#F2B705]"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-700 bg-[#18181B] accent-[#33E092]"
           />
           <span className="min-w-0">
             <span className="flex items-center gap-1.5 text-xs font-semibold text-zinc-100">
               <LuCaptions
-                className="h-3.5 w-3.5 shrink-0 text-[#F2B705]"
+                className="h-3.5 w-3.5 shrink-0 text-[#33E092]"
                 aria-hidden="true"
               />
               <span>Running Text Per Kata</span>

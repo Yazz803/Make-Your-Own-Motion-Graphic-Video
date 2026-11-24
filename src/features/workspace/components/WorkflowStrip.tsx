@@ -29,14 +29,17 @@ const WORKFLOW_STEPS = [
 
 export default function WorkflowStrip() {
   return (
-    <div className="workflow-strip mt-12 grid grid-cols-1 gap-6 border-t border-zinc-800/80 pt-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="workflow-strip mt-14 grid grid-cols-1 gap-4 border-t border-zinc-800/80 pt-8 sm:grid-cols-2 lg:grid-cols-4">
       {WORKFLOW_STEPS.map((item) => (
-        <div key={item.index} className="workflow-step space-y-1.5">
+        <div
+          key={item.index}
+          className="workflow-step rounded-lg border border-zinc-800/90 bg-[#111114]/85 p-4 space-y-1.5"
+        >
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-semibold text-[#F2B705] tabular-nums">
+            <span className="font-mono text-xs font-semibold text-[#33E092] tabular-nums">
               {item.index}.
             </span>
-            <h3 className="font-display text-sm font-semibold text-zinc-100">
+            <h3 className="font-display text-sm font-bold text-zinc-100">
               {item.title}
             </h3>
           </div>

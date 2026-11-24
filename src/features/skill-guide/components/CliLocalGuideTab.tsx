@@ -17,7 +17,7 @@ export default function CliLocalGuideTab({
       {CLI_COMMANDS.map((item) => (
         <div
           key={item.id}
-          className="flex flex-col justify-between rounded-xl border border-zinc-800 bg-[#121215] p-5 sm:p-6"
+          className="flex flex-col justify-between rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-6"
         >
           <div>
             <div className="flex items-center justify-between gap-3 text-xs text-zinc-400">
@@ -26,33 +26,33 @@ export default function CliLocalGuideTab({
                 href={item.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-100"
+                className="inline-flex items-center gap-1 rounded-sm text-zinc-400 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 <span>Buka GitHub</span>
                 <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             </div>
 
-            <h3 className="mt-2 font-display text-lg font-semibold text-zinc-50">
+            <h3 className="mt-2 font-display text-lg font-bold text-zinc-50">
               {item.label}
             </h3>
             <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">
               {item.note}
             </p>
 
-            <div className="mt-4 flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-[#09090B] px-4 py-3">
-              <code className="overflow-x-auto font-mono text-xs text-[#F2B705] whitespace-nowrap">
+            <div className="mt-4 flex items-center justify-between gap-3 rounded-md border border-zinc-800 bg-[#09090B] px-4 py-3">
+              <code className="overflow-x-auto font-mono text-xs text-[#33E092] whitespace-nowrap">
                 {item.command}
               </code>
               <button
                 type="button"
                 onClick={() => onCopy(item.id, item.command)}
                 aria-label={`Salin perintah ${item.repoName}`}
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-zinc-800 text-zinc-300 transition-colors hover:border-zinc-600 hover:text-zinc-50"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-zinc-800 bg-[#18181B] text-zinc-300 transition-colors hover:border-[#33E092]/60 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 {copiedId === item.id ? (
                   <LuCheck
-                    className="h-4 w-4 text-[#F2B705]"
+                    className="h-4 w-4 text-[#33E092]"
                     aria-hidden="true"
                   />
                 ) : (
@@ -64,8 +64,8 @@ export default function CliLocalGuideTab({
         </div>
       ))}
 
-      <div className="rounded-xl border border-zinc-800 bg-[#121215] p-5 sm:p-6 lg:col-span-2">
-        <h3 className="font-display text-base font-semibold text-zinc-100">
+      <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-6 lg:col-span-2">
+        <h3 className="font-display text-base font-bold text-zinc-100">
           Kebutuhan Lingkungan Lokal (Untuk Jalur Terminal)
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-zinc-400">

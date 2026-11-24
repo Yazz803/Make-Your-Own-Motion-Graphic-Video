@@ -70,14 +70,12 @@ export const STAGE_DEMO_HTML: Record<AspectRatio, string> = {
       50% { transform: scale(1.04) translate3d(-1.5%, -1%, 0); }
     }
     @keyframes rise {
-      0% { opacity: 0; transform: translateY(28px); }
-      14%, 82% { opacity: 1; transform: translateY(0); }
-      95%, 100% { opacity: 0; transform: translateY(-18px); }
+      0%, 100% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.92; transform: translateY(-6px); }
     }
     @keyframes growBar {
-      0%, 8% { width: 0; opacity: 0; }
-      22%, 80% { width: 160px; opacity: 1; }
-      95%, 100% { width: 0; opacity: 0; }
+      0%, 100% { width: 160px; opacity: 1; }
+      50% { width: 210px; opacity: 0.9; }
     }
     @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
     @keyframes spinReverse { to { transform: rotate(-360deg); } }
@@ -138,14 +136,12 @@ export const STAGE_DEMO_HTML: Record<AspectRatio, string> = {
       50% { background-position: 18px 24px; }
     }
     @keyframes popCard {
-      0% { opacity: 0; transform: scale(0.84) rotate(-6deg) translateY(20px); }
-      18%, 82% { opacity: 1; transform: scale(1) rotate(-2deg) translateY(0); }
-      100% { opacity: 0; transform: scale(0.92) rotate(2deg) translateY(-16px); }
+      0%, 100% { opacity: 1; transform: scale(1) rotate(-2deg) translateY(0); }
+      50% { opacity: 1; transform: scale(1.03) rotate(-1deg) translateY(-6px); }
     }
     @keyframes fadeUp {
-      0%, 10% { opacity: 0; transform: translateY(14px); }
-      26%, 80% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-10px); }
+      0%, 100% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.9; transform: translateY(-4px); }
     }
   </style>
 </head>

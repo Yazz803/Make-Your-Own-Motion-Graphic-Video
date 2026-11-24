@@ -32,7 +32,7 @@ export default function ScreenshotLightboxModal({
               type="button"
               onClick={onClose}
               aria-label="Tutup pratinjau gambar"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-50"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <LuX className="h-4 w-4" aria-hidden="true" />
             </button>

@@ -1,7 +1,13 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { LuExternalLink, LuMenu, LuX } from 'react-icons/lu';
+import {
+  LuExternalLink,
+  LuMenu,
+  LuOrbit,
+  LuPause,
+  LuX,
+} from 'react-icons/lu';
 import { NAV_LINKS, REPO_LINKS } from '@/lib/constants';
 import {
   gsap,
@@ -10,7 +16,15 @@ import {
   useGSAP,
 } from '@/lib/gsap-config';
 
-export default function Navbar() {
+interface NavbarProps {
+  ambientMotion: boolean;
+  onToggleAmbientMotion: () => void;
+}
+
+export default function Navbar({
+  ambientMotion,
+  onToggleAmbientMotion,
+}: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
@@ -59,42 +73,66 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#09090B]/90 backdrop-blur-md"
+      className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#09090B]/85 backdrop-blur-md"
     >
-      <div className="mx-auto flex h-14 max-w-[1280px] items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
-        {/* Zone 1: Single-line brand wordmark */}
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+        {/* Zone 1: Brand wordmark */}
         <a
           href="#top"
-          className="font-display text-base sm:text-lg font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705] rounded-sm"
+          className="font-display text-lg sm:text-xl font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 rounded-sm transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
         >
           Motion Graphic Studio
         </a>
 
-        {/* Zone 2: 4 clean single-line navigation links */}
+        {/* Zone 2: 4 centered navigation links */}
         <nav
           aria-label="Navigasi utama"
-          className="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400"
+          className="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300"
         >
           {NAV_LINKS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="whitespace-nowrap shrink-0 py-1 text-zinc-400 transition-colors duration-150 hover:text-zinc-50 focus-visible:outline-none focus-visible:text-[#F2B705]"
+              className="whitespace-nowrap shrink-0 rounded-sm px-1 py-1 text-zinc-300 transition-colors duration-150 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B] focus-visible:text-[#33E092]"
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        {/* Zone 3: Single primary action (+ mobile menu toggle on small screens) */}
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Zone 3: Circular emerald ambient toggle + primary Gemini Web CTA */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <button
+            type="button"
+            onClick={onToggleAmbientMotion}
+            aria-pressed={ambientMotion}
+            aria-label={
+              ambientMotion
+                ? 'Jeda animasi latar kosmik'
+                : 'Aktifkan animasi latar kosmik'
+            }
+            title={
+              ambientMotion
+                ? 'Animasi latar kosmik aktif (klik untuk jeda)'
+                : 'Animasi latar kosmik dijeda (klik untuk aktifkan)'
+            }
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-zinc-800 bg-[#111114] text-[#33E092] transition-colors duration-150 hover:border-[#33E092]/60 hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          >
+            {ambientMotion ? (
+              <LuOrbit className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <LuPause className="h-4 w-4" aria-hidden="true" />
+            )}
+          </button>
+
           <a
             href={REPO_LINKS.geminiWeb}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-[38px] items-center gap-2 rounded-lg bg-[#F2B705] px-4 py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#FFD038] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            className="inline-flex min-h-[38px] items-center gap-1.5 sm:gap-2 rounded-md bg-[#33E092] px-3 sm:px-3.5 py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#0CCE6B] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
-            <span>Buka Gemini Web</span>
+            <span className="sm:hidden">Gemini Web</span>
+            <span className="hidden sm:inline">Buka Gemini Web</span>
             <LuExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           </a>
 
@@ -103,7 +141,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50 md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705]"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 bg-[#111114] text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50 md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           >
             {mobileOpen ? (
               <LuX className="h-5 w-5" aria-hidden="true" />
@@ -114,14 +152,14 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Subtle GSAP ScrollTrigger timeline progress hairline */}
+      {/* Scroll progress hairline */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[1.5px] bg-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[1.5px] bg-zinc-800/40"
       >
         <div
           ref={progressRef}
-          className="h-full w-full origin-left scale-x-0 bg-[#F2B705]/90 will-change-transform"
+          className="h-full w-full origin-left scale-x-0 bg-[#33E092]/90 will-change-transform"
         />
       </div>
 
@@ -137,7 +175,7 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex min-h-[44px] items-center rounded-md px-3 text-sm font-medium text-zinc-300 transition-colors hover:bg-zinc-900 hover:text-zinc-50"
+                className="flex min-h-[44px] items-center rounded-md px-3 text-sm font-medium text-zinc-300 transition-colors hover:bg-zinc-900 hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 {item.label}
               </a>

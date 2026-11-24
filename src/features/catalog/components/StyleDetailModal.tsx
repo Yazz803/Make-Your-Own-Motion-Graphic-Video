@@ -29,7 +29,7 @@ export default function StyleDetailModal({
           <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-4 sm:px-6">
             <div>
               <div className="flex items-center gap-2 text-xs text-zinc-400">
-                <span className="font-mono text-[#F2B705]">
+                <span className="font-mono text-[#33E092]">
                   {style.skillHandle}
                 </span>
                 <span aria-hidden="true">·</span>
@@ -46,14 +46,14 @@ export default function StyleDetailModal({
               type="button"
               onClick={onClose}
               aria-label="Tutup jendela detail"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-50"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-zinc-800 text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <LuX className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
 
           <div className="p-5 sm:p-6">
-            <div className="overflow-hidden rounded-xl border border-zinc-800">
+            <div className="overflow-hidden rounded-lg border border-zinc-800">
               <StylePreviewThumb style={style} />
             </div>
 
@@ -112,7 +112,7 @@ export default function StyleDetailModal({
                 href={style.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[42px] items-center justify-center gap-1.5 text-sm font-medium text-zinc-400 transition-colors hover:text-zinc-100"
+                className="inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-sm text-sm font-medium text-zinc-400 transition-colors hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 <span>Lihat sumber di GitHub ({style.stylePath})</span>
                 <LuArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -121,7 +121,7 @@ export default function StyleDetailModal({
               <button
                 type="button"
                 onClick={() => onUseStyle(style)}
-                className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#F2B705] px-5 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#FFD038] whitespace-nowrap"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-[#33E092] px-5 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
               >
                 Gunakan di Studio Prompt
               </button>
