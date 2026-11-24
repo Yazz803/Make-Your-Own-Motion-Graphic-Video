@@ -1,12 +1,14 @@
 {
   "name": "make-your-own-motion-graphic",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import ./tests/register-alias.mjs --test tests/*.test.mts",
     "clean": "next clean"
   },
   "dependencies": {
