@@ -21,10 +21,11 @@ export default function ScreenshotLightboxModal({
       ariaLabel={screenshot?.title}
       maxWidthClassName="max-w-4xl"
       backdropClassName="bg-black/85"
+      panelClassName="max-h-[92vh] overflow-y-auto"
     >
       {screenshot && (
         <>
-          <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-3.5">
+          <div className="flex items-center justify-between gap-3 border-b border-zinc-800 px-5 py-3.5">
             <h4 className="font-display text-sm sm:text-base font-semibold text-zinc-50">
               {screenshot.title}
             </h4>
@@ -32,22 +33,21 @@ export default function ScreenshotLightboxModal({
               type="button"
               onClick={onClose}
               aria-label="Tutup pratinjau gambar"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
             >
               <LuX className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
-          <div className="relative aspect-[16/10] w-full bg-[#09090B]">
+          <div className="relative h-[60vh] max-h-[620px] min-h-[280px] w-full bg-[#09090B]">
             <Image
               src={screenshot.src}
               alt={screenshot.title}
               fill
               sizes="(max-width: 1024px) 100vw, 896px"
-              referrerPolicy="no-referrer"
-              className="object-contain"
+              className="object-contain p-3"
             />
           </div>
-          <p className="border-t border-zinc-800 px-5 py-3.5 text-xs sm:text-sm text-zinc-400">
+          <p className="border-t border-zinc-800 px-5 py-3.5 text-xs sm:text-sm leading-relaxed text-zinc-400">
             {screenshot.caption}
           </p>
         </>

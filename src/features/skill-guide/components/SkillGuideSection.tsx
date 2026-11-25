@@ -32,11 +32,14 @@ export default function SkillGuideSection() {
               Panduan Instalasi Skill Gemini Web
             </h2>
             <p className="mt-3 text-sm sm:text-base leading-relaxed text-zinc-400">
-              Pada tampilan Gemini Web terbaru, Gem telah dialihkan ke menu{' '}
-              <strong className="font-medium text-zinc-200">Keahlian</strong>{' '}
-              dan tidak lagi memakai mode Canvas. Cukup unduh ZIP kedua
-              repositori lalu unggah di{' '}
-              <strong className="font-medium text-zinc-200">Mode Tugas</strong>.
+              Pasang skill{' '}
+              <code className="font-mono text-zinc-200">@bang-motion</code> dan{' '}
+              <code className="font-mono text-zinc-200">@lemo-opuscar</code>{' '}
+              langsung di{' '}
+              <strong className="font-medium text-zinc-200">Mode Tugas</strong>{' '}
+              Gemini Web menggunakan prompt URL GitHub di bawah ini. Jika prompt
+              pertama gagal karena akses internet komputer jarak jauh belum
+              aktif, ikuti langkah aktivasi di bagian bawah.
             </p>
           </div>
 

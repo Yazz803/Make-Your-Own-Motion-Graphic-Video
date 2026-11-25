@@ -23,6 +23,8 @@ export type {
 
 export type {
   CliCommandItem,
+  GeminiInstallPromptItem,
+  GeminiRecoveryStep,
   GeminiScreenshotRef,
   GuideStep,
   GuideTab,

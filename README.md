@@ -18,7 +18,7 @@ Aplikasi web pendamping 100% sisi klien (*browser-only*) untuk menjelajahi **110
 - **Live Stage Preview HTML (`#preview`)**
   - Editor kode HTML dan pratinjau `iframe` ter-sandbox (`sandbox="allow-scripts"`) untuk menguji output `index.html` (misalnya dari `@bang-motion`) dalam rasio `9:16`, `16:9`, atau `1:1`, lengkap dengan demo bawaan, tombol putar ulang, dan unduh `.html`.
 - **Panduan Instalasi Skill (`#panduan`)**
-  - **Gemini Web (Mode Tugas):** panduan 4 langkah mengunduh ZIP kedua repositori, mengaktifkan Mode Tugas, mengunggah ZIP dengan prompt `"Tolong install kedua skill ini"`, dan memeriksa menu **Keahlian → Keterampilan** beserta tangkapan layar referensi.
+  - **Gemini Web (Mode Tugas):** panduan instalasi langsung lewat prompt URL GitHub untuk `@bang-motion` (`Tolong install skill ini https://github.com/bangtutorial/bang-motion`) dan `@lemo-opuscar` (`Tolong install skill ini https://github.com/lemomo-ai/lemo-opuscar`), lengkap dengan contoh error koneksi komputer jarak jauh (`first-error.png`) serta 5 langkah aktivasi izin **Browser** (*Selalu izinkan*) dan **Akses jaringan untuk komputer jarak jauh?** di **Setelan Tugas** hingga prompt konfirmasi berhasil memasang skill.
   - **Gemini CLI / Lokal:** perintah `npx skills add` untuk `bang-motion` dan `git clone` untuk `lemo-opuscar`.
 - **Tour Guide Interaktif (`Navbar` & `TourGuideOverlay`)**
   - Panduan langkah-demi-langkah otomatis untuk pengunjung baru dari bagian paling atas (`Navbar`) hingga bagian paling bawah (`Footer`) dalam 10 langkah berurutan dengan sorotan spotlight emerald, tombol **Lewati Tur**, navigasi **Sebelumnya** / **Lanjut** / **Selesai**, serta pintasan keyboard (`ArrowLeft`, `ArrowRight`, `Escape`).
@@ -92,7 +92,7 @@ Aplikasi ini berjalan sepenuhnya di sisi klien sebagai pendamping akun Gemini We
 ## Sumber & Lisensi
 
 - Skill & katalog gaya visual bersumber dari [`bangtutorial/bang-motion`](https://github.com/bangtutorial/bang-motion) dan [`lemomo-ai/lemo-opuscar`](https://github.com/lemomo-ai/lemo-opuscar) untuk dijalankan di [Gemini Web](https://gemini.google.com/app).
-- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.8.2.md`](docs/changelog/PATCH-V0.8.2.md).
+- Dokumentasi produk dan sistem desain tersedia di [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md), dan [`docs/changelog/PATCH-V0.8.3.md`](docs/changelog/PATCH-V0.8.3.md).
 - Dirilis di bawah [MIT License](LICENSE) — Copyright (c) 2026 Muhammad Yazid Akbar.
 
 ## Support Developer

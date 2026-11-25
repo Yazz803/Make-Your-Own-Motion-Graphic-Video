@@ -1,66 +1,130 @@
 import type {
   CliCommandItem,
+  GeminiInstallPromptItem,
+  GeminiRecoveryStep,
   GeminiScreenshotRef,
-  GuideStep,
 } from '@/types';
 import { REPO_LINKS } from './repos';
 
-export const INSTALL_SKILL_PROMPT = 'Tolong install kedua skill ini';
+export const GEMINI_RETRY_NETWORK_PROMPT =
+  'Aku udah aktifin akses internet untuk komputer jarak jauh nya';
 
-export const GEMINI_WEB_INSTALL_STEPS: GuideStep[] = [
+export const GEMINI_INSTALL_PROMPTS: GeminiInstallPromptItem[] = [
+  {
+    id: 'install-bang-motion',
+    stepNumber: '01',
+    skillName: 'bang-motion',
+    skillHandle: '@bang-motion',
+    repoName: 'bangtutorial/bang-motion',
+    repoUrl: REPO_LINKS.bangMotion,
+    prompt: `Tolong install skill ini ${REPO_LINKS.bangMotion}`,
+    description:
+      'Masukkan prompt ini di Gemini Web Mode Tugas untuk instalasi skill bang-motion.',
+  },
+  {
+    id: 'install-lemo-opuscar',
+    stepNumber: '02',
+    skillName: 'lemo-opuscar',
+    skillHandle: '@lemo-opuscar',
+    repoName: 'lemomo-ai/lemo-opuscar',
+    repoUrl: REPO_LINKS.lemoOpuscar,
+    prompt: `Tolong install skill ini ${REPO_LINKS.lemoOpuscar}`,
+    description:
+      'Masukkan prompt ini di Gemini Web Mode Tugas untuk instalasi skill lemo-opuscar.',
+  },
+];
+
+export const GEMINI_FAILURE_SCREENSHOT: GeminiScreenshotRef = {
+  src: '/assets/images/first-error.png',
+  title: 'Contoh Error: Akses Internet Komputer Jarak Jauh Nonaktif',
+  caption:
+    'Jika prompt pertama gagal karena Gemini Web belum bisa mengunduh dan memasang skill (muncul pesan kendala koneksi internet / akses internet komputer jarak jauh sedang nonaktif), lanjutkan ke 5 langkah aktivasi di bawah.',
+  width: 807,
+  height: 611,
+};
+
+export const GEMINI_RECOVERY_STEPS: GeminiRecoveryStep[] = [
   {
     number: '01',
-    title: 'Download file ZIP dari kedua repositori GitHub',
+    title: 'Buka menu Settings di kiri bawah dan klik menu "Browser"',
     description:
-      'Unduh berkas ZIP resmi dari repositori bangtutorial/bang-motion dan lemomo-ai/lemo-opuscar langsung melalui tombol unduh di sebelah kanan (atau lewat tombol Code → Download ZIP di GitHub).',
+      'Buka menu Settings (ikon roda gigi) yang ada di bagian kiri bawah Gemini Web, lalu klik menu "Browser" pada bagian Preferensi.',
+    screenshot: {
+      src: '/assets/images/pointing-to-menu-browser.png',
+      title: '1. Buka Settings → Menu "Browser"',
+      caption:
+        'Klik ikon Settings di pojok kiri bawah sidebar Gemini Web, lalu pilih menu "Browser" (ditandai kotak merah).',
+      width: 498,
+      height: 656,
+    },
   },
   {
     number: '02',
-    title: 'Buka Gemini Web dan aktifkan Mode Tugas',
+    title: 'Pada bagian "Izin", ubah ke "Selalu izinkan"',
     description:
-      'Masuk ke gemini.google.com dengan akun Google milikmu. Di bagian bawah kolom input, pastikan kamu memilih mode "Tugas" (bukan "Obrolan"). Mode Tugas wajib dipakai baik untuk menginstal keahlian maupun membuat video motion graphic.',
-    tip: 'Pada tampilan Gemini Web terbaru sudah tidak ada mode Canvas dan Gem telah dialihkan ke menu "Keahlian".',
+      'Setelah membuka menu "Browser", akan muncul tampilan pengaturan izin browser jarak jauh. Pada bagian "Izin", ubah pilihannya menjadi "Selalu izinkan".',
+    screenshot: {
+      src: '/assets/images/pointing-to-always-allow-browser.png',
+      title: '2. Ubah Bagian "Izin" ke "Selalu izinkan"',
+      caption:
+        'Buka dropdown pada bagian "Izin" lalu pilih "Selalu izinkan" agar Gemini dapat menggunakan browser tanpa meminta izin berulang.',
+      width: 698,
+      height: 337,
+    },
   },
   {
     number: '03',
-    title: 'Upload kedua file ZIP dan kirim prompt instalasi',
+    title: 'Buka Settings lagi dan buka menu "Setelan Tugas"',
     description:
-      'Klik ikon "+" di kolom input Mode Tugas untuk mengunggah kedua file ZIP (bang-motion & lemo-opuscar) sekaligus, lalu ketik atau tempel prompt persis seperti di bawah:',
-    tip: 'Prompt instalasi: "Tolong install kedua skill ini" — Gemini akan mengekstrak dan memasang kedua keahlian tersebut secara otomatis.',
+      'Setelah itu buka kembali menu Settings di bagian kiri bawah, lalu klik menu "Setelan Tugas" pada bagian Preferensi.',
+    screenshot: {
+      src: '/assets/images/pointing-to-menu-setelan-tugas.png',
+      title: '3. Buka Settings → Menu "Setelan Tugas"',
+      caption:
+        'Buka kembali menu Settings di kiri bawah, lalu pilih menu "Setelan Tugas" (ditandai kotak merah).',
+      width: 502,
+      height: 656,
+    },
   },
   {
     number: '04',
-    title: 'Cek di menu Keahlian (atau upload manual jika perlu)',
+    title: 'Enable "Akses jaringan untuk komputer jarak jauh?"',
     description:
-      'Buka menu Keahlian → Keterampilan di Gemini Web dan pastikan "bang-motion" serta "lemo-opuscar" sudah terdaftar pada bagian Diinstal. Jika ingin mengunggah manual, klik Buat → Upload lalu pilih file/folder SKILL.md (kebab-case) dari hasil ekstrak ZIP.',
+      'Pada halaman Setelan Tugas, aktifkan (enable) toggle "Akses jaringan untuk komputer jarak jauh?" hingga menyala agar Gemini dapat mengunduh paket skill dari GitHub.',
+    screenshot: {
+      src: '/assets/images/pointing-to-akses-jaringan.png',
+      title: '4. Aktifkan "Akses jaringan untuk komputer jarak jauh?"',
+      caption:
+        'Nyalakan toggle pada bagian "Akses jaringan untuk komputer jarak jauh?" di halaman Setelan Tugas.',
+      width: 742,
+      height: 842,
+    },
+  },
+  {
+    number: '05',
+    title: 'Kembali ke chat awal dan masukkan prompt konfirmasi',
+    description:
+      'Kembali lagi ke chat awal tadi, kemudian masukkan prompt di bawah ini. Secara otomatis Gemini akan memeriksa kembali skill tadi dan melakukan instalasi skill tersebut.',
+    tip: 'Jika muncul kartu konfirmasi "Jalankan Perintah", klik tombol "Izinkan" agar Gemini menyelesaikan pemasangan skill hingga aktif. Setelah itu, kamu juga bisa langsung menjalankan prompt instalasi skill kedua (lemo-opuscar).',
+    promptToCopy: {
+      id: 'retry-after-network-prompt',
+      label: 'Salin Prompt Konfirmasi',
+      text: GEMINI_RETRY_NETWORK_PROMPT,
+    },
+    screenshot: {
+      src: '/assets/images/success-install-skill.png',
+      title: '5. Kirim Prompt Konfirmasi & Skill Berhasil Terpasang',
+      caption:
+        'Setelah mengirim prompt konfirmasi (dan klik "Izinkan" bila diminta), Gemini otomatis mengunduh, memeriksa, dan mengaktifkan skill di daftar skill kamu.',
+      width: 593,
+      height: 687,
+    },
   },
 ];
 
 export const GEMINI_SCREENSHOT_REFS: GeminiScreenshotRef[] = [
-  {
-    src: '/assets/aistudio/image_95924fc8.png',
-    title: '1. Pilih Mode Tugas di Gemini Web',
-    caption:
-      'Gunakan tombol "Tugas" di bawah kolom input (bukan Obrolan) setiap kali menginstal skill maupun memproduksi video motion graphic.',
-  },
-  {
-    src: '/assets/aistudio/image_f35bb85a.png',
-    title: '2. Menu Keahlian (Pengganti Gem)',
-    caption:
-      'Setelah terpasang, lemo-opuscar dan bang-motion akan tampil di bagian "Diinstal" pada halaman Keahlian → Keterampilan.',
-  },
-  {
-    src: '/assets/aistudio/image_96377cbf.png',
-    title: '3. Opsi Upload Keahlian Manual',
-    caption:
-      'Jika ingin menambahkan skill secara manual, klik Buat → Upload dan sertakan file SKILL.md di folder utama.',
-  },
-  {
-    src: '/assets/aistudio/image_4e370fea.png',
-    title: '4. Informasi Migrasi Gem ke Keahlian',
-    caption:
-      'Gemini Gem kini dialihkan ke menu Keahlian tempat seluruh skill tersimpan dan dapat dipanggil dengan awalan @nama-skill.',
-  },
+  GEMINI_FAILURE_SCREENSHOT,
+  ...GEMINI_RECOVERY_STEPS.map((step) => step.screenshot),
 ];
 
 export const CLI_COMMANDS: CliCommandItem[] = [

@@ -82,7 +82,7 @@ export const TOUR_GUIDE_STEPS: readonly TourGuideStep[] = [
     badge: 'Persiapan Gemini',
     title: 'Panduan Instalasi Skill',
     description:
-      'Sebelum menjalankan prompt, pasang dulu skill @bang-motion dan @lemo-opuscar. Pilih tab Gemini Web (Mode Tugas) untuk mengunduh file ZIP dan menyalin prompt instalasi ke menu Keahlian, atau tab Gemini CLI / Lokal untuk pemasangan lewat terminal.',
+      'Sebelum menjalankan prompt, pasang dulu skill @bang-motion dan @lemo-opuscar. Pilih tab Gemini Web (Mode Tugas) untuk menyalin prompt instalasi langsung dari URL GitHub beserta langkah aktivasi akses jaringan jika gagal, atau tab Gemini CLI / Lokal untuk pemasangan lewat terminal.',
     preferredPlacement: 'top',
   },
   {

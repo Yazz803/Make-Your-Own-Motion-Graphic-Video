@@ -5,19 +5,18 @@ import {
   LuArrowUpRight,
   LuCheck,
   LuCopy,
-  LuDownload,
   LuExternalLink,
-  LuFolderCheck,
-  LuUpload,
+  LuTriangleAlert,
   LuWandSparkles,
+  LuZoomIn,
 } from 'react-icons/lu';
 import {
-  GEMINI_SCREENSHOT_REFS,
-  GEMINI_WEB_INSTALL_STEPS,
-  INSTALL_SKILL_PROMPT,
+  GEMINI_FAILURE_SCREENSHOT,
+  GEMINI_INSTALL_PROMPTS,
   REPO_LINKS,
 } from '@/lib/constants';
 import type { GeminiScreenshotRef } from '@/types';
+import GeminiRecoveryTimeline from './GeminiRecoveryTimeline';
 
 interface GeminiWebGuideTabProps {
   copiedId: string | null;
@@ -25,7 +24,36 @@ interface GeminiWebGuideTabProps {
   onZoomScreenshot: (shot: GeminiScreenshotRef) => void;
 }
 
-const STEP_ICONS = [LuDownload, LuWandSparkles, LuUpload, LuFolderCheck] as const;
+function renderBreakableUrl(url: string) {
+  const protocolIndex = url.indexOf('://');
+  const prefix = protocolIndex !== -1 ? url.slice(0, protocolIndex + 3) : '';
+  const pathPart = protocolIndex !== -1 ? url.slice(protocolIndex + 3) : url;
+  const segments = pathPart.split('/');
+
+  return (
+    <>
+      {prefix}
+      {segments.map((segment, index) => (
+        <span
+          key={`${segment}-${index}`}
+          className={
+            index === segments.length - 1 && segment.length <= 20
+              ? 'whitespace-nowrap'
+              : undefined
+          }
+        >
+          {segment}
+          {index < segments.length - 1 && (
+            <>
+              /
+              <wbr />
+            </>
+          )}
+        </span>
+      ))}
+    </>
+  );
+}
 
 export default function GeminiWebGuideTab({
   copiedId,
@@ -34,217 +62,159 @@ export default function GeminiWebGuideTab({
 }: GeminiWebGuideTabProps) {
   return (
     <div className="mt-10 space-y-8">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        {/* Timeline Steps list matching reference Experience Timeline */}
-        <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-6 sm:p-7 lg:col-span-7">
-          <div className="space-y-0">
-            {GEMINI_WEB_INSTALL_STEPS.map((step, index) => {
-              const StepIcon = STEP_ICONS[index] ?? LuWandSparkles;
-              const isLast = index === GEMINI_WEB_INSTALL_STEPS.length - 1;
-
-              return (
-                <div key={step.number} className="relative flex gap-5 pb-8 last:pb-0">
-                  {/* Left icon box + vertical timeline connector */}
-                  <div className="relative flex flex-col items-center">
-                    <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-[#18181B] text-[#33E092]">
-                      <StepIcon className="h-5 w-5" aria-hidden="true" />
-                    </div>
-                    {!isLast && (
-                      <div
-                        aria-hidden="true"
-                        className="mt-2 w-px flex-1 bg-zinc-800"
-                      />
-                    )}
-                  </div>
-
-                  {/* Right step content */}
-                  <div className="min-w-0 pt-0.5">
-                    <h3 className="font-display text-base sm:text-lg font-bold text-zinc-50">
-                      <span className="mr-2 font-mono text-sm text-[#33E092] tabular-nums">
-                        {step.number}.
-                      </span>
-                      {step.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">
-                      {step.description}
-                    </p>
-                    {step.tip && (
-                      <p className="mt-2.5 text-xs leading-relaxed text-zinc-300">
-                        Catatan: {step.tip}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+      {/* Primary Step: Install both skills directly via prompt in Mode Tugas */}
+      <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-7">
+        <div className="flex flex-col gap-4 border-b border-zinc-800/80 pb-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-[#33E092]/30 bg-[#33E092]/10 px-2.5 py-1 font-mono text-xs font-medium text-[#33E092]">
+              <LuWandSparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <span>Langkah Utama · Mode Tugas</span>
+            </span>
+            <h3 className="mt-2.5 font-display text-lg sm:text-xl font-bold text-zinc-50">
+              Pasang Skill bang-motion &amp; lemo-opuscar Lewat Prompt
+            </h3>
+            <p className="mt-1 text-xs sm:text-sm leading-relaxed text-zinc-400">
+              Buka Gemini Web, pastikan mode di bawah kolom input berada di{' '}
+              <strong className="font-medium text-zinc-200">Mode Tugas</strong>{' '}
+              (bukan Obrolan), lalu kirim kedua prompt berikut satu per satu:
+            </p>
           </div>
+
+          <a
+            href={REPO_LINKS.geminiWeb}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-md bg-[#33E092] px-4 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          >
+            <span>Buka Gemini Web (Mode Tugas)</span>
+            <LuExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
+          </a>
         </div>
 
-        {/* Action Card: Download ZIPs + Copy Install Prompt */}
-        <div className="flex flex-col justify-between gap-6 rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-6 lg:col-span-5">
-          <div className="space-y-6">
-            {/* Step A: Download both ZIPs */}
-            <div>
-              <h3 className="font-display text-base font-bold text-zinc-50">
-                1. Unduh File ZIP Kedua Repositori
-              </h3>
-              <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-                Simpan kedua berkas ZIP di bawah ini ke perangkatmu tanpa perlu
-                diekstrak terlebih dahulu.
-              </p>
-
-              <div className="mt-3.5 space-y-2.5">
-                <a
-                  href={REPO_LINKS.bangMotionZip}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-[46px] items-center justify-between gap-3 rounded-md border border-zinc-800 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:border-[#33E092] hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-                >
-                  <span className="min-w-0 truncate">
-                    <span className="block font-mono text-xs text-zinc-400">
-                      bangtutorial/bang-motion
+        <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {GEMINI_INSTALL_PROMPTS.map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-col justify-between gap-4 rounded-lg border border-zinc-800 bg-[#18181B]/60 p-4 sm:p-5"
+            >
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h4 className="font-display text-base font-bold text-zinc-50">
+                    <span className="mr-2 font-mono text-sm text-[#33E092] tabular-nums">
+                      {item.stepNumber}.
                     </span>
-                    <span>Download bang-motion.zip</span>
-                  </span>
-                  <LuDownload className="h-4 w-4 shrink-0" aria-hidden="true" />
-                </a>
+                    Install Skill {item.skillName}
+                  </h4>
+                  <a
+                    href={item.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-sm font-mono text-xs text-zinc-400 transition-colors hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+                  >
+                    <span>{item.repoName}</span>
+                    <LuArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  </a>
+                </div>
 
-                <a
-                  href={REPO_LINKS.lemoOpuscarZip}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-[46px] items-center justify-between gap-3 rounded-md border border-zinc-800 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:border-[#33E092] hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-                >
-                  <span className="min-w-0 truncate">
-                    <span className="block font-mono text-xs text-zinc-400">
-                      lemomo-ai/lemo-opuscar
-                    </span>
-                    <span>Download lemo-opuscar.zip</span>
+                <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-zinc-400">
+                  {item.description}
+                </p>
+
+                <div className="mt-3 rounded-md border border-zinc-800 bg-[#09090B] px-3.5 py-3 font-mono text-xs sm:text-sm leading-relaxed text-[#33E092]">
+                  <span>Tolong install skill ini </span>
+                  <span className="inline-block max-w-full break-words">
+                    {renderBreakableUrl(item.repoUrl)}
                   </span>
-                  <LuDownload className="h-4 w-4 shrink-0" aria-hidden="true" />
-                </a>
+                </div>
               </div>
-            </div>
 
-            {/* Step B: Copy exact installation prompt */}
-            <div className="border-t border-zinc-800/80 pt-5">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="font-display text-base font-bold text-zinc-50">
-                  2. Prompt Instalasi di Mode Tugas
-                </h3>
                 <button
                   type="button"
-                  onClick={() =>
-                    onCopy('install-skill-prompt', INSTALL_SKILL_PROMPT)
-                  }
-                  className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-md bg-[#33E092] px-3 py-1.5 text-xs font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+                  onClick={() => onCopy(item.id, item.prompt)}
+                  className="inline-flex min-h-[40px] w-full items-center justify-center gap-2 rounded-md bg-[#33E092] px-4 py-2 text-xs sm:text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] whitespace-nowrap sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
                 >
-                  {copiedId === 'install-skill-prompt' ? (
+                  {copiedId === item.id ? (
                     <>
-                      <LuCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>Tersalin</span>
+                      <LuCheck className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span>Prompt Tersalin</span>
                     </>
                   ) : (
                     <>
-                      <LuCopy className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>Salin Prompt</span>
+                      <LuCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span>Salin Prompt {item.skillName}</span>
                     </>
                   )}
                 </button>
               </div>
-
-              <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">
-                Upload kedua file ZIP ke kolom input{' '}
-                <strong className="font-medium text-zinc-200">
-                  Mode Tugas
-                </strong>{' '}
-                Gemini Web, lalu kirim teks berikut:
-              </p>
-
-              <div className="mt-3 rounded-md border border-zinc-800 bg-[#09090B] px-4 py-3.5 font-mono text-sm font-medium text-[#33E092]">
-                {INSTALL_SKILL_PROMPT}
-              </div>
             </div>
-          </div>
-
-          {/* Launch Gemini Web */}
-          <div className="space-y-3 border-t border-zinc-800/80 pt-5">
-            <a
-              href={REPO_LINKS.geminiWeb}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-md bg-[#33E092] px-4 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#0CCE6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-            >
-              <span>Buka Gemini Web (Pilih Mode Tugas)</span>
-              <LuExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
-            </a>
-
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-400">
-              <a
-                href={REPO_LINKS.bangMotion}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-sm hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-              >
-                <span>Repo bang-motion</span>
-                <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-              <a
-                href={REPO_LINKS.lemoOpuscar}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-sm hover:text-[#33E092] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-              >
-                <span>Repo lemo-opuscar</span>
-                <LuArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Visual UI Reference Screenshots from Gemini Web */}
-      <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-6">
-        <div className="max-w-2xl">
-          <h3 className="font-display text-base sm:text-lg font-bold text-zinc-50">
-            Panduan Visual Antarmuka Gemini Web Terbaru
-          </h3>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
-            Klik gambar mana pun untuk memperbesar letak Mode Tugas dan menu
-            Keahlian (Keterampilan).
-          </p>
-        </div>
-
-        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {GEMINI_SCREENSHOT_REFS.map((shot) => (
-            <figure key={shot.src} className="flex flex-col">
-              <button
-                type="button"
-                onClick={() => onZoomScreenshot(shot)}
-                className="group relative aspect-[16/10] w-full overflow-hidden rounded-md border border-zinc-800 bg-[#09090B] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
-                aria-label={`Perbesar gambar ${shot.title}`}
-              >
-                <Image
-                  src={shot.src}
-                  alt={shot.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  referrerPolicy="no-referrer"
-                  className="object-cover transition-transform duration-200 group-hover:scale-[1.03]"
-                />
-              </button>
-              <figcaption className="mt-2.5">
-                <p className="text-xs font-semibold text-zinc-100">
-                  {shot.title}
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-                  {shot.caption}
-                </p>
-              </figcaption>
-            </figure>
           ))}
         </div>
       </div>
+
+      {/* Failure Callout: What happens if the first prompt fails */}
+      <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5 sm:p-7">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+          <div className="min-w-0 space-y-3 lg:col-span-7">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-red-500/30 bg-red-500/10 px-2.5 py-1 font-mono text-xs font-medium text-red-300">
+              <LuTriangleAlert className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <span>Jika Prompt Pertama Gagal</span>
+            </span>
+
+            <h3 className="font-display text-lg sm:text-xl font-bold text-zinc-50">
+              Gemini Web Tidak Bisa Mengunduh &amp; Memasang Skill?
+            </h3>
+
+            <p className="text-sm leading-relaxed text-zinc-400">
+              Jika prompt pertama gagal karena Gemini Web belum bisa mengunduh
+              dan memasang skill-nya (muncul pesan{' '}
+              <strong className="font-medium text-zinc-200">
+                &ldquo;Gagal menginstal repositori karena kendala koneksi
+                internet&rdquo;
+              </strong>{' '}
+              atau akses internet untuk komputer jarak jauh sedang nonaktif
+              seperti pada gambar di samping), lanjutkan ke 5 langkah aktivasi
+              di bawah ini.
+            </p>
+
+            <p className="text-xs leading-relaxed text-zinc-300">
+              Klik gambar di samping untuk memperbesar tampilan pesan error dari
+              Gemini Web.
+            </p>
+          </div>
+
+          <figure className="lg:col-span-5">
+            <button
+              type="button"
+              onClick={() => onZoomScreenshot(GEMINI_FAILURE_SCREENSHOT)}
+              aria-label={`Perbesar gambar ${GEMINI_FAILURE_SCREENSHOT.title}`}
+              className="group relative aspect-[4/3] w-full overflow-hidden rounded-md border border-zinc-800 bg-[#09090B] text-left transition-colors hover:border-[#33E092]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+            >
+              <Image
+                src={GEMINI_FAILURE_SCREENSHOT.src}
+                alt={GEMINI_FAILURE_SCREENSHOT.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 440px"
+                className="object-contain p-2 transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+              <span className="pointer-events-none absolute right-2.5 bottom-2.5 inline-flex items-center gap-1.5 rounded-md border border-zinc-800 bg-[#09090B]/90 px-2.5 py-1 text-xs font-medium text-zinc-100">
+                <LuZoomIn
+                  className="h-3.5 w-3.5 text-[#33E092]"
+                  aria-hidden="true"
+                />
+                <span>Perbesar</span>
+              </span>
+            </button>
+          </figure>
+        </div>
+      </div>
+
+      {/* 5-Step Recovery Timeline */}
+      <GeminiRecoveryTimeline
+        copiedId={copiedId}
+        onCopy={onCopy}
+        onZoomScreenshot={onZoomScreenshot}
+      />
     </div>
   );
 }

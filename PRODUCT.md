@@ -21,7 +21,7 @@ Pendamping 100% sisi klien (browser-only) khusus untuk **Mode Tugas Gemini Web**
 ## Operating Context
 
 - Lingkungan eksekusi utama pengguna adalah **Gemini Web** (`gemini.google.com/app`) menggunakan **Mode Tugas** (bukan Obrolan) dan menu **Keahlian / Keterampilan** (pengganti Gem/Canvas pada antarmuka Gemini Web terbaru).
-- Pengguna mengunduh berkas ZIP repositori `bangtutorial/bang-motion` dan `lemomo-ai/lemo-opuscar`, mengunggahnya ke Mode Tugas dengan prompt instalasi `"Tolong install kedua skill ini"`, lalu memanggil skill lewat `@bang-motion` atau `@lemo-opuscar`.
+- Pengguna memasang skill langsung di **Mode Tugas** Gemini Web dengan mengirim prompt URL GitHub (`Tolong install skill ini https://github.com/bangtutorial/bang-motion` dan `Tolong install skill ini https://github.com/lemomo-ai/lemo-opuscar`), lalu memanggil skill lewat `@bang-motion` atau `@lemo-opuscar`. Jika prompt pertama gagal karena akses internet komputer jarak jauh belum aktif, pengguna mengubah izin **Browser** menjadi **Selalu izinkan**, mengaktifkan **Akses jaringan untuk komputer jarak jauh?** di **Setelan Tugas**, lalu mengirim prompt konfirmasi `"Aku udah aktifin akses internet untuk komputer jarak jauh nya"`.
 - Untuk alur dengan Voice Over, pengguna memakai layanan TTS pihak ketiga (seperti ElevenLabs V4 dengan 40 Audio Tags resmi dan pengaturan Stability 60%, CapCut TTS/Voice, atau dubbing manual) untuk menghasilkan file audio `.mp3`/`.wav` dari naskah Tahap 1 sebelum mengirim Prompt Tahap 2 bersama file audio tersebut.
 - Jika Gemini Web menghasilkan berkas `index.html` (misalnya dari `@bang-motion`), pengguna dapat menempel dan mengujinya di **Live Stage Preview** dalam rasio `9:16`, `16:9`, atau `1:1` lalu mengunduhnya sebagai `.html`.
 - Jalur alternatif **Gemini CLI / Lokal** (`npx skills add`, `git clone`, Node.js 18+, Python 3.10+, FFmpeg) didokumentasikan sebagai tab panduan sekunder bagi pengguna teknis.
@@ -45,7 +45,7 @@ Pendamping 100% sisi klien (browser-only) khusus untuk **Mode Tugas Gemini Web**
 ## Evidence on Hand
 
 - **Data Katalog Terverifikasi**: `src/lib/constants/bang-motion-styles.ts` (11 gaya), `src/lib/constants/lemo-opuscar-styles.ts` (99 gaya), `src/lib/constants/motion-styles.ts` (4 preset brief cepat), dan `src/lib/constants/stage-demos.ts` (3 template demo HTML untuk `9:16`, `16:9`, `1:1`).
-- **Screenshot Panduan Gemini Web**: 4 tangkapan layar antarmuka Gemini Web di `public/assets/aistudio/` (`image_95924fc8.png`, `image_f35bb85a.png`, `image_96377cbf.png`, `image_4e370fea.png`).
+- **Screenshot Panduan Gemini Web**: 6 tangkapan layar alur instalasi & aktivasi akses jaringan Gemini Web di `public/assets/images/` (`first-error.png`, `pointing-to-menu-browser.png`, `pointing-to-always-allow-browser.png`, `pointing-to-menu-setelan-tugas.png`, `pointing-to-akses-jaringan.png`, `success-install-skill.png`).
 - **Aset Lokal Tidak Terpakai**: 5 berkas gambar di `src/assets/images/` (`style_cartoon_collage_1795491766402.jpg`, `style_product_teardown_1795491765731.jpg`, `style_ukiyoe_woodblock_1795491766507.jpg`, `style_vintage_sketch_1795491813599.jpg`, `style_visual_journalism_1795491765679.jpg`) saat ini tidak direferensikan oleh komponen UI.
 - **Ketiadaan Bukti yang Tidak Boleh Dikarang**: Tidak ada testimoni pengguna, studi kasus pelanggan, liputan pers, metrik jumlah pengguna/video, paket harga, atau klaim benchmark performa render di repositori.
 
