@@ -30,6 +30,4 @@ export {
 export {
   HYBRID_CLIP_BALANCES,
   HYBRID_CLIP_BALANCE_MAP,
-  VIDEO_CLIP_CATEGORIES,
-  VIDEO_CLIP_CATEGORY_MAP,
 } from './hybrid-clip';

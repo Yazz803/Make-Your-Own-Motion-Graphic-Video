@@ -24,9 +24,9 @@ describe('studio-config localStorage persistence', () => {
       QUICK_BRIEF_PRESETS[0].audience
     );
     assert.equal(DEFAULT_STUDIO_CONFIG.productionMode, 'full-motion');
-    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.category, 'viral-hook');
     assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.balance, 'balanced');
     assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.reviewBeforeRender, true);
+    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.autoCutSilence, true);
     assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.clipFocusNote, '');
     assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.includeSfx, true);
     assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.includeRunningText, true);
@@ -51,9 +51,9 @@ describe('studio-config localStorage persistence', () => {
       targetAudience: '',
       productionMode: 'hybrid-clip',
       hybridClip: {
-        category: 'deep-talk-philosophy',
         balance: 'clip-heavy',
         reviewBeforeRender: false,
+        autoCutSilence: false,
         clipFocusNote: 'Fokus detik 00:10-00:25',
         includeSfx: false,
         includeRunningText: false,
@@ -115,9 +115,10 @@ describe('studio-config localStorage persistence', () => {
       targetAudience: 12345,
       productionMode: 'unknown-mode',
       hybridClip: {
-        category: 'invalid-category',
+        category: 'legacy-category-ignored',
         balance: 'motion-heavy',
         reviewBeforeRender: 'invalid',
+        autoCutSilence: 'invalid',
         clipFocusNote: 999,
         includeSfx: 'nope',
         includeRunningText: false,
@@ -139,14 +140,14 @@ describe('studio-config localStorage persistence', () => {
     assert.equal(parsed.topic, 'Topik kustom tersimpan');
     assert.equal(parsed.targetAudience, DEFAULT_STUDIO_CONFIG.targetAudience);
     assert.equal(parsed.productionMode, DEFAULT_STUDIO_CONFIG.productionMode);
-    assert.equal(
-      parsed.hybridClip.category,
-      DEFAULT_STUDIO_CONFIG.hybridClip.category
-    );
     assert.equal(parsed.hybridClip.balance, 'motion-heavy');
     assert.equal(
       parsed.hybridClip.reviewBeforeRender,
       DEFAULT_STUDIO_CONFIG.hybridClip.reviewBeforeRender
+    );
+    assert.equal(
+      parsed.hybridClip.autoCutSilence,
+      DEFAULT_STUDIO_CONFIG.hybridClip.autoCutSilence
     );
     assert.equal(
       parsed.hybridClip.clipFocusNote,

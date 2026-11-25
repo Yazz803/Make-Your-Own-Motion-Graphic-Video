@@ -4,7 +4,6 @@ import {
   ELEVENLABS_V4_TAG_FORMAT,
   ELEVENLABS_V4_TAG_GROUPS,
   HYBRID_CLIP_BALANCE_MAP,
-  VIDEO_CLIP_CATEGORY_MAP,
 } from '@/lib/constants';
 import type {
   AspectRatio,
@@ -60,9 +59,9 @@ const TTS_TARGET_NOTES: Record<TtsTarget, string> = {
 };
 
 const DEFAULT_HYBRID_CLIP: HybridClipConfig = {
-  category: 'viral-hook',
   balance: 'balanced',
   reviewBeforeRender: true,
+  autoCutSilence: true,
   clipFocusNote: '',
   includeSfx: true,
   includeRunningText: true,
@@ -78,9 +77,6 @@ export function estimateSceneCount(durationSec: DurationSec): number {
 function buildHybridMotionPrompt(config: PromptConfig): string {
   const ratio = ASPECT_RATIO_SPECS[config.aspectRatio];
   const hybrid = config.hybridClip ?? DEFAULT_HYBRID_CLIP;
-  const categoryMeta =
-    VIDEO_CLIP_CATEGORY_MAP[hybrid.category] ??
-    VIDEO_CLIP_CATEGORY_MAP['viral-hook'];
   const balanceMeta =
     HYBRID_CLIP_BALANCE_MAP[hybrid.balance] ??
     HYBRID_CLIP_BALANCE_MAP.balanced;
@@ -100,8 +96,8 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
   const briefLines = [
     '## 1. BRIEF PRODUKSI HYBRID',
     '- Mode Produksi: Hybrid (Perpaduan Cuplikan Video Clip Asli + Adegan Motion Graphic)',
-    `- Kategori Video Clip: ${categoryMeta.label} — ${categoryMeta.briefSummary}`,
     `- Komposisi Visual Hybrid: ${balanceMeta.label} (${balanceMeta.ratioLabel})`,
+    `- Auto-Cut Jeda Hening (Dead Air): ${hybrid.autoCutSilence ? 'Aktif — pangkas jeda hening/kosong dengan sambungan audio-visual halus' : 'Nonaktif — pertahankan jeda alami clip apa adanya'}`,
     `- Topik / Konteks Video: ${cleanTopic}`,
   ];
   if (cleanFocusNote) {
@@ -111,7 +107,7 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
     `- Target Audiens: ${cleanAudience}`,
     `- Gaya Visual Motion Graphic: ${config.style.name} (${config.style.station} · ${config.style.stylePath})`,
     `- Rasio Aspek & Resolusi: ${ratio.label} (${ratio.resolution} — untuk ${ratio.platform})`,
-    '- Durasi & Jumlah Adegan: Mengikuti 100% durasi utuh video clip yang di-upload; jumlah segmen ditentukan oleh jeda alami ucapan/kalimat di dalam audio clip.',
+    '- Durasi Video Final (Fleksibel): Tidak harus 100% sama dengan durasi mentah video clip — durasi akhir **boleh lebih pendek** (karena pemangkasan jeda hening/dead air atau pemadatan tempo) maupun **lebih panjang** (karena penambahan intro/hook motion graphic, jeda visual penekanan, atau outro/CTA motion graphic) demi hasil yang paling mulus dan enak ditonton.',
     `- Catatan Framing: ${ratio.framingNote}`
   );
   sections.push(briefLines.join('\n'));
@@ -156,20 +152,24 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
   }
   if (hybrid.includeRunningText) {
     hybridAudioFeatures.push(
-      `- **WAJIB Running Text Per Kata (Word-by-Word Synced Captions):** Transkripsikan ucapan dari audio asli video clip yang di-upload, lalu tampilkan running text / teks berjalan yang sinkron tepat pada **setiap kata yang diucapkan** (highlight aktif per kata mengikuti timestamp audio clip), dengan tipografi kontras tinggi di area aman (safe zone) rasio ${config.aspectRatio}.`
+      `- **WAJIB Running Text Per Kata (Word-by-Word Synced Captions):** Transkripsikan ucapan dari audio asli video clip yang di-upload, lalu tampilkan running text / teks berjalan yang sinkron tepat pada **setiap kata yang diucapkan** (highlight aktif per kata mengikuti timestamp audio setelah penyesuaian jeda), dengan tipografi kontras tinggi di area aman (safe zone) rasio ${config.aspectRatio}.`
     );
   }
 
+  const silenceRule = hybrid.autoCutSilence
+    ? '- **WAJIB Auto-Cut Jeda Hening (Dead Air) & Sambungan Audio Halus:** Deteksi dan pangkas otomatis jeda hening (*dead air*), jeda napas terlalu panjang, atau bagian kosong tanpa ucapan di dalam video clip agar ritme bicara rapat dan mengalir mulus. **DILARANG** memotong di tengah kata atau memutus ujung suku kata — sisakan *breathing room* alami (~80–150 ms), terapkan **audio crossfade halus (30–80 ms)** di setiap titik potong agar tidak ada bunyi *pop/click*, dan tutupi sambungan antar-potongan clip dengan **adegan motion graphic**, **J-cut / L-cut**, atau **punch-in/out skala halus** agar tidak terasa *jump cut* kasar.'
+    : '- **Alur Audio Halus:** Pertahankan audio suara asli video clip mengalir alami tanpa memotong di tengah kata atau kalimat; terapkan audio crossfade halus bila ada penyesuaian tempo atau transisi.';
+
   sections.push(
     [
-      `## ${nextStep}. ATURAN HYBRID, AUDIO UTUH & JEDA ALAMI (WAJIB DIPATUHI)`,
+      `## ${nextStep}. ATURAN HYBRID, AUTO-CUT JEDA & ALUR SEMULUS MUNGKIN (WAJIB DIPATUHI)`,
       '**PENTING — TIDAK PERLU MEMBUAT NASKAH VO BARU ATAU MEMINTA UPLOAD AUDIO VO TERPISAH!**',
-      `- **Audio & Timeline Utuh (DILARANG Memotong/Mengacak Clip):** Gunakan **100% audio suara asli dari file video clip yang saya upload** secara utuh dan kontinu dari awal hingga akhir durasi clip${cleanFocusNote ? ' (kecuali rentang timestamp yang secara eksplisit saya tulis pada Catatan Momen / Fokus Clip)' : ''}. **DILARANG** memotong bagian tengah, menghapus kalimat, atau menyusun ulang urutan timeline video clip asli.`,
-      `- **WAJIB Hybrid Visual (Jangan Full Motion Graphic):** Trek audio tetap mengalir utuh, sementara **lapisan visual** bergantian antara **cuplikan video clip asli** (sinkron tepat pada timestamp aslinya) dan **adegan motion graphic** bergaya "${config.style.name}". **DILARANG** membuat 100% full motion graphic tanpa menampilkan video clip asli, dan **DILARANG** hanya menempel teks di atas video mentah tanpa adegan motion graphic penuh.`,
-      '- **WAJIB Transisi Hanya di Jeda Alami (DILARANG Memotong di Tengah Kalimat):** Perpindahan visual antara video clip asli dan adegan motion graphic **HANYA BOLEH** dilakukan pada batas jeda alami ucapan (akhir kalimat, jeda antar-klausa, atau jeda napas pembicara) — **DILARANG KERAS** memotong atau mengganti adegan di tengah kata atau di tengah kalimat yang sedang diucapkan.',
+      '- **Sumber Suara / Voice (Audio Asli Video Clip):** Gunakan **suara/voice asli dari file video clip yang saya upload** di chat Mode Tugas ini sebagai trek audio utama (tanpa membuat naskah VO baru atau meminta upload audio VO terpisah).',
+      silenceRule,
+      '- **Durasi Fleksibel (Boleh Kurang atau Lebih dari Clip Asli):** Jangan memaksakan durasi video final harus persis 100% sama dengan durasi mentah video clip. Kamu bebas memadatkan jeda/bagian lambat agar lebih ringkas, maupun menambah ruang intro/hook, jeda visual penekanan, atau outro motion graphic agar alur cerita terasa utuh dan sinematik.',
+      `- **WAJIB Hybrid Visual (Jangan Full Motion Graphic):** Hasil akhir **HARUS** memadukan **beberapa cuplikan visual dari video clip asli** dengan **adegan motion graphic** bergaya "${config.style.name}". **DILARANG** membuat 100% full motion graphic tanpa menampilkan video clip asli, dan **DILARANG** hanya menempel teks di atas video mentah tanpa adegan motion graphic penuh.`,
+      `- **WAJIB Transisi Hanya di Jeda Alami & Semulus Mungkin:** Perpindahan visual antara video clip asli dan adegan motion graphic **HANYA BOLEH** dilakukan pada batas jeda alami ucapan (akhir kalimat, jeda antar-klausa, atau titik auto-cut jeda) — **DILARANG KERAS** memotong atau mengganti adegan di tengah kata/kalimat. Gunakan teknik penyambungan sinematik (**J-cut / L-cut**, match-cut, whip blur halus, zoom-through, atau wipe objek) serta **integrasi visual** (framing rasio ${config.aspectRatio}, punch-in/zoom halus, split-screen, frame-in-frame, atau overlay grafis berpalet ${config.style.palette.slice(0, 3).join(', ')}) agar perpindahan antara footage nyata dan motion graphic terasa menyatu dan semulus mungkin.`,
       `- **Komposisi & Porsi Cuplikan:** ${balanceMeta.promptRule}`,
-      `- **Arahan Kategori "${categoryMeta.label}":** ${categoryMeta.promptDirective}`,
-      `- **Integrasi Footage Clip ke Gaya Visual:** Perlakukan cuplikan video clip asli sebagai layer footage sinematik (sesuaikan framing ke rasio ${config.aspectRatio}, gunakan punch-in/zoom halus, split-screen, frame-in-frame, atau overlay grafis berpalet ${config.style.palette.slice(0, 3).join(', ')}), lalu hubungkan ke adegan motion graphic dengan transisi bermakna (match-cut, whip blur, zoom-through, atau wipe objek).`,
     ].join('\n')
   );
 
@@ -182,12 +182,12 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
         '**PENTING — JANGAN LANGSUNG MEMBUAT FILE VIDEO (.MP4) ATAU FILE HTML TERLEBIH DAHULU!**',
         '',
         '### TAHAP 1 (KERJAKAN SEKARANG, LALU BERHENTI & TUNGGU KONFIRMASI):',
-        '1. **Transkripsi Audio Video Clip:** Dengarkan seluruh audio asli dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu), lalu tulis **transkrip lengkap** dengan timestamp presisi per kalimat/jeda alami (contoh: `[00:00.0 - 00:03.4]`).',
-        '2. **Susun Tabel Storyboard Hybrid (Berdasarkan Jeda Alami):** Sajikan tabel pemetaan segmen utuh dari awal hingga akhir clip (`Segmen | Timestamp Clip | Transkrip Kalimat | Jenis Visual: Video Clip Asli / Motion Graphic | Konsep Visual & Gerak Kamera | Daftar SFX | Teks Layar`), pastikan tidak ada pergantian adegan di tengah kalimat.',
-        '3. **BERHENTI DI TAHAP INI.** Minta saya meninjau dan mengonfirmasi ketepatan transkrip serta pembagian segmen Video Clip Asli vs Motion Graphic (tanpa perlu membuat atau meng-upload audio VO terpisah).',
+        `1. **Transkripsi & Deteksi Jeda Video Clip:** Dengarkan seluruh audio asli dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu), tulis **transkrip lengkap** dengan timestamp presisi per kalimat/jeda alami${hybrid.autoCutSilence ? ', serta tandai bagian jeda hening (*dead air*) yang akan di-auto-cut agar ritme rapat dan mulus' : ''}.`,
+        '2. **Susun Tabel Storyboard Hybrid (Berdasarkan Jeda Alami):** Sajikan tabel pemetaan segmen (`Segmen | Timestamp Clip / Auto-Cut | Transkrip Kalimat | Jenis Visual: Video Clip Asli / Motion Graphic | Teknik Transisi Halus (J-Cut/L-Cut/Match-Cut) & Gerak Kamera | Daftar SFX | Teks Layar`), pastikan tidak ada pergantian adegan di tengah kalimat dan durasi total boleh lebih pendek atau lebih panjang dari clip asli demi hasil semulus mungkin.',
+        `3. **BERHENTI DI TAHAP INI.** Minta saya meninjau dan mengonfirmasi ketepatan transkrip${hybrid.autoCutSilence ? ', titik auto-cut jeda,' : ''} serta pembagian segmen Video Clip Asli vs Motion Graphic (tanpa perlu membuat atau meng-upload audio VO terpisah).`,
         '',
         '### TAHAP 2 (SETELAH SAYA KONFIRMASI LANJUT RENDER):',
-        `- Begitu saya menyetujui atau mengirim koreksi transkrip/segmen, langsung render **video hybrid final dalam format \`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, durasi mengikuti video clip utuh) menggunakan file video clip yang sudah di-upload di chat ini dengan audio asli yang mengalir kontinu.`,
+        `- Begitu saya menyetujui atau mengirim koreksi transkrip/segmen, langsung render **video hybrid final dalam format \`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, durasi fleksibel mengikuti hasil edit paling mulus) menggunakan file video clip yang sudah di-upload di chat ini dengan sambungan audio-visual yang halus.`,
         ...hybridAudioFeatures,
       ].join('\n')
     );
@@ -197,9 +197,9 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
         `## ${nextStep}. ALUR EKSEKUSI LANGSUNG 1 GILIRAN (.MP4)`,
         '**PENTING — DILARANG BERHENTI HANYA DI TABEL STORYBOARD ATAU MEMINTA KONFIRMASI TAMBAHAN!**',
         'Dalam satu giliran kerja Mode Tugas ini, kerjakan seluruh langkah berikut secara berurutan hingga menghasilkan file `.mp4`:',
-        '1. **Transkripsi & Pemetaan Jeda Alami:** Dengarkan seluruh audio asli dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu sebelum merender), tulis transkrip lengkap per jeda alami, dan petakan segmen mana yang menampilkan **Video Clip Asli** vs **Motion Graphic** tanpa memotong di tengah kalimat.',
-        '2. **Tampilkan Ringkasan Transkrip & Storyboard Hybrid:** Sertakan transkrip bertimestamp dan tabel pemetaan segmen (`Segmen | Timestamp Clip | Transkrip Kalimat | Jenis Visual: Video Clip Asli / Motion Graphic | Konsep Visual & Gerak Kamera | Daftar SFX`) di respons agar saya dapat melihat transkrip yang dipakai.',
-        `3. **Langsung Render Video Hybrid Final (\`.mp4\`):** Produksi dan render video final dalam format **\`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, durasi mengikuti video clip utuh) menggunakan keahlian ${skillTag} dengan perpaduan cuplikan video clip asli + adegan motion graphic yang sinkron penuh dengan audio asli video clip.`,
+        `1. **Transkripsi, Auto-Cut Jeda & Pemetaan Jeda Alami:** Dengarkan seluruh audio asli dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu sebelum merender), tulis transkrip lengkap per jeda alami${hybrid.autoCutSilence ? ', pangkas jeda hening (*dead air*) dengan audio crossfade halus,' : ','} dan petakan segmen **Video Clip Asli** vs **Motion Graphic** tanpa memotong di tengah kalimat.`,
+        '2. **Tampilkan Ringkasan Transkrip & Storyboard Hybrid:** Sertakan transkrip bertimestamp dan tabel pemetaan segmen (`Segmen | Timestamp Clip / Auto-Cut | Transkrip Kalimat | Jenis Visual: Video Clip Asli / Motion Graphic | Teknik Transisi Halus & Gerak Kamera | Daftar SFX`) di respons agar saya dapat melihat transkrip yang dipakai.',
+        `3. **Langsung Render Video Hybrid Final (\`.mp4\`):** Produksi dan render video final dalam format **\`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, durasi fleksibel boleh lebih pendek atau lebih panjang dari clip asli demi hasil semulus mungkin) menggunakan keahlian ${skillTag} dengan perpaduan cuplikan video clip asli + adegan motion graphic yang menyatu mulus dengan audio asli video clip.`,
         ...hybridAudioFeatures,
       ].join('\n')
     );
@@ -389,6 +389,7 @@ export function buildPhase2FollowUpPrompt(config: {
 export function buildHybridPhase2FollowUpPrompt(config: {
   style: MotionStyle;
   aspectRatio: AspectRatio;
+  autoCutSilence: boolean;
   includeSfx: boolean;
   includeRunningText: boolean;
 }): string {
@@ -398,9 +399,14 @@ export function buildHybridPhase2FollowUpPrompt(config: {
   ];
 
   const reqs: string[] = [
-    '- Pertahankan audio suara asli video clip mengalir utuh dan kontinu dari awal hingga akhir tanpa memotong atau mengacak urutan timeline.',
-    '- Pastikan perpindahan visual antara video clip asli dan adegan motion graphic hanya terjadi pada jeda alami kalimat.',
+    '- Buat hasil akhir semulus mungkin: durasi video final fleksibel (boleh lebih pendek atau lebih panjang dari clip asli demi ritme terbaik).',
+    '- Pastikan perpindahan visual antara video clip asli dan adegan motion graphic hanya terjadi pada jeda alami kalimat dengan transisi halus (J-cut/L-cut, match-cut, atau whip blur).',
   ];
+  if (config.autoCutSilence) {
+    reqs.push(
+      '- Terapkan **auto-cut jeda hening (dead air)** dengan audio crossfade halus (30–80 ms) dan jembatan visual agar tidak ada jump cut kasar atau bunyi putus mendadak.'
+    );
+  }
   if (config.includeSfx) {
     reqs.push(
       '- Tambahkan **Sound Effect (SFX)** yang sesuai di setiap transisi antara clip & motion graphic dengan volume seimbang di bawah suara asli clip.'

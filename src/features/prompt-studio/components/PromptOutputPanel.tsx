@@ -19,7 +19,6 @@ interface PromptOutputPanelProps {
   aspectRatio: AspectRatio;
   sceneCount: number;
   productionMode: ProductionMode;
-  clipCategoryLabel: string;
   hybridReviewBeforeRender: boolean;
   hybridIncludeSfx: boolean;
   hybridIncludeRunningText: boolean;
@@ -40,7 +39,6 @@ export default function PromptOutputPanel({
   aspectRatio,
   sceneCount,
   productionMode,
-  clipCategoryLabel,
   hybridReviewBeforeRender,
   hybridIncludeSfx,
   hybridIncludeRunningText,
@@ -82,7 +80,7 @@ export default function PromptOutputPanel({
               </span>{' '}
               · {selectedStyle.name} · {aspectRatio} ·{' '}
               {isHybridMode
-                ? `Durasi ikut clip · Hybrid (${clipCategoryLabel})`
+                ? 'Durasi fleksibel · Hybrid'
                 : `~${sceneCount} adegan`}
             </p>
           </div>
@@ -205,7 +203,8 @@ export default function PromptOutputPanel({
                       <strong className="font-medium text-zinc-200">
                         Tidak perlu upload audio VO terpisah
                       </strong>{' '}
-                      — Gemini memakai suara asli video clip secara utuh,
+                      — Gemini memakai suara asli video clip (dengan auto-cut
+                      jeda hening &amp; durasi fleksibel agar mulus),
                       menampilkan transkrip &amp; pemetaan segmen, lalu langsung
                       merender video final{' '}
                       <code className="font-mono text-zinc-200">.mp4</code>

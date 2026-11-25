@@ -2,11 +2,7 @@
 
 import { type SetStateAction, useCallback, useMemo } from 'react';
 import { useStudioConfig } from '@/hooks';
-import {
-  MOTION_STYLES,
-  QUICK_BRIEF_PRESETS,
-  VIDEO_CLIP_CATEGORY_MAP,
-} from '@/lib/constants';
+import { MOTION_STYLES, QUICK_BRIEF_PRESETS } from '@/lib/constants';
 import {
   buildHybridPhase2FollowUpPrompt,
   buildMotionPrompt,
@@ -22,7 +18,6 @@ import type {
   ProductionMode,
   SavedDraft,
   TtsTarget,
-  VideoClipCategory,
   VoLanguage,
   VoTone,
 } from '@/types';
@@ -92,16 +87,6 @@ export function usePromptBuilder({
     [updateConfig]
   );
 
-  const setHybridCategory = useCallback(
-    (next: VideoClipCategory) => {
-      updateConfig((prev) => ({
-        ...prev,
-        hybridClip: { ...prev.hybridClip, category: next },
-      }));
-    },
-    [updateConfig]
-  );
-
   const setHybridBalance = useCallback(
     (next: HybridClipBalance) => {
       updateConfig((prev) => ({
@@ -123,6 +108,16 @@ export function usePromptBuilder({
               ? next(prev.hybridClip.reviewBeforeRender)
               : next,
         },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridAutoCutSilence = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: { ...prev.hybridClip, autoCutSilence: next },
       }));
     },
     [updateConfig]
@@ -306,6 +301,7 @@ export function usePromptBuilder({
         ? buildHybridPhase2FollowUpPrompt({
             style: selectedStyle,
             aspectRatio,
+            autoCutSilence: hybridClip.autoCutSilence,
             includeSfx: hybridClip.includeSfx,
             includeRunningText: hybridClip.includeRunningText,
           })
@@ -319,6 +315,7 @@ export function usePromptBuilder({
       productionMode,
       selectedStyle,
       aspectRatio,
+      hybridClip.autoCutSilence,
       hybridClip.includeSfx,
       hybridClip.includeRunningText,
       includeSfx,
@@ -363,10 +360,6 @@ export function usePromptBuilder({
     const cleanTitle = trimmedTopic
       ? trimmedTopic.slice(0, 56) + (trimmedTopic.length > 56 ? '…' : '')
       : `Draft ${selectedStyle.name}`;
-    const clipCategoryLabel =
-      productionMode === 'hybrid-clip'
-        ? VIDEO_CLIP_CATEGORY_MAP[hybridClip.category]?.label
-        : undefined;
 
     return {
       id: `${Date.now()}`,
@@ -383,7 +376,6 @@ export function usePromptBuilder({
       aspectRatio,
       durationSec,
       productionMode,
-      clipCategoryLabel,
       voEnabled,
       prompt: generatedPrompt,
       configSnapshot: {
@@ -439,9 +431,9 @@ export function usePromptBuilder({
     productionMode,
     setProductionMode,
     hybridClip,
-    setHybridCategory,
     setHybridBalance,
     setHybridReviewBeforeRender,
+    setHybridAutoCutSilence,
     setHybridClipFocusNote,
     setHybridIncludeSfx,
     setHybridIncludeRunningText,

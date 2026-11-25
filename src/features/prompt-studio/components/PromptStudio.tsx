@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { LuFolderClock } from 'react-icons/lu';
 import { useCopyFeedback } from '@/hooks';
-import { VIDEO_CLIP_CATEGORY_MAP } from '@/lib/constants';
 import type { AspectRatio, MotionStyle, SavedDraft } from '@/types';
 import { usePromptBuilder } from '../hooks/usePromptBuilder';
 import { usePromptDrafts } from '../hooks/usePromptDrafts';
@@ -128,11 +127,11 @@ export default function PromptStudio({
             productionMode={builder.productionMode}
             onChangeProductionMode={builder.setProductionMode}
             hybridClip={builder.hybridClip}
-            onChangeHybridCategory={builder.setHybridCategory}
             onChangeHybridBalance={builder.setHybridBalance}
             onToggleHybridReviewBeforeRender={() =>
               builder.setHybridReviewBeforeRender((prev) => !prev)
             }
+            onChangeHybridAutoCutSilence={builder.setHybridAutoCutSilence}
             onChangeHybridClipFocusNote={builder.setHybridClipFocusNote}
             onChangeHybridIncludeSfx={builder.setHybridIncludeSfx}
             onChangeHybridIncludeRunningText={
@@ -170,10 +169,6 @@ export default function PromptStudio({
             aspectRatio={aspectRatio}
             sceneCount={builder.sceneCount}
             productionMode={builder.productionMode}
-            clipCategoryLabel={
-              VIDEO_CLIP_CATEGORY_MAP[builder.hybridClip.category]?.label ??
-              'Viral & Hook'
-            }
             hybridReviewBeforeRender={builder.hybridClip.reviewBeforeRender}
             hybridIncludeSfx={builder.hybridClip.includeSfx}
             hybridIncludeRunningText={builder.hybridClip.includeRunningText}

@@ -1,60 +1,34 @@
 'use client';
 
-import type { IconType } from 'react-icons';
 import {
-  LuBrain,
   LuCaptions,
   LuFilm,
-  LuFlame,
-  LuHeart,
-  LuLaugh,
-  LuLightbulb,
-  LuMessageSquareWarning,
+  LuScissors,
   LuVolume2,
 } from 'react-icons/lu';
-import {
-  HYBRID_CLIP_BALANCES,
-  VIDEO_CLIP_CATEGORIES,
-  VIDEO_CLIP_CATEGORY_MAP,
-} from '@/lib/constants';
+import { HYBRID_CLIP_BALANCES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import type {
-  HybridClipBalance,
-  HybridClipConfig,
-  VideoClipCategory,
-} from '@/types';
+import type { HybridClipBalance, HybridClipConfig } from '@/types';
 
 interface HybridClipControlsSectionProps {
   hybridClip: HybridClipConfig;
-  onChangeCategory: (category: VideoClipCategory) => void;
   onChangeBalance: (balance: HybridClipBalance) => void;
   onToggleReviewBeforeRender: () => void;
+  onChangeAutoCutSilence: (checked: boolean) => void;
   onChangeClipFocusNote: (note: string) => void;
   onChangeIncludeSfx: (checked: boolean) => void;
   onChangeIncludeRunningText: (checked: boolean) => void;
 }
 
-const CATEGORY_ICONS: Record<VideoClipCategory, IconType> = {
-  'viral-hook': LuFlame,
-  'meme-comedy': LuLaugh,
-  'education-insight': LuLightbulb,
-  'debate-controversy': LuMessageSquareWarning,
-  'story-emotional': LuHeart,
-  'deep-talk-philosophy': LuBrain,
-};
-
 export default function HybridClipControlsSection({
   hybridClip,
-  onChangeCategory,
   onChangeBalance,
   onToggleReviewBeforeRender,
+  onChangeAutoCutSilence,
   onChangeClipFocusNote,
   onChangeIncludeSfx,
   onChangeIncludeRunningText,
 }: HybridClipControlsSectionProps) {
-  const activeCategory =
-    VIDEO_CLIP_CATEGORY_MAP[hybridClip.category] ?? VIDEO_CLIP_CATEGORIES[0];
-
   return (
     <div className="space-y-5 border-t border-zinc-800/80 pt-6">
       {/* Original Clip Audio Notice + Review Before Render Switch */}
@@ -71,9 +45,10 @@ export default function HybridClipControlsSection({
               </span>
               <span className="mt-1 block text-xs leading-relaxed text-zinc-400">
                 Tidak perlu upload audio VO terpisah — suara memakai audio asli
-                video clip secara utuh. Aktifkan switch ini agar Gemini
-                menampilkan transkrip bertimestamp &amp; tabel pembagian segmen
-                di jeda alami dulu sebelum render MP4.
+                video clip dan durasi akhir fleksibel (boleh lebih pendek atau
+                lebih panjang dari clip asli demi hasil semulus mungkin).
+                Aktifkan switch ini agar Gemini menampilkan transkrip &amp;
+                tabel segmen dulu sebelum render MP4.
               </span>
             </div>
           </div>
@@ -100,58 +75,6 @@ export default function HybridClipControlsSection({
               )}
             />
           </button>
-        </div>
-      </div>
-
-      {/* 6 Video Clip Categories */}
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <span
-            id="hybrid-category-label"
-            className="text-xs font-semibold text-zinc-200"
-          >
-            Kategori Video Clip
-          </span>
-          <span className="text-[11px] text-zinc-400">
-            {activeCategory.shortDesc}
-          </span>
-        </div>
-
-        <div
-          role="radiogroup"
-          aria-labelledby="hybrid-category-label"
-          className="mt-2.5 grid auto-rows-fr grid-cols-2 gap-2 sm:grid-cols-3"
-        >
-          {VIDEO_CLIP_CATEGORIES.map((item) => {
-            const active = hybridClip.category === item.id;
-            const Icon = CATEGORY_ICONS[item.id];
-            return (
-              <button
-                key={item.id}
-                type="button"
-                role="radio"
-                aria-checked={active}
-                onClick={() => onChangeCategory(item.id)}
-                className={cn(
-                  'flex min-h-[52px] items-center gap-2 rounded-md border px-3 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
-                  active
-                    ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
-                    : 'border-zinc-800 bg-[#18181B] text-zinc-200 hover:border-zinc-700 hover:text-zinc-50'
-                )}
-              >
-                <Icon
-                  className={cn(
-                    'h-4 w-4 shrink-0',
-                    active ? 'text-[#09090B]' : 'text-[#33E092]'
-                  )}
-                  aria-hidden="true"
-                />
-                <span className="text-xs font-semibold leading-snug">
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
         </div>
       </div>
 
@@ -219,8 +142,31 @@ export default function HybridClipControlsSection({
         />
       </div>
 
-      {/* SFX & Word-by-Word Running Text synced to Video Clip Audio */}
+      {/* Auto-Cut Silence, SFX & Word-by-Word Running Text */}
       <div className="grid grid-cols-1 gap-3 border-t border-zinc-800/70 pt-5 sm:grid-cols-2">
+        <label className="flex min-h-[54px] cursor-pointer items-start gap-3 rounded-md border border-zinc-800 bg-[#09090B] p-3 sm:col-span-2">
+          <input
+            type="checkbox"
+            checked={hybridClip.autoCutSilence}
+            onChange={(e) => onChangeAutoCutSilence(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-700 bg-[#18181B] accent-[#33E092]"
+          />
+          <span className="min-w-0">
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-zinc-100">
+              <LuScissors
+                className="h-3.5 w-3.5 shrink-0 text-[#33E092]"
+                aria-hidden="true"
+              />
+              <span>Auto-Cut Jeda Hening (Dead Air)</span>
+            </span>
+            <span className="mt-0.5 block text-[11px] leading-snug text-zinc-400">
+              Pangkas otomatis jeda hening atau bagian kosong di video clip
+              dengan audio crossfade halus &amp; jembatan visual agar ritme
+              semulus mungkin.
+            </span>
+          </span>
+        </label>
+
         <label className="flex min-h-[54px] cursor-pointer items-start gap-3 rounded-md border border-zinc-800 bg-[#09090B] p-3">
           <input
             type="checkbox"

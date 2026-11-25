@@ -55,7 +55,7 @@ export default function SavedDraftsDrawer({
                   {draft.skillHandle} · {draft.styleName} · {draft.aspectRatio}{' '}
                   ·{' '}
                   {draft.productionMode === 'hybrid-clip'
-                    ? `Durasi ikut clip · Hybrid (${draft.clipCategoryLabel ?? 'Video Clip'}) → MP4`
+                    ? 'Durasi fleksibel · Hybrid → MP4'
                     : `${draft.durationSec} dtk · ${draft.voEnabled ? '2-Tahap VO → MP4' : 'Langsung MP4'}`}{' '}
                   · {draft.createdAt}
                 </p>

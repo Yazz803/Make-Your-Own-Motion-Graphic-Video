@@ -16,7 +16,6 @@ export type {
   SavedDraft,
   StudioConfigSnapshot,
   TtsTarget,
-  VideoClipCategory,
   VoLanguage,
   VoiceOverConfig,
   VoTone,

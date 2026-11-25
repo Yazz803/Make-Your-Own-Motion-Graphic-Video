@@ -7,7 +7,6 @@ import type {
   ProductionMode,
   StudioConfigSnapshot,
   TtsTarget,
-  VideoClipCategory,
   VoLanguage,
   VoTone,
 } from '@/types';
@@ -22,9 +21,9 @@ export const DEFAULT_STUDIO_CONFIG: StudioConfigSnapshot = {
   targetAudience: QUICK_BRIEF_PRESETS[0].audience,
   productionMode: 'full-motion',
   hybridClip: {
-    category: 'viral-hook',
     balance: 'balanced',
     reviewBeforeRender: true,
+    autoCutSilence: true,
     clipFocusNote: '',
     includeSfx: true,
     includeRunningText: true,
@@ -51,14 +50,6 @@ const VALID_DURATIONS = new Set<DurationSec>([15, 30, 45, 60]);
 const VALID_PRODUCTION_MODES = new Set<ProductionMode>([
   'full-motion',
   'hybrid-clip',
-]);
-const VALID_CLIP_CATEGORIES = new Set<VideoClipCategory>([
-  'viral-hook',
-  'meme-comedy',
-  'education-insight',
-  'debate-controversy',
-  'story-emotional',
-  'deep-talk-philosophy',
 ]);
 const VALID_CLIP_BALANCES = new Set<HybridClipBalance>([
   'balanced',
@@ -132,11 +123,6 @@ export function parseStudioConfig(raw: string | null): StudioConfigSnapshot {
         ? (parsed.productionMode as ProductionMode)
         : DEFAULT_STUDIO_CONFIG.productionMode,
     hybridClip: {
-      category:
-        typeof hybridRaw.category === 'string' &&
-        VALID_CLIP_CATEGORIES.has(hybridRaw.category as VideoClipCategory)
-          ? (hybridRaw.category as VideoClipCategory)
-          : defaultHybrid.category,
       balance:
         typeof hybridRaw.balance === 'string' &&
         VALID_CLIP_BALANCES.has(hybridRaw.balance as HybridClipBalance)
@@ -146,6 +132,10 @@ export function parseStudioConfig(raw: string | null): StudioConfigSnapshot {
         typeof hybridRaw.reviewBeforeRender === 'boolean'
           ? hybridRaw.reviewBeforeRender
           : defaultHybrid.reviewBeforeRender,
+      autoCutSilence:
+        typeof hybridRaw.autoCutSilence === 'boolean'
+          ? hybridRaw.autoCutSilence
+          : defaultHybrid.autoCutSilence,
       clipFocusNote:
         typeof hybridRaw.clipFocusNote === 'string'
           ? hybridRaw.clipFocusNote

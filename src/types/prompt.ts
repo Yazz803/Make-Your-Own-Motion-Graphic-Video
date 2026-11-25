@@ -2,20 +2,12 @@ import type { AspectRatio, DurationSec, MotionStyle } from './motion';
 
 export type ProductionMode = 'full-motion' | 'hybrid-clip';
 
-export type VideoClipCategory =
-  | 'viral-hook'
-  | 'meme-comedy'
-  | 'education-insight'
-  | 'debate-controversy'
-  | 'story-emotional'
-  | 'deep-talk-philosophy';
-
 export type HybridClipBalance = 'balanced' | 'clip-heavy' | 'motion-heavy';
 
 export interface HybridClipConfig {
-  category: VideoClipCategory;
   balance: HybridClipBalance;
   reviewBeforeRender: boolean;
+  autoCutSilence: boolean;
   clipFocusNote: string;
   includeSfx: boolean;
   includeRunningText: boolean;
@@ -70,7 +62,6 @@ export interface SavedDraft {
   aspectRatio: AspectRatio;
   durationSec: DurationSec;
   productionMode?: ProductionMode;
-  clipCategoryLabel?: string;
   voEnabled: boolean;
   prompt: string;
   configSnapshot: StudioConfigSnapshot;

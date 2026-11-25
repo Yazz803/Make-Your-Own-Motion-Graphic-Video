@@ -8,7 +8,6 @@ import {
   ELEVENLABS_V4_TAG_GROUPS,
   HYBRID_CLIP_BALANCES,
   MOTION_STYLES,
-  VIDEO_CLIP_CATEGORIES,
 } from '@/lib/constants';
 import {
   buildHybridPhase2FollowUpPrompt,
@@ -263,7 +262,7 @@ describe('prompt-engine', () => {
     assert.equal(explicitFullPrompt, legacyPrompt);
   });
 
-  it('builds Hybrid (Motion Graphic + Video Clip) prompt using original clip audio without VO upload', () => {
+  it('builds Hybrid (Motion Graphic + Video Clip) prompt using original clip audio, flexible duration, and auto-cut silence without VO upload', () => {
     const prompt = buildMotionPrompt({
       style: sampleStyle,
       aspectRatio: '9:16',
@@ -272,9 +271,9 @@ describe('prompt-engine', () => {
       targetAudience: 'Penonton Reels & TikTok',
       productionMode: 'hybrid-clip',
       hybridClip: {
-        category: 'education-insight',
         balance: 'balanced',
         reviewBeforeRender: true,
+        autoCutSilence: true,
         clipFocusNote: 'Pakai detik 00:03-00:11 sebagai hook pembuka',
         includeSfx: true,
         includeRunningText: true,
@@ -295,20 +294,23 @@ describe('prompt-engine', () => {
 
     assert.ok(prompt.startsWith(sampleStyle.skillHandle));
     assert.match(prompt, /## 1\. BRIEF PRODUKSI HYBRID/);
-    assert.match(prompt, /Kategori Video Clip: Edukasi & Insight/);
     assert.match(prompt, /Komposisi Visual Hybrid: Seimbang/);
+    assert.match(prompt, /Auto-Cut Jeda Hening \(Dead Air\): Aktif/);
     assert.match(prompt, /Catatan Momen \/ Fokus Clip: Pakai detik 00:03-00:11/);
-    assert.match(prompt, /Mengikuti 100% durasi utuh video clip yang di-upload/);
+    assert.match(prompt, /Durasi Video Final \(Fleksibel\)/);
+    assert.match(prompt, /boleh lebih pendek/);
+    assert.match(prompt, /lebih panjang/);
     assert.match(prompt, /TIDAK PERLU MEMBUAT NASKAH VO BARU ATAU MEMINTA UPLOAD AUDIO VO TERPISAH/);
-    assert.match(prompt, /Audio & Timeline Utuh \(DILARANG Memotong\/Mengacak Clip\)/);
-    assert.match(prompt, /WAJIB Transisi Hanya di Jeda Alami \(DILARANG Memotong di Tengah Kalimat\)/);
+    assert.match(prompt, /WAJIB Auto-Cut Jeda Hening \(Dead Air\) & Sambungan Audio Halus/);
+    assert.match(prompt, /audio crossfade halus/);
+    assert.match(prompt, /WAJIB Transisi Hanya di Jeda Alami & Semulus Mungkin/);
     assert.match(prompt, /\*\*DILARANG\*\* membuat 100% full motion graphic/);
-    assert.match(prompt, /\*\*cuplikan video clip asli\*\*/);
+    assert.match(prompt, /\*\*beberapa cuplikan visual dari video clip asli\*\*/);
     assert.match(prompt, /ALUR 2 TAHAP HYBRID: REVIEW TRANSKRIP & STORYBOARD DULU/);
     assert.match(prompt, /BERHENTI DI TAHAP INI/);
     assert.match(prompt, /Sound Effect \(SFX\)/);
     assert.match(prompt, /Running Text Per Kata/);
-    assert.match(prompt, /audio asli video clip yang di-upload/);
+    assert.doesNotMatch(prompt, /Kategori Video Clip/);
     assert.doesNotMatch(prompt, /potongan terbaik/);
     assert.doesNotMatch(prompt, /momen visual terbaik/);
     assert.doesNotMatch(prompt, /Target Durasi Total: 30 detik/);
@@ -326,9 +328,9 @@ describe('prompt-engine', () => {
       targetAudience: 'Penonton YouTube',
       productionMode: 'hybrid-clip',
       hybridClip: {
-        category: 'deep-talk-philosophy',
         balance: 'clip-heavy',
         reviewBeforeRender: false,
+        autoCutSilence: true,
         clipFocusNote: '',
         includeSfx: true,
         includeRunningText: true,
@@ -349,82 +351,74 @@ describe('prompt-engine', () => {
 
     assert.match(directPrompt, /ALUR EKSEKUSI LANGSUNG 1 GILIRAN \(\.MP4\)/);
     assert.match(directPrompt, /DILARANG BERHENTI HANYA DI TABEL STORYBOARD/);
+    assert.match(directPrompt, /pangkas jeda hening/);
     assert.doesNotMatch(directPrompt, /BERHENTI DI TAHAP INI/);
     assert.doesNotMatch(directPrompt, /potongan terbaik/);
 
     const hybridPhase2 = buildHybridPhase2FollowUpPrompt({
       style: sampleStyle,
       aspectRatio: '9:16',
+      autoCutSilence: true,
       includeSfx: true,
       includeRunningText: true,
     });
     assert.ok(hybridPhase2.startsWith(sampleStyle.skillHandle));
     assert.match(hybridPhase2, /Transkrip dan pembagian segmen Storyboard Hybrid/);
+    assert.match(hybridPhase2, /boleh lebih pendek atau lebih panjang/);
+    assert.match(hybridPhase2, /auto-cut jeda hening/);
     assert.match(hybridPhase2, /jeda alami kalimat/);
     assert.match(hybridPhase2, /Sound Effect \(SFX\)/);
     assert.match(hybridPhase2, /Running Text/);
     assert.doesNotMatch(hybridPhase2, /audio Voice Over/);
   });
 
-  it('supports all 6 video clip categories and 3 hybrid balances in prompt-engine', () => {
-    assert.deepEqual(
-      VIDEO_CLIP_CATEGORIES.map((c) => c.label),
-      [
-        'Viral & Hook',
-        'Meme & Komedi',
-        'Edukasi & Insight',
-        'Debat & Kontroversi',
-        'Cerita & Emosional',
-        'Deep Talk & Filosofi',
-      ]
-    );
+  it('supports all 3 hybrid balances and autoCutSilence toggle in prompt-engine', () => {
     assert.equal(HYBRID_CLIP_BALANCES.length, 3);
 
-    for (const category of VIDEO_CLIP_CATEGORIES) {
-      for (const balance of HYBRID_CLIP_BALANCES) {
-        const prompt = buildMotionPrompt({
-          style: sampleStyle,
-          aspectRatio: '16:9',
-          durationSec: 45,
-          topic: '   ',
-          targetAudience: '',
-          productionMode: 'hybrid-clip',
-          hybridClip: {
-            category: category.id,
-            balance: balance.id,
-            reviewBeforeRender: true,
-            clipFocusNote: '   ',
-            includeSfx: false,
-            includeRunningText: false,
-          },
-          voiceOver: {
-            enabled: true,
-            language: 'id',
-            tone: 'storytelling',
-            ttsTarget: 'elevenlabs',
-            includeTimecodes: true,
-            includeIntonationCues: true,
-            includeSfx: true,
-            includeRunningText: true,
-          },
-          antiSlideEnforcement: false,
-          includeInlineStyleRules: false,
-        });
+    for (const balance of HYBRID_CLIP_BALANCES) {
+      const prompt = buildMotionPrompt({
+        style: sampleStyle,
+        aspectRatio: '16:9',
+        durationSec: 45,
+        topic: '   ',
+        targetAudience: '',
+        productionMode: 'hybrid-clip',
+        hybridClip: {
+          balance: balance.id,
+          reviewBeforeRender: true,
+          autoCutSilence: false,
+          clipFocusNote: '   ',
+          includeSfx: false,
+          includeRunningText: false,
+        },
+        voiceOver: {
+          enabled: true,
+          language: 'id',
+          tone: 'storytelling',
+          ttsTarget: 'elevenlabs',
+          includeTimecodes: true,
+          includeIntonationCues: true,
+          includeSfx: true,
+          includeRunningText: true,
+        },
+        antiSlideEnforcement: false,
+        includeInlineStyleRules: false,
+      });
 
-        assert.ok(prompt.includes(category.label));
-        assert.ok(prompt.includes(category.promptDirective));
-        assert.ok(prompt.includes(balance.promptRule));
-        assert.doesNotMatch(prompt, /potongan terbaik/);
-        assert.doesNotMatch(prompt, /momen visual terbaik/);
-        assert.doesNotMatch(prompt, /Catatan Momen \/ Fokus Clip/);
-        assert.doesNotMatch(prompt, /ATURAN ANTI-SLIDE/);
-        assert.doesNotMatch(prompt, /Sound Effect \(SFX\)/);
-        assert.doesNotMatch(prompt, /Running Text Per Kata/);
-      }
+      assert.ok(prompt.includes(balance.promptRule));
+      assert.match(prompt, /Auto-Cut Jeda Hening \(Dead Air\): Nonaktif/);
+      assert.doesNotMatch(prompt, /WAJIB Auto-Cut Jeda Hening/);
+      assert.doesNotMatch(prompt, /Kategori Video Clip/);
+      assert.doesNotMatch(prompt, /potongan terbaik/);
+      assert.doesNotMatch(prompt, /momen visual terbaik/);
+      assert.doesNotMatch(prompt, /Catatan Momen \/ Fokus Clip/);
+      assert.doesNotMatch(prompt, /ATURAN ANTI-SLIDE/);
+      assert.doesNotMatch(prompt, /Sound Effect \(SFX\)/);
+      assert.doesNotMatch(prompt, /Running Text Per Kata/);
     }
   });
 
-  it('renders Full Motion Graphic and Hybrid choices above topic label, hides duration in Hybrid, and wires Hybrid UI', () => {
+  it('renders Full Motion Graphic and Hybrid choices above topic label, hides duration & clip category in Hybrid, and wires Auto-Cut UI', () => {
     const controlsForm = fs.readFileSync(
       path.join(
         ROOT,
@@ -465,12 +459,13 @@ describe('prompt-engine', () => {
 
     assert.match(controlsForm, /\{!isHybridMode && \([\s\S]*Target Durasi Video/);
     assert.match(controlsForm, /HybridClipControlsSection/);
-    assert.match(hybridControls, /VIDEO_CLIP_CATEGORIES/);
+    assert.doesNotMatch(hybridControls, /Kategori Video Clip/);
     assert.match(hybridControls, /HYBRID_CLIP_BALANCES/);
     assert.match(hybridControls, /Review Transkrip Dulu/);
+    assert.match(hybridControls, /Auto-Cut Jeda Hening \(Dead Air\)/);
     assert.equal(/rounded-full/.test(hybridControls.replace(/rounded-full bg-\[#09090B\]|rounded-full border/g, '')), false);
     assert.match(outputPanel, /Alur Hybrid di Gemini Web/);
-    assert.match(outputPanel, /Durasi ikut clip/);
+    assert.match(outputPanel, /Durasi fleksibel · Hybrid/);
     assert.match(outputPanel, /Tidak perlu upload audio VO terpisah/);
   });
 });

@@ -21,7 +21,6 @@ import type {
   MotionStyle,
   ProductionMode,
   TtsTarget,
-  VideoClipCategory,
   VoLanguage,
   VoTone,
 } from '@/types';
@@ -38,9 +37,9 @@ interface PromptControlsFormProps {
   productionMode: ProductionMode;
   onChangeProductionMode: (mode: ProductionMode) => void;
   hybridClip: HybridClipConfig;
-  onChangeHybridCategory: (category: VideoClipCategory) => void;
   onChangeHybridBalance: (balance: HybridClipBalance) => void;
   onToggleHybridReviewBeforeRender: () => void;
+  onChangeHybridAutoCutSilence: (checked: boolean) => void;
   onChangeHybridClipFocusNote: (note: string) => void;
   onChangeHybridIncludeSfx: (checked: boolean) => void;
   onChangeHybridIncludeRunningText: (checked: boolean) => void;
@@ -89,9 +88,9 @@ export default function PromptControlsForm({
   productionMode,
   onChangeProductionMode,
   hybridClip,
-  onChangeHybridCategory,
   onChangeHybridBalance,
   onToggleHybridReviewBeforeRender,
+  onChangeHybridAutoCutSilence,
   onChangeHybridClipFocusNote,
   onChangeHybridIncludeSfx,
   onChangeHybridIncludeRunningText,
@@ -455,9 +454,9 @@ export default function PromptControlsForm({
       {isHybridMode ? (
         <HybridClipControlsSection
           hybridClip={hybridClip}
-          onChangeCategory={onChangeHybridCategory}
           onChangeBalance={onChangeHybridBalance}
           onToggleReviewBeforeRender={onToggleHybridReviewBeforeRender}
+          onChangeAutoCutSilence={onChangeHybridAutoCutSilence}
           onChangeClipFocusNote={onChangeHybridClipFocusNote}
           onChangeIncludeSfx={onChangeHybridIncludeSfx}
           onChangeIncludeRunningText={onChangeHybridIncludeRunningText}
