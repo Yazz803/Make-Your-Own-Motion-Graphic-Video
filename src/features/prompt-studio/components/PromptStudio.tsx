@@ -130,6 +130,9 @@ export default function PromptStudio({
             hybridClip={builder.hybridClip}
             onChangeHybridCategory={builder.setHybridCategory}
             onChangeHybridBalance={builder.setHybridBalance}
+            onToggleHybridReviewBeforeRender={() =>
+              builder.setHybridReviewBeforeRender((prev) => !prev)
+            }
             onChangeHybridClipFocusNote={builder.setHybridClipFocusNote}
             onChangeHybridIncludeSfx={builder.setHybridIncludeSfx}
             onChangeHybridIncludeRunningText={
@@ -171,6 +174,7 @@ export default function PromptStudio({
               VIDEO_CLIP_CATEGORY_MAP[builder.hybridClip.category]?.label ??
               'Viral & Hook'
             }
+            hybridReviewBeforeRender={builder.hybridClip.reviewBeforeRender}
             hybridIncludeSfx={builder.hybridClip.includeSfx}
             hybridIncludeRunningText={builder.hybridClip.includeRunningText}
             voEnabled={builder.voEnabled}

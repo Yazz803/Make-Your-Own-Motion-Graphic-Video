@@ -11,6 +11,7 @@ import {
   VIDEO_CLIP_CATEGORIES,
 } from '@/lib/constants';
 import {
+  buildHybridPhase2FollowUpPrompt,
   buildMotionPrompt,
   buildPhase2FollowUpPrompt,
   estimateSceneCount,
@@ -273,6 +274,7 @@ describe('prompt-engine', () => {
       hybridClip: {
         category: 'education-insight',
         balance: 'balanced',
+        reviewBeforeRender: true,
         clipFocusNote: 'Pakai detik 00:03-00:11 sebagai hook pembuka',
         includeSfx: true,
         includeRunningText: true,
@@ -296,16 +298,72 @@ describe('prompt-engine', () => {
     assert.match(prompt, /Kategori Video Clip: Edukasi & Insight/);
     assert.match(prompt, /Komposisi Visual Hybrid: Seimbang/);
     assert.match(prompt, /Catatan Momen \/ Fokus Clip: Pakai detik 00:03-00:11/);
+    assert.match(prompt, /Mengikuti 100% durasi utuh video clip yang di-upload/);
     assert.match(prompt, /TIDAK PERLU MEMBUAT NASKAH VO BARU ATAU MEMINTA UPLOAD AUDIO VO TERPISAH/);
-    assert.match(prompt, /100% suara\/voice asli dari file video clip yang saya upload/);
+    assert.match(prompt, /Audio & Timeline Utuh \(DILARANG Memotong\/Mengacak Clip\)/);
+    assert.match(prompt, /WAJIB Transisi Hanya di Jeda Alami \(DILARANG Memotong di Tengah Kalimat\)/);
     assert.match(prompt, /\*\*DILARANG\*\* membuat 100% full motion graphic/);
-    assert.match(prompt, /beberapa cuplikan visual dari video clip asli/);
+    assert.match(prompt, /\*\*cuplikan video clip asli\*\*/);
+    assert.match(prompt, /ALUR 2 TAHAP HYBRID: REVIEW TRANSKRIP & STORYBOARD DULU/);
+    assert.match(prompt, /BERHENTI DI TAHAP INI/);
     assert.match(prompt, /Sound Effect \(SFX\)/);
     assert.match(prompt, /Running Text Per Kata/);
     assert.match(prompt, /audio asli video clip yang di-upload/);
+    assert.doesNotMatch(prompt, /potongan terbaik/);
+    assert.doesNotMatch(prompt, /momen visual terbaik/);
+    assert.doesNotMatch(prompt, /Target Durasi Total: 30 detik/);
     assert.doesNotMatch(prompt, /ALUR 2 TAHAP DENGAN VOICE OVER/);
     assert.doesNotMatch(prompt, /ElevenLabs V4/);
     assert.doesNotMatch(prompt, /meng-upload file audio Voice Over/);
+  });
+
+  it('supports direct 1-turn Hybrid render mode and Hybrid phase 2 follow-up prompt without ambiguity', () => {
+    const directPrompt = buildMotionPrompt({
+      style: sampleStyle,
+      aspectRatio: '16:9',
+      durationSec: 60,
+      topic: 'Diskusi filosofi kerja',
+      targetAudience: 'Penonton YouTube',
+      productionMode: 'hybrid-clip',
+      hybridClip: {
+        category: 'deep-talk-philosophy',
+        balance: 'clip-heavy',
+        reviewBeforeRender: false,
+        clipFocusNote: '',
+        includeSfx: true,
+        includeRunningText: true,
+      },
+      voiceOver: {
+        enabled: true,
+        language: 'id',
+        tone: 'storytelling',
+        ttsTarget: 'elevenlabs',
+        includeTimecodes: true,
+        includeIntonationCues: true,
+        includeSfx: true,
+        includeRunningText: true,
+      },
+      antiSlideEnforcement: true,
+      includeInlineStyleRules: true,
+    });
+
+    assert.match(directPrompt, /ALUR EKSEKUSI LANGSUNG 1 GILIRAN \(\.MP4\)/);
+    assert.match(directPrompt, /DILARANG BERHENTI HANYA DI TABEL STORYBOARD/);
+    assert.doesNotMatch(directPrompt, /BERHENTI DI TAHAP INI/);
+    assert.doesNotMatch(directPrompt, /potongan terbaik/);
+
+    const hybridPhase2 = buildHybridPhase2FollowUpPrompt({
+      style: sampleStyle,
+      aspectRatio: '9:16',
+      includeSfx: true,
+      includeRunningText: true,
+    });
+    assert.ok(hybridPhase2.startsWith(sampleStyle.skillHandle));
+    assert.match(hybridPhase2, /Transkrip dan pembagian segmen Storyboard Hybrid/);
+    assert.match(hybridPhase2, /jeda alami kalimat/);
+    assert.match(hybridPhase2, /Sound Effect \(SFX\)/);
+    assert.match(hybridPhase2, /Running Text/);
+    assert.doesNotMatch(hybridPhase2, /audio Voice Over/);
   });
 
   it('supports all 6 video clip categories and 3 hybrid balances in prompt-engine', () => {
@@ -334,6 +392,7 @@ describe('prompt-engine', () => {
           hybridClip: {
             category: category.id,
             balance: balance.id,
+            reviewBeforeRender: true,
             clipFocusNote: '   ',
             includeSfx: false,
             includeRunningText: false,
@@ -355,6 +414,8 @@ describe('prompt-engine', () => {
         assert.ok(prompt.includes(category.label));
         assert.ok(prompt.includes(category.promptDirective));
         assert.ok(prompt.includes(balance.promptRule));
+        assert.doesNotMatch(prompt, /potongan terbaik/);
+        assert.doesNotMatch(prompt, /momen visual terbaik/);
         assert.doesNotMatch(prompt, /Catatan Momen \/ Fokus Clip/);
         assert.doesNotMatch(prompt, /ATURAN ANTI-SLIDE/);
         assert.doesNotMatch(prompt, /Sound Effect \(SFX\)/);
@@ -363,7 +424,7 @@ describe('prompt-engine', () => {
     }
   });
 
-  it('renders Full Motion Graphic and Hybrid choices above topic label and wires Hybrid UI', () => {
+  it('renders Full Motion Graphic and Hybrid choices above topic label, hides duration in Hybrid, and wires Hybrid UI', () => {
     const controlsForm = fs.readFileSync(
       path.join(
         ROOT,
@@ -402,12 +463,14 @@ describe('prompt-engine', () => {
       'Mode choices must appear above "Ide atau Topik Video Motion Graphic"'
     );
 
+    assert.match(controlsForm, /\{!isHybridMode && \([\s\S]*Target Durasi Video/);
     assert.match(controlsForm, /HybridClipControlsSection/);
     assert.match(hybridControls, /VIDEO_CLIP_CATEGORIES/);
     assert.match(hybridControls, /HYBRID_CLIP_BALANCES/);
-    assert.match(hybridControls, /Tanpa Upload Audio VO/);
-    assert.equal(/rounded-full/.test(hybridControls), false);
+    assert.match(hybridControls, /Review Transkrip Dulu/);
+    assert.equal(/rounded-full/.test(hybridControls.replace(/rounded-full bg-\[#09090B\]|rounded-full border/g, '')), false);
     assert.match(outputPanel, /Alur Hybrid di Gemini Web/);
+    assert.match(outputPanel, /Durasi ikut clip/);
     assert.match(outputPanel, /Tidak perlu upload audio VO terpisah/);
   });
 });

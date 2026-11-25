@@ -40,6 +40,7 @@ interface PromptControlsFormProps {
   hybridClip: HybridClipConfig;
   onChangeHybridCategory: (category: VideoClipCategory) => void;
   onChangeHybridBalance: (balance: HybridClipBalance) => void;
+  onToggleHybridReviewBeforeRender: () => void;
   onChangeHybridClipFocusNote: (note: string) => void;
   onChangeHybridIncludeSfx: (checked: boolean) => void;
   onChangeHybridIncludeRunningText: (checked: boolean) => void;
@@ -90,6 +91,7 @@ export default function PromptControlsForm({
   hybridClip,
   onChangeHybridCategory,
   onChangeHybridBalance,
+  onToggleHybridReviewBeforeRender,
   onChangeHybridClipFocusNote,
   onChangeHybridIncludeSfx,
   onChangeHybridIncludeRunningText,
@@ -227,8 +229,13 @@ export default function PromptControlsForm({
         </button>
       </div>
 
-      {/* Aspect Ratio & Duration */}
-      <div className="grid grid-cols-1 gap-6 border-t border-zinc-800/80 pt-6 sm:grid-cols-2">
+      {/* Aspect Ratio & Duration (Duration hidden in Hybrid mode because it follows the uploaded video clip) */}
+      <div
+        className={cn(
+          'grid grid-cols-1 gap-6 border-t border-zinc-800/80 pt-6',
+          !isHybridMode && 'sm:grid-cols-2'
+        )}
+      >
         <div>
           <span className="block text-sm font-semibold text-zinc-100">
             Layout &amp; Rasio Aspek
@@ -266,39 +273,43 @@ export default function PromptControlsForm({
           </div>
         </div>
 
-        <div>
-          <span className="block text-sm font-semibold text-zinc-100">
-            Target Durasi Video
-          </span>
-          <div className="mt-2.5 grid grid-cols-4 gap-2">
-            {DURATION_OPTIONS.map((sec) => {
-              const active = durationSec === sec;
-              return (
-                <button
-                  key={sec}
-                  type="button"
-                  onClick={() => onChangeDurationSec(sec)}
-                  className={cn(
-                    'flex min-h-[60px] flex-col items-center justify-center rounded-md border px-1 sm:px-2 py-2 font-mono transition-colors tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
-                    active
-                      ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
-                      : 'border-zinc-800 bg-[#18181B] text-zinc-300 hover:border-zinc-700 hover:text-zinc-50'
-                  )}
-                >
-                  <span className="text-sm font-semibold">{sec}s</span>
-                  <span
+        {!isHybridMode && (
+          <div>
+            <span className="block text-sm font-semibold text-zinc-100">
+              Target Durasi Video
+            </span>
+            <div className="mt-2.5 grid grid-cols-4 gap-2">
+              {DURATION_OPTIONS.map((sec) => {
+                const active = durationSec === sec;
+                return (
+                  <button
+                    key={sec}
+                    type="button"
+                    onClick={() => onChangeDurationSec(sec)}
                     className={cn(
-                      'mt-0.5 font-sans text-[11px] whitespace-nowrap',
-                      active ? 'text-[#09090B]/80 font-medium' : 'text-zinc-400'
+                      'flex min-h-[60px] flex-col items-center justify-center rounded-md border px-1 sm:px-2 py-2 font-mono transition-colors tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
+                      active
+                        ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
+                        : 'border-zinc-800 bg-[#18181B] text-zinc-300 hover:border-zinc-700 hover:text-zinc-50'
                     )}
                   >
-                    ~{estimateSceneCount(sec)} scene
-                  </span>
-                </button>
-              );
-            })}
+                    <span className="text-sm font-semibold">{sec}s</span>
+                    <span
+                      className={cn(
+                        'mt-0.5 font-sans text-[11px] whitespace-nowrap',
+                        active
+                          ? 'text-[#09090B]/80 font-medium'
+                          : 'text-zinc-400'
+                      )}
+                    >
+                      ~{estimateSceneCount(sec)} scene
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Production Mode, Topic & Audience */}
@@ -313,7 +324,9 @@ export default function PromptControlsForm({
             </span>
             <span className="font-mono text-[11px] text-[#33E092]">
               {isHybridMode
-                ? 'Audio dari Video Clip · 1-Tahap'
+                ? hybridClip.reviewBeforeRender
+                  ? 'Audio Clip · Review Transkrip → MP4'
+                  : 'Audio Clip · Langsung MP4'
                 : voEnabled
                   ? 'Alur 2-Tahap VO → MP4'
                   : 'Langsung MP4'}
@@ -444,6 +457,7 @@ export default function PromptControlsForm({
           hybridClip={hybridClip}
           onChangeCategory={onChangeHybridCategory}
           onChangeBalance={onChangeHybridBalance}
+          onToggleReviewBeforeRender={onToggleHybridReviewBeforeRender}
           onChangeClipFocusNote={onChangeHybridClipFocusNote}
           onChangeIncludeSfx={onChangeHybridIncludeSfx}
           onChangeIncludeRunningText={onChangeHybridIncludeRunningText}

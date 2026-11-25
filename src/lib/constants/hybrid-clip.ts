@@ -20,20 +20,20 @@ export const VIDEO_CLIP_CATEGORIES: readonly VideoClipCategoryOption[] = [
   {
     id: 'viral-hook',
     label: 'Viral & Hook',
-    shortDesc: 'Hook 3 detik pertama, cut cepat & punchline visual.',
+    shortDesc: 'Hook 3 detik pertama, ritme dinamis & punchline visual.',
     briefSummary:
-      'Retensi tinggi dengan hook pembuka kuat, tempo cepat, dan penekanan momen viral.',
+      'Retensi tinggi dengan hook pembuka kuat, tempo dinamis di jeda alami, dan penekanan momen viral.',
     promptDirective:
-      'Buka 0–3 detik pertama langsung dengan cuplikan video clip asli paling memancing rasa penasaran (hook visual + audio asli yang kuat), lalu potong cepat ke adegan motion graphic untuk mempertegas klaim, angka, atau konteks, dan selang-seling kembali ke cuplikan reaksi/klimaks video clip asli dengan ritme cut cepat (1,5–3 detik per beat).',
+      'Pertahankan pembuka 0–3 detik pertama dengan visual video clip asli (atau overlay hook motion graphic di atas footage asli) agar langsung memancing rasa penasaran, lalu beralih ke adegan motion graphic pada jeda klausa/kalimat untuk mempertegas klaim, angka, atau konteks, dan kembali ke video clip asli pada momen reaksi/klimaks mengikuti jeda alami ucapan.',
   },
   {
     id: 'meme-comedy',
     label: 'Meme & Komedi',
     shortDesc: 'Timing komedi, freeze-frame punchline & zoom reaksi.',
     briefSummary:
-      'Menjaga timing komedi dan ekspresi asli clip dengan sisipan grafis hiperbolis.',
+      'Menjaga timing komedi dan ekspresi asli clip dengan sisipan grafis hiperbolis di jeda alami.',
     promptDirective:
-      'Pertahankan timing komedi, ekspresi wajah, dan intonasi suara asli dari video clip pada momen setup dan punchline; sisipkan adegan motion graphic sebagai reaksi visual, label komedi, freeze-frame zoom-in, atau ilustrasi hiperbolis yang memperkuat kelucuan tanpa memotong punchline audio asli.',
+      'Pertahankan timing komedi, ekspresi wajah, dan intonasi suara asli dari video clip pada momen setup dan punchline; sisipkan adegan motion graphic pada jeda alami sebagai reaksi visual, label komedi, freeze-frame zoom-in, atau ilustrasi hiperbolis yang memperkuat kelucuan tanpa memotong punchline audio asli.',
   },
   {
     id: 'education-insight',
@@ -42,7 +42,7 @@ export const VIDEO_CLIP_CATEGORIES: readonly VideoClipCategoryOption[] = [
     briefSummary:
       'Menjelaskan konsep kompleks dengan memadukan pembicara/footage asli dan diagram motion graphic.',
     promptDirective:
-      'Tampilkan cuplikan video clip asli saat pembicara atau subjek menyampaikan poin inti dan contoh nyata, lalu beralih mulus ke adegan motion graphic (diagram, angka, peta, atau ilustrasi konsep) untuk memvisualisasikan penjelasan tersebut, sebelum kembali ke cuplikan video clip asli untuk penekanan kesimpulan.',
+      'Tampilkan video clip asli saat pembicara atau subjek menyampaikan poin inti dan contoh nyata, lalu beralih mulus ke adegan motion graphic pada jeda kalimat/klausa (diagram, angka, peta, atau ilustrasi konsep) untuk memvisualisasikan penjelasan tersebut, sebelum kembali ke video clip asli untuk penekanan kesimpulan.',
   },
   {
     id: 'debate-controversy',
@@ -51,7 +51,7 @@ export const VIDEO_CLIP_CATEGORIES: readonly VideoClipCategoryOption[] = [
     briefSummary:
       'Menjaga tensi argumen dengan sorotan kutipan, perbandingan dua sisi, dan reaksi clip.',
     promptDirective:
-      'Tampilkan cuplikan video clip asli saat pernyataan tajam, pertanyaan kritis, atau adu argumen diucapkan dengan intonasi aslinya; potong ke adegan motion graphic untuk menyorot kutipan kunci, perbandingan dua sisi, timeline fakta, atau data pendukung, lalu kembali ke ekspresi/respons di video clip asli.',
+      'Tampilkan video clip asli saat pernyataan tajam, pertanyaan kritis, atau adu argumen diucapkan dengan intonasi aslinya; beralih ke adegan motion graphic pada jeda kalimat untuk menyorot kutipan kunci, perbandingan dua sisi, timeline fakta, atau data pendukung, lalu kembali ke ekspresi/respons di video clip asli.',
   },
   {
     id: 'story-emotional',
@@ -60,7 +60,7 @@ export const VIDEO_CLIP_CATEGORIES: readonly VideoClipCategoryOption[] = [
     briefSummary:
       'Menjaga keutuhan emosi suara asli dengan visual motion graphic penguat suasana.',
     promptDirective:
-      'Hormati jeda napas, getar suara, dan momen emosional pada cuplikan video clip asli tanpa memotong kalimat secara kasar; gunakan adegan motion graphic sebagai penguat suasana, kilas balik visual, atau metafora puitis di sela-sela cuplikan video clip asli dengan transisi lembut yang tetap bergerak.',
+      'Hormati jeda napas, getar suara, dan momen emosional pada video clip asli tanpa memotong kalimat secara kasar; gunakan adegan motion graphic pada jeda alami sebagai penguat suasana, kilas balik visual, atau metafora puitis di sela-sela tampilan video clip asli dengan transisi lembut yang tetap bergerak.',
   },
   {
     id: 'deep-talk-philosophy',
@@ -69,7 +69,7 @@ export const VIDEO_CLIP_CATEGORIES: readonly VideoClipCategoryOption[] = [
     briefSummary:
       'Memberi ruang cerna kontemplatif antara suara reflektif clip dan tipografi/metafora visual.',
     promptDirective:
-      'Biarkan suara asli dan momen perenungan dari video clip mengalir utuh pada kalimat-kalimat reflektif; selingi dengan adegan motion graphic kontemplatif (tipografi editorial, metafora visual minimalis, atau ilustrasi simbolik) untuk memberi ruang cerna bagi penonton sebelum kembali ke cuplikan video clip asli.',
+      'Biarkan suara asli dan momen perenungan dari video clip mengalir utuh pada kalimat-kalimat reflektif; selingi pada jeda alami dengan adegan motion graphic kontemplatif (tipografi editorial, metafora visual minimalis, atau ilustrasi simbolik) untuk memberi ruang cerna bagi penonton sebelum kembali ke video clip asli.',
   },
 ] as const;
 
@@ -85,25 +85,25 @@ export const HYBRID_CLIP_BALANCES: readonly HybridClipBalanceOption[] = [
     id: 'balanced',
     label: 'Seimbang',
     ratioLabel: '~50% Clip · 50% Motion',
-    shortDesc: 'Bergantian seimbang antara cuplikan clip asli dan motion graphic.',
+    shortDesc: 'Proporsional antara clip asli & motion graphic di jeda alami.',
     promptRule:
-      'Bagi komposisi visual secara seimbang (~50% cuplikan video clip asli, ~50% adegan motion graphic) dengan pola selang-seling dinamis di sepanjang durasi video.',
+      'Bagi porsi visual secara proporsional (~50% menampilkan video clip asli, ~50% adegan motion graphic) dengan perpindahan segmen yang fleksibel mengikuti jeda alami kalimat/napas pembicara (bukan pembagian detik yang kaku).',
   },
   {
     id: 'clip-heavy',
     label: 'Dominan Video Clip',
     ratioLabel: '~65% Clip · 35% Motion',
-    shortDesc: 'Cuplikan clip asli lebih dominan; motion graphic di momen kunci.',
+    shortDesc: 'Clip asli lebih dominan; motion graphic di jeda poin kunci.',
     promptRule:
-      'Jadikan cuplikan video clip asli sebagai tulang punggung visual (~65% durasi) agar ekspresi dan aksi asli tetap dominan, sementara adegan motion graphic (~35% durasi) disisipkan pada hook pembuka, visualisasi poin penting, overlay data/kutipan, dan penutup.',
+      'Tampilkan video clip asli lebih dominan (~65% total durasi) agar ekspresi dan aksi asli tetap menjadi pusat perhatian, sementara adegan motion graphic (~35% total durasi) masuk pada jeda kalimat yang tepat untuk memvisualisasikan poin penting, data, atau penekanan.',
   },
   {
     id: 'motion-heavy',
     label: 'Dominan Motion',
     ratioLabel: '~35% Clip · 65% Motion',
-    shortDesc: 'Motion graphic dominan; cuplikan clip muncul di hook & klimaks.',
+    shortDesc: 'Motion graphic dominan; clip asli di pembuka & penekanan.',
     promptRule:
-      'Jadikan adegan motion graphic sebagai panggung visual utama (~65% durasi) sementara audio suara tetap memakai audio asli video clip secara kontinu, dan tampilkan cuplikan video clip asli (~35% durasi) pada momen hook, reaksi kunci, bukti visual, dan klimaks agar tetap terasa hybrid.',
+      'Jadikan adegan motion graphic sebagai visual utama (~65% total durasi) di atas audio asli video clip yang tetap mengalir utuh, dan tampilkan video clip asli (~35% total durasi) pada segmen pembuka, reaksi kunci, atau penekanan kalimat tanpa memotong ucapan di tengah kalimat.',
   },
 ] as const;
 

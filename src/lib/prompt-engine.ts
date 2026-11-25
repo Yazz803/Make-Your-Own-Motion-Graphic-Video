@@ -62,6 +62,7 @@ const TTS_TARGET_NOTES: Record<TtsTarget, string> = {
 const DEFAULT_HYBRID_CLIP: HybridClipConfig = {
   category: 'viral-hook',
   balance: 'balanced',
+  reviewBeforeRender: true,
   clipFocusNote: '',
   includeSfx: true,
   includeRunningText: true,
@@ -76,7 +77,6 @@ export function estimateSceneCount(durationSec: DurationSec): number {
 
 function buildHybridMotionPrompt(config: PromptConfig): string {
   const ratio = ASPECT_RATIO_SPECS[config.aspectRatio];
-  const sceneCount = estimateSceneCount(config.durationSec);
   const hybrid = config.hybridClip ?? DEFAULT_HYBRID_CLIP;
   const categoryMeta =
     VIDEO_CLIP_CATEGORY_MAP[hybrid.category] ??
@@ -111,7 +111,7 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
     `- Target Audiens: ${cleanAudience}`,
     `- Gaya Visual Motion Graphic: ${config.style.name} (${config.style.station} · ${config.style.stylePath})`,
     `- Rasio Aspek & Resolusi: ${ratio.label} (${ratio.resolution} — untuk ${ratio.platform})`,
-    `- Target Durasi Total: ${config.durationSec} detik (sekitar ${sceneCount} babak/adegan bergantian antara cuplikan clip & motion graphic)`,
+    '- Durasi & Jumlah Adegan: Mengikuti 100% durasi utuh video clip yang di-upload; jumlah segmen ditentukan oleh jeda alami ucapan/kalimat di dalam audio clip.',
     `- Catatan Framing: ${ratio.framingNote}`
   );
   sections.push(briefLines.join('\n'));
@@ -162,21 +162,48 @@ function buildHybridMotionPrompt(config: PromptConfig): string {
 
   sections.push(
     [
-      `## ${nextStep}. ATURAN HYBRID, AUDIO ASLI CLIP & EKSEKUSI LANGSUNG (.MP4)`,
+      `## ${nextStep}. ATURAN HYBRID, AUDIO UTUH & JEDA ALAMI (WAJIB DIPATUHI)`,
       '**PENTING — TIDAK PERLU MEMBUAT NASKAH VO BARU ATAU MEMINTA UPLOAD AUDIO VO TERPISAH!**',
-      `- **Sumber Suara / Voice (Audio Asli Video Clip):** Gunakan **100% suara/voice asli dari file video clip yang saya upload** di chat Mode Tugas ini sebagai trek audio utama yang mengalir kontinu dari awal hingga akhir (baik saat visual menampilkan cuplikan video clip asli maupun saat visual beralih ke adegan motion graphic).`,
-      `- **WAJIB Hybrid Visual (Jangan Full Motion Graphic):** Hasil akhir **HARUS** memadukan **beberapa cuplikan visual dari video clip asli yang di-upload** dengan **adegan motion graphic** bergaya "${config.style.name}" — **DILARANG** membuat 100% full motion graphic tanpa menampilkan cuplikan video clip asli, dan **DILARANG** hanya menempel teks di atas video mentah tanpa adegan motion graphic penuh.`,
+      `- **Audio & Timeline Utuh (DILARANG Memotong/Mengacak Clip):** Gunakan **100% audio suara asli dari file video clip yang saya upload** secara utuh dan kontinu dari awal hingga akhir durasi clip${cleanFocusNote ? ' (kecuali rentang timestamp yang secara eksplisit saya tulis pada Catatan Momen / Fokus Clip)' : ''}. **DILARANG** memotong bagian tengah, menghapus kalimat, atau menyusun ulang urutan timeline video clip asli.`,
+      `- **WAJIB Hybrid Visual (Jangan Full Motion Graphic):** Trek audio tetap mengalir utuh, sementara **lapisan visual** bergantian antara **cuplikan video clip asli** (sinkron tepat pada timestamp aslinya) dan **adegan motion graphic** bergaya "${config.style.name}". **DILARANG** membuat 100% full motion graphic tanpa menampilkan video clip asli, dan **DILARANG** hanya menempel teks di atas video mentah tanpa adegan motion graphic penuh.`,
+      '- **WAJIB Transisi Hanya di Jeda Alami (DILARANG Memotong di Tengah Kalimat):** Perpindahan visual antara video clip asli dan adegan motion graphic **HANYA BOLEH** dilakukan pada batas jeda alami ucapan (akhir kalimat, jeda antar-klausa, atau jeda napas pembicara) — **DILARANG KERAS** memotong atau mengganti adegan di tengah kata atau di tengah kalimat yang sedang diucapkan.',
       `- **Komposisi & Porsi Cuplikan:** ${balanceMeta.promptRule}`,
       `- **Arahan Kategori "${categoryMeta.label}":** ${categoryMeta.promptDirective}`,
       `- **Integrasi Footage Clip ke Gaya Visual:** Perlakukan cuplikan video clip asli sebagai layer footage sinematik (sesuaikan framing ke rasio ${config.aspectRatio}, gunakan punch-in/zoom halus, split-screen, frame-in-frame, atau overlay grafis berpalet ${config.style.palette.slice(0, 3).join(', ')}), lalu hubungkan ke adegan motion graphic dengan transisi bermakna (match-cut, whip blur, zoom-through, atau wipe objek).`,
-      '',
-      '### LANGKAH EKSEKUSI DI MODE TUGAS:',
-      '1. **Analisis Video Clip yang Di-upload:** Dengarkan audio suara asli dan pindai momen visual terbaik dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu sebelum merender).',
-      `2. **Susun Ringkasan Storyboard Hybrid (${sceneCount} Adegan):** Sajikan tabel singkat (Adegan | Perkiraan Timecode | Jenis Visual: Cuplikan Clip Asli / Motion Graphic | Timestamp Clip / Aksi Kamera | Daftar SFX | Teks Layar).`,
-      `3. **Langsung Render Video Hybrid Final (\`.mp4\`):** Produksi dan render video final dalam format **\`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, target durasi ~${config.durationSec} detik atau mengikuti potongan terbaik video clip) menggunakan keahlian ${skillTag} dengan perpaduan cuplikan video clip asli + adegan motion graphic yang sinkron penuh dengan audio asli video clip.`,
-      ...hybridAudioFeatures,
     ].join('\n')
   );
+
+  nextStep += 1;
+
+  if (hybrid.reviewBeforeRender) {
+    sections.push(
+      [
+        `## ${nextStep}. ALUR 2 TAHAP HYBRID: REVIEW TRANSKRIP & STORYBOARD DULU (WAJIB DIIKUTI)`,
+        '**PENTING — JANGAN LANGSUNG MEMBUAT FILE VIDEO (.MP4) ATAU FILE HTML TERLEBIH DAHULU!**',
+        '',
+        '### TAHAP 1 (KERJAKAN SEKARANG, LALU BERHENTI & TUNGGU KONFIRMASI):',
+        '1. **Transkripsi Audio Video Clip:** Dengarkan seluruh audio asli dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu), lalu tulis **transkrip lengkap** dengan timestamp presisi per kalimat/jeda alami (contoh: `[00:00.0 - 00:03.4]`).',
+        '2. **Susun Tabel Storyboard Hybrid (Berdasarkan Jeda Alami):** Sajikan tabel pemetaan segmen utuh dari awal hingga akhir clip (`Segmen | Timestamp Clip | Transkrip Kalimat | Jenis Visual: Video Clip Asli / Motion Graphic | Konsep Visual & Gerak Kamera | Daftar SFX | Teks Layar`), pastikan tidak ada pergantian adegan di tengah kalimat.',
+        '3. **BERHENTI DI TAHAP INI.** Minta saya meninjau dan mengonfirmasi ketepatan transkrip serta pembagian segmen Video Clip Asli vs Motion Graphic (tanpa perlu membuat atau meng-upload audio VO terpisah).',
+        '',
+        '### TAHAP 2 (SETELAH SAYA KONFIRMASI LANJUT RENDER):',
+        `- Begitu saya menyetujui atau mengirim koreksi transkrip/segmen, langsung render **video hybrid final dalam format \`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, durasi mengikuti video clip utuh) menggunakan file video clip yang sudah di-upload di chat ini dengan audio asli yang mengalir kontinu.`,
+        ...hybridAudioFeatures,
+      ].join('\n')
+    );
+  } else {
+    sections.push(
+      [
+        `## ${nextStep}. ALUR EKSEKUSI LANGSUNG 1 GILIRAN (.MP4)`,
+        '**PENTING — DILARANG BERHENTI HANYA DI TABEL STORYBOARD ATAU MEMINTA KONFIRMASI TAMBAHAN!**',
+        'Dalam satu giliran kerja Mode Tugas ini, kerjakan seluruh langkah berikut secara berurutan hingga menghasilkan file `.mp4`:',
+        '1. **Transkripsi & Pemetaan Jeda Alami:** Dengarkan seluruh audio asli dari video clip yang saya upload (jika saya belum melampirkan file video clip pada pesan ini, minta saya meng-upload file video clip terlebih dahulu sebelum merender), tulis transkrip lengkap per jeda alami, dan petakan segmen mana yang menampilkan **Video Clip Asli** vs **Motion Graphic** tanpa memotong di tengah kalimat.',
+        '2. **Tampilkan Ringkasan Transkrip & Storyboard Hybrid:** Sertakan transkrip bertimestamp dan tabel pemetaan segmen (`Segmen | Timestamp Clip | Transkrip Kalimat | Jenis Visual: Video Clip Asli / Motion Graphic | Konsep Visual & Gerak Kamera | Daftar SFX`) di respons agar saya dapat melihat transkrip yang dipakai.',
+        `3. **Langsung Render Video Hybrid Final (\`.mp4\`):** Produksi dan render video final dalam format **\`.mp4\`** (${ratio.resolution}, rasio ${config.aspectRatio}, durasi mengikuti video clip utuh) menggunakan keahlian ${skillTag} dengan perpaduan cuplikan video clip asli + adegan motion graphic yang sinkron penuh dengan audio asli video clip.`,
+        ...hybridAudioFeatures,
+      ].join('\n')
+    );
+  }
 
   return sections.join('\n\n');
 }
@@ -353,6 +380,35 @@ export function buildPhase2FollowUpPrompt(config: {
   if (config.includeRunningText) {
     reqs.push(
       '- Tambahkan **Running Text / subtitle kinetik yang sinkron untuk setiap kata yang diucapkan** berdasarkan audio Voice Over tersebut (word-by-word highlight) pada area aman layar.'
+    );
+  }
+
+  return `${parts.join(' ')}\n\nPastikan hal berikut terpenuhi:\n${reqs.join('\n')}`;
+}
+
+export function buildHybridPhase2FollowUpPrompt(config: {
+  style: MotionStyle;
+  aspectRatio: AspectRatio;
+  includeSfx: boolean;
+  includeRunningText: boolean;
+}): string {
+  const parts = [
+    `${config.style.skillHandle} Transkrip dan pembagian segmen Storyboard Hybrid di atas sudah sesuai.`,
+    `Silakan langsung proses dan render **video hybrid final dalam format .mp4** sesuai gaya visual "${config.style.name}" (${config.aspectRatio}) menggunakan file video clip yang sudah saya upload di chat ini.`,
+  ];
+
+  const reqs: string[] = [
+    '- Pertahankan audio suara asli video clip mengalir utuh dan kontinu dari awal hingga akhir tanpa memotong atau mengacak urutan timeline.',
+    '- Pastikan perpindahan visual antara video clip asli dan adegan motion graphic hanya terjadi pada jeda alami kalimat.',
+  ];
+  if (config.includeSfx) {
+    reqs.push(
+      '- Tambahkan **Sound Effect (SFX)** yang sesuai di setiap transisi antara clip & motion graphic dengan volume seimbang di bawah suara asli clip.'
+    );
+  }
+  if (config.includeRunningText) {
+    reqs.push(
+      '- Tambahkan **Running Text / subtitle kinetik per kata** yang sinkron tepat mengikuti transkrip yang sudah disepakati dan audio asli video clip pada area aman layar.'
     );
   }
 

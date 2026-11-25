@@ -15,6 +15,7 @@ export type HybridClipBalance = 'balanced' | 'clip-heavy' | 'motion-heavy';
 export interface HybridClipConfig {
   category: VideoClipCategory;
   balance: HybridClipBalance;
+  reviewBeforeRender: boolean;
   clipFocusNote: string;
   includeSfx: boolean;
   includeRunningText: boolean;

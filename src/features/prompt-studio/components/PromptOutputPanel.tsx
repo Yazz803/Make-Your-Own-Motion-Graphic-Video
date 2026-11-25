@@ -20,6 +20,7 @@ interface PromptOutputPanelProps {
   sceneCount: number;
   productionMode: ProductionMode;
   clipCategoryLabel: string;
+  hybridReviewBeforeRender: boolean;
   hybridIncludeSfx: boolean;
   hybridIncludeRunningText: boolean;
   voEnabled: boolean;
@@ -40,6 +41,7 @@ export default function PromptOutputPanel({
   sceneCount,
   productionMode,
   clipCategoryLabel,
+  hybridReviewBeforeRender,
   hybridIncludeSfx,
   hybridIncludeRunningText,
   voEnabled,
@@ -54,6 +56,7 @@ export default function PromptOutputPanel({
   onCopyPhase2,
 }: PromptOutputPanelProps) {
   const isHybridMode = productionMode === 'hybrid-clip';
+  const showPhase2Card = isHybridMode ? hybridReviewBeforeRender : voEnabled;
   const hybridExtras = [
     hybridIncludeSfx ? 'SFX' : '',
     hybridIncludeRunningText ? 'running text per kata' : '',
@@ -77,8 +80,10 @@ export default function PromptOutputPanel({
               <span className="text-[#33E092]">
                 {selectedStyle.skillHandle}
               </span>{' '}
-              · {selectedStyle.name} · {aspectRatio} · ~{sceneCount} adegan
-              {isHybridMode ? ` · Hybrid (${clipCategoryLabel})` : ''}
+              · {selectedStyle.name} · {aspectRatio} ·{' '}
+              {isHybridMode
+                ? `Durasi ikut clip · Hybrid (${clipCategoryLabel})`
+                : `~${sceneCount} adegan`}
             </p>
           </div>
 
@@ -170,20 +175,43 @@ export default function PromptOutputPanel({
                   ingin dipadukan.
                 </li>
                 <li>
-                  <span className="font-mono text-[#33E092]">03.</span> Tempel
-                  prompt di atas (sudah diawali{' '}
-                  <code className="font-mono text-[#33E092]">
-                    {selectedStyle.skillHandle}
-                  </code>
-                  ) lalu kirim bersama video clip tersebut.{' '}
-                  <strong className="font-medium text-zinc-200">
-                    Tidak perlu upload audio VO terpisah
-                  </strong>{' '}
-                  — Gemini memakai suara asli dari video clip, memadukan
-                  cuplikan video clip asli dengan adegan motion graphic, lalu
-                  langsung merender video final{' '}
-                  <code className="font-mono text-zinc-200">.mp4</code>
-                  {hybridExtras ? ` lengkap dengan ${hybridExtras}` : ''}.
+                  <span className="font-mono text-[#33E092]">03.</span>{' '}
+                  {hybridReviewBeforeRender ? (
+                    <>
+                      Tempel prompt di atas (sudah diawali{' '}
+                      <code className="font-mono text-[#33E092]">
+                        {selectedStyle.skillHandle}
+                      </code>
+                      ) lalu kirim bersama video clip tersebut.{' '}
+                      <strong className="font-medium text-zinc-200">
+                        Tidak perlu upload audio VO terpisah
+                      </strong>{' '}
+                      — Gemini akan membuat transkrip bertimestamp &amp; tabel
+                      Storyboard Hybrid di jeda alami dulu, lalu kirim{' '}
+                      <strong className="font-medium text-zinc-200">
+                        Prompt Tahap 2
+                      </strong>{' '}
+                      di bawah untuk render{' '}
+                      <code className="font-mono text-zinc-200">.mp4</code>
+                      {hybridExtras ? ` lengkap dengan ${hybridExtras}` : ''}.
+                    </>
+                  ) : (
+                    <>
+                      Tempel prompt di atas (sudah diawali{' '}
+                      <code className="font-mono text-[#33E092]">
+                        {selectedStyle.skillHandle}
+                      </code>
+                      ) lalu kirim bersama video clip tersebut.{' '}
+                      <strong className="font-medium text-zinc-200">
+                        Tidak perlu upload audio VO terpisah
+                      </strong>{' '}
+                      — Gemini memakai suara asli video clip secara utuh,
+                      menampilkan transkrip &amp; pemetaan segmen, lalu langsung
+                      merender video final{' '}
+                      <code className="font-mono text-zinc-200">.mp4</code>
+                      {hybridExtras ? ` lengkap dengan ${hybridExtras}` : ''}.
+                    </>
+                  )}
                 </li>
               </ol>
             ) : (
@@ -247,16 +275,20 @@ export default function PromptOutputPanel({
         </div>
       </div>
 
-      {/* Phase 2 Follow-Up Prompt Card (only for Full Motion Graphic with VO enabled) */}
-      {!isHybridMode && voEnabled && (
+      {/* Phase 2 Follow-Up Prompt Card */}
+      {showPhase2Card && (
         <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
               <h4 className="font-display text-sm font-bold text-zinc-100">
-                Prompt Tahap 2 (Setelah Upload Audio VO)
+                {isHybridMode
+                  ? 'Prompt Tahap 2 (Setelah Cek Transkrip & Storyboard)'
+                  : 'Prompt Tahap 2 (Setelah Upload Audio VO)'}
               </h4>
               <p className="mt-0.5 text-xs text-zinc-400">
-                Tempel bersama file audio VO (.mp3/.wav) untuk render MP4.
+                {isHybridMode
+                  ? 'Tempel untuk konfirmasi render MP4 (tanpa upload audio VO).'
+                  : 'Tempel bersama file audio VO (.mp3/.wav) untuk render MP4.'}
               </p>
             </div>
             <button

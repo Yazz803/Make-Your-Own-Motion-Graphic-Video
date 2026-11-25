@@ -28,6 +28,7 @@ interface HybridClipControlsSectionProps {
   hybridClip: HybridClipConfig;
   onChangeCategory: (category: VideoClipCategory) => void;
   onChangeBalance: (balance: HybridClipBalance) => void;
+  onToggleReviewBeforeRender: () => void;
   onChangeClipFocusNote: (note: string) => void;
   onChangeIncludeSfx: (checked: boolean) => void;
   onChangeIncludeRunningText: (checked: boolean) => void;
@@ -46,6 +47,7 @@ export default function HybridClipControlsSection({
   hybridClip,
   onChangeCategory,
   onChangeBalance,
+  onToggleReviewBeforeRender,
   onChangeClipFocusNote,
   onChangeIncludeSfx,
   onChangeIncludeRunningText,
@@ -55,27 +57,49 @@ export default function HybridClipControlsSection({
 
   return (
     <div className="space-y-5 border-t border-zinc-800/80 pt-6">
-      {/* Original Clip Audio Notice (No separate VO upload needed) */}
-      <div className="flex items-start gap-2.5 rounded-md border border-[#33E092]/35 bg-[#09090B] p-3.5">
-        <LuFilm
-          className="mt-0.5 h-4 w-4 shrink-0 text-[#33E092]"
-          aria-hidden="true"
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-sm font-semibold text-zinc-100">
-              Audio &amp; Cuplikan Video Clip Asli (Tanpa Upload Audio VO)
-            </span>
-            <span className="shrink-0 rounded-sm border border-[#33E092]/40 bg-[#33E092]/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-[#33E092]">
-              1-Tahap · Upload Clip
-            </span>
+      {/* Original Clip Audio Notice + Review Before Render Switch */}
+      <div className="rounded-md border border-[#33E092]/35 bg-[#09090B] p-3.5">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-2.5">
+            <LuFilm
+              className="mt-0.5 h-4 w-4 shrink-0 text-[#33E092]"
+              aria-hidden="true"
+            />
+            <div className="min-w-0">
+              <span className="block text-sm font-semibold text-zinc-100">
+                Audio Asli Video Clip · Review Transkrip Dulu
+              </span>
+              <span className="mt-1 block text-xs leading-relaxed text-zinc-400">
+                Tidak perlu upload audio VO terpisah — suara memakai audio asli
+                video clip secara utuh. Aktifkan switch ini agar Gemini
+                menampilkan transkrip bertimestamp &amp; tabel pembagian segmen
+                di jeda alami dulu sebelum render MP4.
+              </span>
+            </div>
           </div>
-          <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-            Suara narasi/dialog langsung memakai audio asli dari video clip yang
-            kamu upload ke Gemini Web. Hasil video memadukan beberapa cuplikan
-            video clip asli dengan adegan motion graphic (bukan full motion
-            graphic).
-          </p>
+
+          <button
+            type="button"
+            role="switch"
+            aria-checked={hybridClip.reviewBeforeRender}
+            aria-label="Review transkrip dan storyboard sebelum render MP4"
+            onClick={onToggleReviewBeforeRender}
+            className={cn(
+              'relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
+              hybridClip.reviewBeforeRender
+                ? 'border-[#33E092] bg-[#33E092]'
+                : 'border-zinc-700 bg-[#18181B]'
+            )}
+          >
+            <span
+              className={cn(
+                'inline-block h-5 w-5 rounded-full bg-[#09090B] transition-transform',
+                hybridClip.reviewBeforeRender
+                  ? 'translate-x-6'
+                  : 'translate-x-1 bg-zinc-400'
+              )}
+            />
+          </button>
         </div>
       </div>
 

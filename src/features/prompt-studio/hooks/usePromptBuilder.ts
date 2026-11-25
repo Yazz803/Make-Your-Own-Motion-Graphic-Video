@@ -8,6 +8,7 @@ import {
   VIDEO_CLIP_CATEGORY_MAP,
 } from '@/lib/constants';
 import {
+  buildHybridPhase2FollowUpPrompt,
   buildMotionPrompt,
   buildPhase2FollowUpPrompt,
   estimateSceneCount,
@@ -106,6 +107,22 @@ export function usePromptBuilder({
       updateConfig((prev) => ({
         ...prev,
         hybridClip: { ...prev.hybridClip, balance: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridReviewBeforeRender = useCallback(
+    (next: SetStateAction<boolean>) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: {
+          ...prev.hybridClip,
+          reviewBeforeRender:
+            typeof next === 'function'
+              ? next(prev.hybridClip.reviewBeforeRender)
+              : next,
+        },
       }));
     },
     [updateConfig]
@@ -285,13 +302,28 @@ export function usePromptBuilder({
 
   const phase2Prompt = useMemo(
     () =>
-      buildPhase2FollowUpPrompt({
-        style: selectedStyle,
-        aspectRatio,
-        includeSfx,
-        includeRunningText,
-      }),
-    [selectedStyle, aspectRatio, includeSfx, includeRunningText]
+      productionMode === 'hybrid-clip'
+        ? buildHybridPhase2FollowUpPrompt({
+            style: selectedStyle,
+            aspectRatio,
+            includeSfx: hybridClip.includeSfx,
+            includeRunningText: hybridClip.includeRunningText,
+          })
+        : buildPhase2FollowUpPrompt({
+            style: selectedStyle,
+            aspectRatio,
+            includeSfx,
+            includeRunningText,
+          }),
+    [
+      productionMode,
+      selectedStyle,
+      aspectRatio,
+      hybridClip.includeSfx,
+      hybridClip.includeRunningText,
+      includeSfx,
+      includeRunningText,
+    ]
   );
 
   const sceneCount = estimateSceneCount(durationSec);
@@ -409,6 +441,7 @@ export function usePromptBuilder({
     hybridClip,
     setHybridCategory,
     setHybridBalance,
+    setHybridReviewBeforeRender,
     setHybridClipFocusNote,
     setHybridIncludeSfx,
     setHybridIncludeRunningText,

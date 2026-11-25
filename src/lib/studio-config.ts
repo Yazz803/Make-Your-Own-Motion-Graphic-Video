@@ -24,6 +24,7 @@ export const DEFAULT_STUDIO_CONFIG: StudioConfigSnapshot = {
   hybridClip: {
     category: 'viral-hook',
     balance: 'balanced',
+    reviewBeforeRender: true,
     clipFocusNote: '',
     includeSfx: true,
     includeRunningText: true,
@@ -141,6 +142,10 @@ export function parseStudioConfig(raw: string | null): StudioConfigSnapshot {
         VALID_CLIP_BALANCES.has(hybridRaw.balance as HybridClipBalance)
           ? (hybridRaw.balance as HybridClipBalance)
           : defaultHybrid.balance,
+      reviewBeforeRender:
+        typeof hybridRaw.reviewBeforeRender === 'boolean'
+          ? hybridRaw.reviewBeforeRender
+          : defaultHybrid.reviewBeforeRender,
       clipFocusNote:
         typeof hybridRaw.clipFocusNote === 'string'
           ? hybridRaw.clipFocusNote
