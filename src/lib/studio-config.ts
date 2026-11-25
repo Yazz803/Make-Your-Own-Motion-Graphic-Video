@@ -2,9 +2,12 @@ import { MOTION_STYLES, QUICK_BRIEF_PRESETS } from '@/lib/constants';
 import type {
   AspectRatio,
   DurationSec,
+  HybridClipBalance,
   MotionStyle,
+  ProductionMode,
   StudioConfigSnapshot,
   TtsTarget,
+  VideoClipCategory,
   VoLanguage,
   VoTone,
 } from '@/types';
@@ -17,6 +20,14 @@ export const DEFAULT_STUDIO_CONFIG: StudioConfigSnapshot = {
   durationSec: 30,
   topic: QUICK_BRIEF_PRESETS[0].topic,
   targetAudience: QUICK_BRIEF_PRESETS[0].audience,
+  productionMode: 'full-motion',
+  hybridClip: {
+    category: 'viral-hook',
+    balance: 'balanced',
+    clipFocusNote: '',
+    includeSfx: true,
+    includeRunningText: true,
+  },
   voiceOver: {
     enabled: true,
     language: 'id',
@@ -36,6 +47,23 @@ export const DEFAULT_STUDIO_CONFIG_RAW = JSON.stringify(DEFAULT_STUDIO_CONFIG);
 const VALID_STYLE_IDS = new Set<string>(MOTION_STYLES.map((s) => s.id));
 const VALID_ASPECT_RATIOS = new Set<AspectRatio>(['9:16', '16:9', '1:1']);
 const VALID_DURATIONS = new Set<DurationSec>([15, 30, 45, 60]);
+const VALID_PRODUCTION_MODES = new Set<ProductionMode>([
+  'full-motion',
+  'hybrid-clip',
+]);
+const VALID_CLIP_CATEGORIES = new Set<VideoClipCategory>([
+  'viral-hook',
+  'meme-comedy',
+  'education-insight',
+  'debate-controversy',
+  'story-emotional',
+  'deep-talk-philosophy',
+]);
+const VALID_CLIP_BALANCES = new Set<HybridClipBalance>([
+  'balanced',
+  'clip-heavy',
+  'motion-heavy',
+]);
 const VALID_VO_LANGUAGES = new Set<VoLanguage>(['id', 'en']);
 const VALID_VO_TONES = new Set<VoTone>([
   'santai',
@@ -71,6 +99,8 @@ export function parseStudioConfig(raw: string | null): StudioConfigSnapshot {
 
   const voRaw = isPlainObject(parsed.voiceOver) ? parsed.voiceOver : {};
   const defaultVo = DEFAULT_STUDIO_CONFIG.voiceOver;
+  const hybridRaw = isPlainObject(parsed.hybridClip) ? parsed.hybridClip : {};
+  const defaultHybrid = DEFAULT_STUDIO_CONFIG.hybridClip;
 
   return {
     styleId:
@@ -95,6 +125,35 @@ export function parseStudioConfig(raw: string | null): StudioConfigSnapshot {
       typeof parsed.targetAudience === 'string'
         ? parsed.targetAudience
         : DEFAULT_STUDIO_CONFIG.targetAudience,
+    productionMode:
+      typeof parsed.productionMode === 'string' &&
+      VALID_PRODUCTION_MODES.has(parsed.productionMode as ProductionMode)
+        ? (parsed.productionMode as ProductionMode)
+        : DEFAULT_STUDIO_CONFIG.productionMode,
+    hybridClip: {
+      category:
+        typeof hybridRaw.category === 'string' &&
+        VALID_CLIP_CATEGORIES.has(hybridRaw.category as VideoClipCategory)
+          ? (hybridRaw.category as VideoClipCategory)
+          : defaultHybrid.category,
+      balance:
+        typeof hybridRaw.balance === 'string' &&
+        VALID_CLIP_BALANCES.has(hybridRaw.balance as HybridClipBalance)
+          ? (hybridRaw.balance as HybridClipBalance)
+          : defaultHybrid.balance,
+      clipFocusNote:
+        typeof hybridRaw.clipFocusNote === 'string'
+          ? hybridRaw.clipFocusNote
+          : defaultHybrid.clipFocusNote,
+      includeSfx:
+        typeof hybridRaw.includeSfx === 'boolean'
+          ? hybridRaw.includeSfx
+          : defaultHybrid.includeSfx,
+      includeRunningText:
+        typeof hybridRaw.includeRunningText === 'boolean'
+          ? hybridRaw.includeRunningText
+          : defaultHybrid.includeRunningText,
+    },
     voiceOver: {
       enabled:
         typeof voRaw.enabled === 'boolean' ? voRaw.enabled : defaultVo.enabled,

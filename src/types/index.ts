@@ -9,10 +9,14 @@ export type {
 } from './motion';
 
 export type {
+  HybridClipBalance,
+  HybridClipConfig,
+  ProductionMode,
   PromptConfig,
   SavedDraft,
   StudioConfigSnapshot,
   TtsTarget,
+  VideoClipCategory,
   VoLanguage,
   VoiceOverConfig,
   VoTone,

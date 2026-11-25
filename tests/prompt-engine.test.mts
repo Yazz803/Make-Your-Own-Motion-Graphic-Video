@@ -6,7 +6,9 @@ import {
   ELEVENLABS_V4_ALL_TAGS,
   ELEVENLABS_V4_STABILITY_PERCENT,
   ELEVENLABS_V4_TAG_GROUPS,
+  HYBRID_CLIP_BALANCES,
   MOTION_STYLES,
+  VIDEO_CLIP_CATEGORIES,
 } from '@/lib/constants';
 import {
   buildMotionPrompt,
@@ -228,5 +230,184 @@ describe('prompt-engine', () => {
     assert.match(outputPanel, /ElevenLabs V4/);
     assert.match(outputPanel, /Stability/);
     assert.match(outputPanel, /ELEVENLABS_V4_STABILITY_PERCENT/);
+  });
+
+  it('keeps Full Motion Graphic prompt identical to legacy default prompt', () => {
+    const baseConfig = {
+      style: sampleStyle,
+      aspectRatio: '9:16' as const,
+      durationSec: 30 as const,
+      topic: 'Cara kerja baterai solid-state',
+      targetAudience: 'Penonton TikTok edukasi teknologi',
+      voiceOver: {
+        enabled: true,
+        language: 'id' as const,
+        tone: 'storytelling' as const,
+        ttsTarget: 'elevenlabs' as const,
+        includeTimecodes: true,
+        includeIntonationCues: true,
+        includeSfx: true,
+        includeRunningText: true,
+      },
+      antiSlideEnforcement: true,
+      includeInlineStyleRules: true,
+    };
+
+    const legacyPrompt = buildMotionPrompt(baseConfig);
+    const explicitFullPrompt = buildMotionPrompt({
+      ...baseConfig,
+      productionMode: 'full-motion',
+    });
+
+    assert.equal(explicitFullPrompt, legacyPrompt);
+  });
+
+  it('builds Hybrid (Motion Graphic + Video Clip) prompt using original clip audio without VO upload', () => {
+    const prompt = buildMotionPrompt({
+      style: sampleStyle,
+      aspectRatio: '9:16',
+      durationSec: 30,
+      topic: 'Sorot argumen utama pembicara lalu visualisasikan datanya',
+      targetAudience: 'Penonton Reels & TikTok',
+      productionMode: 'hybrid-clip',
+      hybridClip: {
+        category: 'education-insight',
+        balance: 'balanced',
+        clipFocusNote: 'Pakai detik 00:03-00:11 sebagai hook pembuka',
+        includeSfx: true,
+        includeRunningText: true,
+      },
+      voiceOver: {
+        enabled: true,
+        language: 'id',
+        tone: 'storytelling',
+        ttsTarget: 'elevenlabs',
+        includeTimecodes: true,
+        includeIntonationCues: true,
+        includeSfx: false,
+        includeRunningText: false,
+      },
+      antiSlideEnforcement: true,
+      includeInlineStyleRules: true,
+    });
+
+    assert.ok(prompt.startsWith(sampleStyle.skillHandle));
+    assert.match(prompt, /## 1\. BRIEF PRODUKSI HYBRID/);
+    assert.match(prompt, /Kategori Video Clip: Edukasi & Insight/);
+    assert.match(prompt, /Komposisi Visual Hybrid: Seimbang/);
+    assert.match(prompt, /Catatan Momen \/ Fokus Clip: Pakai detik 00:03-00:11/);
+    assert.match(prompt, /TIDAK PERLU MEMBUAT NASKAH VO BARU ATAU MEMINTA UPLOAD AUDIO VO TERPISAH/);
+    assert.match(prompt, /100% suara\/voice asli dari file video clip yang saya upload/);
+    assert.match(prompt, /\*\*DILARANG\*\* membuat 100% full motion graphic/);
+    assert.match(prompt, /beberapa cuplikan visual dari video clip asli/);
+    assert.match(prompt, /Sound Effect \(SFX\)/);
+    assert.match(prompt, /Running Text Per Kata/);
+    assert.match(prompt, /audio asli video clip yang di-upload/);
+    assert.doesNotMatch(prompt, /ALUR 2 TAHAP DENGAN VOICE OVER/);
+    assert.doesNotMatch(prompt, /ElevenLabs V4/);
+    assert.doesNotMatch(prompt, /meng-upload file audio Voice Over/);
+  });
+
+  it('supports all 6 video clip categories and 3 hybrid balances in prompt-engine', () => {
+    assert.deepEqual(
+      VIDEO_CLIP_CATEGORIES.map((c) => c.label),
+      [
+        'Viral & Hook',
+        'Meme & Komedi',
+        'Edukasi & Insight',
+        'Debat & Kontroversi',
+        'Cerita & Emosional',
+        'Deep Talk & Filosofi',
+      ]
+    );
+    assert.equal(HYBRID_CLIP_BALANCES.length, 3);
+
+    for (const category of VIDEO_CLIP_CATEGORIES) {
+      for (const balance of HYBRID_CLIP_BALANCES) {
+        const prompt = buildMotionPrompt({
+          style: sampleStyle,
+          aspectRatio: '16:9',
+          durationSec: 45,
+          topic: '   ',
+          targetAudience: '',
+          productionMode: 'hybrid-clip',
+          hybridClip: {
+            category: category.id,
+            balance: balance.id,
+            clipFocusNote: '   ',
+            includeSfx: false,
+            includeRunningText: false,
+          },
+          voiceOver: {
+            enabled: true,
+            language: 'id',
+            tone: 'storytelling',
+            ttsTarget: 'elevenlabs',
+            includeTimecodes: true,
+            includeIntonationCues: true,
+            includeSfx: true,
+            includeRunningText: true,
+          },
+          antiSlideEnforcement: false,
+          includeInlineStyleRules: false,
+        });
+
+        assert.ok(prompt.includes(category.label));
+        assert.ok(prompt.includes(category.promptDirective));
+        assert.ok(prompt.includes(balance.promptRule));
+        assert.doesNotMatch(prompt, /Catatan Momen \/ Fokus Clip/);
+        assert.doesNotMatch(prompt, /ATURAN ANTI-SLIDE/);
+        assert.doesNotMatch(prompt, /Sound Effect \(SFX\)/);
+        assert.doesNotMatch(prompt, /Running Text Per Kata/);
+      }
+    }
+  });
+
+  it('renders Full Motion Graphic and Hybrid choices above topic label and wires Hybrid UI', () => {
+    const controlsForm = fs.readFileSync(
+      path.join(
+        ROOT,
+        'src/features/prompt-studio/components/PromptControlsForm.tsx'
+      ),
+      'utf8'
+    );
+    const hybridControls = fs.readFileSync(
+      path.join(
+        ROOT,
+        'src/features/prompt-studio/components/HybridClipControlsSection.tsx'
+      ),
+      'utf8'
+    );
+    const outputPanel = fs.readFileSync(
+      path.join(
+        ROOT,
+        'src/features/prompt-studio/components/PromptOutputPanel.tsx'
+      ),
+      'utf8'
+    );
+
+    const fullIdx = controlsForm.indexOf('Full Motion Graphic');
+    const hybridIdx = controlsForm.indexOf(
+      'Hybrid (Motion Graphic + Video Clip)'
+    );
+    const topicIdx = controlsForm.indexOf(
+      'Ide atau Topik Video Motion Graphic'
+    );
+
+    assert.ok(fullIdx !== -1, 'Full Motion Graphic option must exist');
+    assert.ok(hybridIdx !== -1, 'Hybrid option must exist');
+    assert.ok(topicIdx !== -1, 'Topic label must exist');
+    assert.ok(
+      fullIdx < topicIdx && hybridIdx < topicIdx,
+      'Mode choices must appear above "Ide atau Topik Video Motion Graphic"'
+    );
+
+    assert.match(controlsForm, /HybridClipControlsSection/);
+    assert.match(hybridControls, /VIDEO_CLIP_CATEGORIES/);
+    assert.match(hybridControls, /HYBRID_CLIP_BALANCES/);
+    assert.match(hybridControls, /Tanpa Upload Audio VO/);
+    assert.equal(/rounded-full/.test(hybridControls), false);
+    assert.match(outputPanel, /Alur Hybrid di Gemini Web/);
+    assert.match(outputPanel, /Tidak perlu upload audio VO terpisah/);
   });
 });

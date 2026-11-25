@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import {
+  LuClapperboard,
   LuLayoutGrid,
   LuMonitor,
   LuSmartphone,
   LuSquare,
+  LuWandSparkles,
 } from 'react-icons/lu';
 import { StyleCatalogModal, StylePreviewThumb } from '@/features/catalog';
 import { MOTION_STYLES, QUICK_BRIEF_PRESETS } from '@/lib/constants';
@@ -14,11 +16,16 @@ import { cn } from '@/lib/utils';
 import type {
   AspectRatio,
   DurationSec,
+  HybridClipBalance,
+  HybridClipConfig,
   MotionStyle,
+  ProductionMode,
   TtsTarget,
+  VideoClipCategory,
   VoLanguage,
   VoTone,
 } from '@/types';
+import HybridClipControlsSection from './HybridClipControlsSection';
 import VoiceOverControlsSection from './VoiceOverControlsSection';
 
 interface PromptControlsFormProps {
@@ -28,6 +35,14 @@ interface PromptControlsFormProps {
   onChangeAspectRatio: (ratio: AspectRatio) => void;
   durationSec: DurationSec;
   onChangeDurationSec: (sec: DurationSec) => void;
+  productionMode: ProductionMode;
+  onChangeProductionMode: (mode: ProductionMode) => void;
+  hybridClip: HybridClipConfig;
+  onChangeHybridCategory: (category: VideoClipCategory) => void;
+  onChangeHybridBalance: (balance: HybridClipBalance) => void;
+  onChangeHybridClipFocusNote: (note: string) => void;
+  onChangeHybridIncludeSfx: (checked: boolean) => void;
+  onChangeHybridIncludeRunningText: (checked: boolean) => void;
   topic: string;
   onChangeTopic: (topic: string) => void;
   targetAudience: string;
@@ -70,6 +85,14 @@ export default function PromptControlsForm({
   onChangeAspectRatio,
   durationSec,
   onChangeDurationSec,
+  productionMode,
+  onChangeProductionMode,
+  hybridClip,
+  onChangeHybridCategory,
+  onChangeHybridBalance,
+  onChangeHybridClipFocusNote,
+  onChangeHybridIncludeSfx,
+  onChangeHybridIncludeRunningText,
   topic,
   onChangeTopic,
   targetAudience,
@@ -97,6 +120,7 @@ export default function PromptControlsForm({
   onApplyPreset,
 }: PromptControlsFormProps) {
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState<boolean>(false);
+  const isHybridMode = productionMode === 'hybrid-clip';
   const stationLabel = selectedStyle.station
     .replace(/^\d+\s*·\s*/, '')
     .replace(/^Bang Motion\s*·\s*/, '');
@@ -277,8 +301,105 @@ export default function PromptControlsForm({
         </div>
       </div>
 
-      {/* Topic & Audience */}
-      <div className="space-y-4 border-t border-zinc-800/80 pt-6">
+      {/* Production Mode, Topic & Audience */}
+      <div className="space-y-5 border-t border-zinc-800/80 pt-6">
+        <div>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span
+              id="production-mode-label"
+              className="block text-sm font-semibold text-zinc-100"
+            >
+              Mode Produksi Video
+            </span>
+            <span className="font-mono text-[11px] text-[#33E092]">
+              {isHybridMode
+                ? 'Audio dari Video Clip · 1-Tahap'
+                : voEnabled
+                  ? 'Alur 2-Tahap VO → MP4'
+                  : 'Langsung MP4'}
+            </span>
+          </div>
+
+          <div
+            role="radiogroup"
+            aria-labelledby="production-mode-label"
+            className="mt-2.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2"
+          >
+            <button
+              type="button"
+              role="radio"
+              aria-checked={!isHybridMode}
+              onClick={() => onChangeProductionMode('full-motion')}
+              className={cn(
+                'flex min-h-[68px] items-start gap-3 rounded-md border px-3.5 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
+                !isHybridMode
+                  ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
+                  : 'border-zinc-800 bg-[#18181B] text-zinc-200 hover:border-zinc-700 hover:text-zinc-50'
+              )}
+            >
+              <LuWandSparkles
+                className={cn(
+                  'mt-0.5 h-4 w-4 shrink-0',
+                  !isHybridMode ? 'text-[#09090B]' : 'text-[#33E092]'
+                )}
+                aria-hidden="true"
+              />
+              <span className="min-w-0">
+                <span className="block text-xs sm:text-sm font-semibold leading-snug">
+                  Full Motion Graphic
+                </span>
+                <span
+                  className={cn(
+                    'mt-0.5 block text-[11px] leading-snug',
+                    !isHybridMode
+                      ? 'text-[#09090B]/80 font-medium'
+                      : 'text-zinc-400'
+                  )}
+                >
+                  100% animasi grafis dengan alur VO 2 tahap atau tanpa VO.
+                </span>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              role="radio"
+              aria-checked={isHybridMode}
+              onClick={() => onChangeProductionMode('hybrid-clip')}
+              className={cn(
+                'flex min-h-[68px] items-start gap-3 rounded-md border px-3.5 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]',
+                isHybridMode
+                  ? 'border-[#33E092] bg-[#33E092] text-[#09090B]'
+                  : 'border-zinc-800 bg-[#18181B] text-zinc-200 hover:border-zinc-700 hover:text-zinc-50'
+              )}
+            >
+              <LuClapperboard
+                className={cn(
+                  'mt-0.5 h-4 w-4 shrink-0',
+                  isHybridMode ? 'text-[#09090B]' : 'text-[#33E092]'
+                )}
+                aria-hidden="true"
+              />
+              <span className="min-w-0">
+                <span className="block text-xs sm:text-sm font-semibold leading-snug">
+                  Hybrid (Motion Graphic + Video Clip)
+                </span>
+                <span
+                  className={cn(
+                    'mt-0.5 block text-[11px] leading-snug',
+                    isHybridMode
+                      ? 'text-[#09090B]/80 font-medium'
+                      : 'text-zinc-400'
+                  )}
+                >
+                  Padukan cuplikan video clip asli + motion graphic; suara pakai
+                  audio clip.
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+
         <div>
           <label
             htmlFor="topic-input"
@@ -291,7 +412,11 @@ export default function PromptControlsForm({
             rows={4}
             value={topic}
             onChange={(e) => onChangeTopic(e.target.value)}
-            placeholder="Contoh: Jelaskan cara kerja panel surya dalam 30 detik dengan alur yang mudah dipahami pemula..."
+            placeholder={
+              isHybridMode
+                ? 'Contoh: Sorot bagian pembicara menjelaskan kesalahan umum pemula di video clip, lalu visualisasikan 3 poin solusinya dengan motion graphic...'
+                : 'Contoh: Jelaskan cara kerja panel surya dalam 30 detik dengan alur yang mudah dipahami pemula...'
+            }
             className="mt-2 min-h-[104px] w-full rounded-md border border-zinc-800 bg-[#09090B] px-3.5 py-2.5 text-sm leading-relaxed text-zinc-100 placeholder:text-zinc-400 focus:border-[#33E092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#33E092] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
           />
         </div>
@@ -314,24 +439,35 @@ export default function PromptControlsForm({
         </div>
       </div>
 
-      <VoiceOverControlsSection
-        voEnabled={voEnabled}
-        onToggleVoEnabled={onToggleVoEnabled}
-        voLanguage={voLanguage}
-        onChangeVoLanguage={onChangeVoLanguage}
-        voTone={voTone}
-        onChangeVoTone={onChangeVoTone}
-        ttsTarget={ttsTarget}
-        onChangeTtsTarget={onChangeTtsTarget}
-        includeTimecodes={includeTimecodes}
-        onChangeIncludeTimecodes={onChangeIncludeTimecodes}
-        includeIntonationCues={includeIntonationCues}
-        onChangeIncludeIntonationCues={onChangeIncludeIntonationCues}
-        includeSfx={includeSfx}
-        onChangeIncludeSfx={onChangeIncludeSfx}
-        includeRunningText={includeRunningText}
-        onChangeIncludeRunningText={onChangeIncludeRunningText}
-      />
+      {isHybridMode ? (
+        <HybridClipControlsSection
+          hybridClip={hybridClip}
+          onChangeCategory={onChangeHybridCategory}
+          onChangeBalance={onChangeHybridBalance}
+          onChangeClipFocusNote={onChangeHybridClipFocusNote}
+          onChangeIncludeSfx={onChangeHybridIncludeSfx}
+          onChangeIncludeRunningText={onChangeHybridIncludeRunningText}
+        />
+      ) : (
+        <VoiceOverControlsSection
+          voEnabled={voEnabled}
+          onToggleVoEnabled={onToggleVoEnabled}
+          voLanguage={voLanguage}
+          onChangeVoLanguage={onChangeVoLanguage}
+          voTone={voTone}
+          onChangeVoTone={onChangeVoTone}
+          ttsTarget={ttsTarget}
+          onChangeTtsTarget={onChangeTtsTarget}
+          includeTimecodes={includeTimecodes}
+          onChangeIncludeTimecodes={onChangeIncludeTimecodes}
+          includeIntonationCues={includeIntonationCues}
+          onChangeIncludeIntonationCues={onChangeIncludeIntonationCues}
+          includeSfx={includeSfx}
+          onChangeIncludeSfx={onChangeIncludeSfx}
+          includeRunningText={includeRunningText}
+          onChangeIncludeRunningText={onChangeIncludeRunningText}
+        />
+      )}
 
       {/* Director switches */}
       <div className="space-y-3 border-t border-zinc-800/80 pt-6">

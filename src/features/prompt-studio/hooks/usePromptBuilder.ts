@@ -2,7 +2,11 @@
 
 import { type SetStateAction, useCallback, useMemo } from 'react';
 import { useStudioConfig } from '@/hooks';
-import { MOTION_STYLES, QUICK_BRIEF_PRESETS } from '@/lib/constants';
+import {
+  MOTION_STYLES,
+  QUICK_BRIEF_PRESETS,
+  VIDEO_CLIP_CATEGORY_MAP,
+} from '@/lib/constants';
 import {
   buildMotionPrompt,
   buildPhase2FollowUpPrompt,
@@ -12,9 +16,12 @@ import { parseStudioConfig } from '@/lib/studio-config';
 import type {
   AspectRatio,
   DurationSec,
+  HybridClipBalance,
   MotionStyle,
+  ProductionMode,
   SavedDraft,
   TtsTarget,
+  VideoClipCategory,
   VoLanguage,
   VoTone,
 } from '@/types';
@@ -38,6 +45,8 @@ export function usePromptBuilder({
     durationSec,
     topic,
     targetAudience,
+    productionMode,
+    hybridClip,
     voiceOver,
     antiSlideEnforcement,
     includeInlineStyleRules,
@@ -71,6 +80,63 @@ export function usePromptBuilder({
   const setTargetAudience = useCallback(
     (next: string) => {
       updateConfig((prev) => ({ ...prev, targetAudience: next }));
+    },
+    [updateConfig]
+  );
+
+  const setProductionMode = useCallback(
+    (next: ProductionMode) => {
+      updateConfig((prev) => ({ ...prev, productionMode: next }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridCategory = useCallback(
+    (next: VideoClipCategory) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: { ...prev.hybridClip, category: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridBalance = useCallback(
+    (next: HybridClipBalance) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: { ...prev.hybridClip, balance: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridClipFocusNote = useCallback(
+    (next: string) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: { ...prev.hybridClip, clipFocusNote: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridIncludeSfx = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: { ...prev.hybridClip, includeSfx: next },
+      }));
+    },
+    [updateConfig]
+  );
+
+  const setHybridIncludeRunningText = useCallback(
+    (next: boolean) => {
+      updateConfig((prev) => ({
+        ...prev,
+        hybridClip: { ...prev.hybridClip, includeRunningText: next },
+      }));
     },
     [updateConfig]
   );
@@ -181,6 +247,8 @@ export function usePromptBuilder({
         durationSec,
         topic,
         targetAudience,
+        productionMode,
+        hybridClip,
         voiceOver: {
           enabled: voEnabled,
           language: voLanguage,
@@ -200,6 +268,8 @@ export function usePromptBuilder({
       durationSec,
       topic,
       targetAudience,
+      productionMode,
+      hybridClip,
       voEnabled,
       voLanguage,
       voTone,
@@ -261,6 +331,10 @@ export function usePromptBuilder({
     const cleanTitle = trimmedTopic
       ? trimmedTopic.slice(0, 56) + (trimmedTopic.length > 56 ? '…' : '')
       : `Draft ${selectedStyle.name}`;
+    const clipCategoryLabel =
+      productionMode === 'hybrid-clip'
+        ? VIDEO_CLIP_CATEGORY_MAP[hybridClip.category]?.label
+        : undefined;
 
     return {
       id: `${Date.now()}`,
@@ -276,6 +350,8 @@ export function usePromptBuilder({
       skillHandle: selectedStyle.skillHandle,
       aspectRatio,
       durationSec,
+      productionMode,
+      clipCategoryLabel,
       voEnabled,
       prompt: generatedPrompt,
       configSnapshot: {
@@ -284,6 +360,8 @@ export function usePromptBuilder({
         durationSec,
         topic,
         targetAudience,
+        productionMode,
+        hybridClip,
         voiceOver: {
           enabled: voEnabled,
           language: voLanguage,
@@ -303,11 +381,13 @@ export function usePromptBuilder({
     aspectRatio,
     durationSec,
     generatedPrompt,
+    hybridClip,
     includeInlineStyleRules,
     includeIntonationCues,
     includeRunningText,
     includeSfx,
     includeTimecodes,
+    productionMode,
     selectedStyle,
     targetAudience,
     topic,
@@ -324,6 +404,14 @@ export function usePromptBuilder({
     setTopic,
     targetAudience,
     setTargetAudience,
+    productionMode,
+    setProductionMode,
+    hybridClip,
+    setHybridCategory,
+    setHybridBalance,
+    setHybridClipFocusNote,
+    setHybridIncludeSfx,
+    setHybridIncludeRunningText,
     voEnabled,
     setVoEnabled,
     voLanguage,

@@ -54,7 +54,7 @@ export const TOUR_GUIDE_STEPS: readonly TourGuideStep[] = [
     badge: 'Penyusun Prompt',
     title: 'Formulir Studio Prompt',
     description:
-      'Atur seluruh kebutuhan videomu di sini: pilih contoh brief cepat, ganti gaya visual lewat modal katalog, tentukan rasio aspek (9:16, 16:9, 1:1) dan durasi, isi topik serta target penonton, lalu sesuaikan pengaturan Voice Over dan aturan Anti-Slide.',
+      'Atur seluruh kebutuhan videomu di sini: pilih contoh brief cepat, ganti gaya visual lewat modal katalog, tentukan rasio aspek (9:16, 16:9, 1:1) dan durasi, pilih mode Full Motion Graphic atau Hybrid (Motion Graphic + Video Clip), isi topik serta target penonton, lalu sesuaikan pengaturan audio dan aturan Anti-Slide.',
     tip: 'Seluruh pengaturan aktif di formulir ini otomatis tersimpan di browser.',
     preferredPlacement: 'right',
   },

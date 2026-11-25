@@ -7,12 +7,21 @@ import {
   LuExternalLink,
 } from 'react-icons/lu';
 import { ELEVENLABS_V4_STABILITY_PERCENT, REPO_LINKS } from '@/lib/constants';
-import type { AspectRatio, MotionStyle, TtsTarget } from '@/types';
+import type {
+  AspectRatio,
+  MotionStyle,
+  ProductionMode,
+  TtsTarget,
+} from '@/types';
 
 interface PromptOutputPanelProps {
   selectedStyle: MotionStyle;
   aspectRatio: AspectRatio;
   sceneCount: number;
+  productionMode: ProductionMode;
+  clipCategoryLabel: string;
+  hybridIncludeSfx: boolean;
+  hybridIncludeRunningText: boolean;
   voEnabled: boolean;
   ttsTarget: TtsTarget;
   generatedPrompt: string;
@@ -29,6 +38,10 @@ export default function PromptOutputPanel({
   selectedStyle,
   aspectRatio,
   sceneCount,
+  productionMode,
+  clipCategoryLabel,
+  hybridIncludeSfx,
+  hybridIncludeRunningText,
   voEnabled,
   ttsTarget,
   generatedPrompt,
@@ -40,6 +53,14 @@ export default function PromptOutputPanel({
   onCopyPrompt,
   onCopyPhase2,
 }: PromptOutputPanelProps) {
+  const isHybridMode = productionMode === 'hybrid-clip';
+  const hybridExtras = [
+    hybridIncludeSfx ? 'SFX' : '',
+    hybridIncludeRunningText ? 'running text per kata' : '',
+  ]
+    .filter(Boolean)
+    .join(' & ');
+
   return (
     <div
       data-tour-target="studio-output"
@@ -57,6 +78,7 @@ export default function PromptOutputPanel({
                 {selectedStyle.skillHandle}
               </span>{' '}
               · {selectedStyle.name} · {aspectRatio} · ~{sceneCount} adegan
+              {isHybridMode ? ` · Hybrid (${clipCategoryLabel})` : ''}
             </p>
           </div>
 
@@ -123,69 +145,110 @@ export default function PromptOutputPanel({
           {/* Companion workflow explanation */}
           <div className="mt-5 border-t border-zinc-800/80 pt-4">
             <p className="text-xs font-semibold text-zinc-200">
-              Alur Wajib di Gemini Web (Mode Tugas)
+              {isHybridMode
+                ? 'Alur Hybrid di Gemini Web (Mode Tugas)'
+                : 'Alur Wajib di Gemini Web (Mode Tugas)'}
             </p>
-            <ol className="mt-2.5 space-y-2 text-xs leading-relaxed text-zinc-400">
-              <li>
-                <span className="font-mono text-[#33E092]">01.</span> Buka Gemini
-                Web dengan akun Google milikmu, lalu pastikan toggle di bawah
-                kolom input berada di{' '}
-                <strong className="font-medium text-zinc-200">Tugas</strong>{' '}
-                (bukan Obrolan).
-              </li>
-              <li>
-                <span className="font-mono text-[#33E092]">02.</span> Tempel
-                prompt di atas (sudah diawali{' '}
-                <code className="font-mono text-[#33E092]">
-                  {selectedStyle.skillHandle}
-                </code>
-                ).{' '}
-                {voEnabled
-                  ? 'Gemini akan menulis naskah VO & storyboard terlebih dahulu tanpa langsung membuat video.'
-                  : 'Gemini akan langsung memproses video motion graphic format MP4.'}
-              </li>
-              {voEnabled && (
+            {isHybridMode ? (
+              <ol className="mt-2.5 space-y-2 text-xs leading-relaxed text-zinc-400">
                 <li>
-                  <span className="font-mono text-[#33E092]">03.</span>{' '}
-                  {ttsTarget === 'elevenlabs' ? (
-                    <>
-                      Tempel naskah VO bertag ke{' '}
-                      <strong className="font-medium text-zinc-200">
-                        ElevenLabs V4
-                      </strong>
-                      , ubah slider{' '}
-                      <strong className="font-medium text-[#33E092]">
-                        Stability menjadi {ELEVENLABS_V4_STABILITY_PERCENT}%
-                      </strong>{' '}
-                      (rentang Creative → Robust), generate audio, lalu{' '}
-                      <strong className="font-medium text-zinc-200">
-                        upload file audio VO ke chat Mode Tugas yang sama
-                      </strong>{' '}
-                      agar Gemini langsung merender video final{' '}
-                      <code className="font-mono text-zinc-200">.mp4</code>{' '}
-                      lengkap dengan SFX &amp; running text per kata.
-                    </>
-                  ) : (
-                    <>
-                      Generate audio VO dari naskah tersebut di layanan TTS
-                      pilihanmu, lalu{' '}
-                      <strong className="font-medium text-zinc-200">
-                        upload file audio VO ke chat Mode Tugas yang sama
-                      </strong>{' '}
-                      agar Gemini langsung merender video final{' '}
-                      <code className="font-mono text-zinc-200">.mp4</code>{' '}
-                      lengkap dengan SFX &amp; running text per kata.
-                    </>
-                  )}
+                  <span className="font-mono text-[#33E092]">01.</span> Buka
+                  Gemini Web dengan akun Google milikmu, lalu pastikan toggle di
+                  bawah kolom input berada di{' '}
+                  <strong className="font-medium text-zinc-200">Tugas</strong>{' '}
+                  (bukan Obrolan).
                 </li>
-              )}
-            </ol>
+                <li>
+                  <span className="font-mono text-[#33E092]">02.</span> Klik
+                  ikon <strong className="font-medium text-zinc-200">+</strong>{' '}
+                  di kolom input Mode Tugas untuk{' '}
+                  <strong className="font-medium text-zinc-200">
+                    meng-upload file video clip
+                  </strong>{' '}
+                  (<code className="font-mono text-zinc-200">.mp4</code> /{' '}
+                  <code className="font-mono text-zinc-200">.mov</code>) yang
+                  ingin dipadukan.
+                </li>
+                <li>
+                  <span className="font-mono text-[#33E092]">03.</span> Tempel
+                  prompt di atas (sudah diawali{' '}
+                  <code className="font-mono text-[#33E092]">
+                    {selectedStyle.skillHandle}
+                  </code>
+                  ) lalu kirim bersama video clip tersebut.{' '}
+                  <strong className="font-medium text-zinc-200">
+                    Tidak perlu upload audio VO terpisah
+                  </strong>{' '}
+                  — Gemini memakai suara asli dari video clip, memadukan
+                  cuplikan video clip asli dengan adegan motion graphic, lalu
+                  langsung merender video final{' '}
+                  <code className="font-mono text-zinc-200">.mp4</code>
+                  {hybridExtras ? ` lengkap dengan ${hybridExtras}` : ''}.
+                </li>
+              </ol>
+            ) : (
+              <ol className="mt-2.5 space-y-2 text-xs leading-relaxed text-zinc-400">
+                <li>
+                  <span className="font-mono text-[#33E092]">01.</span> Buka
+                  Gemini Web dengan akun Google milikmu, lalu pastikan toggle di
+                  bawah kolom input berada di{' '}
+                  <strong className="font-medium text-zinc-200">Tugas</strong>{' '}
+                  (bukan Obrolan).
+                </li>
+                <li>
+                  <span className="font-mono text-[#33E092]">02.</span> Tempel
+                  prompt di atas (sudah diawali{' '}
+                  <code className="font-mono text-[#33E092]">
+                    {selectedStyle.skillHandle}
+                  </code>
+                  ).{' '}
+                  {voEnabled
+                    ? 'Gemini akan menulis naskah VO & storyboard terlebih dahulu tanpa langsung membuat video.'
+                    : 'Gemini akan langsung memproses video motion graphic format MP4.'}
+                </li>
+                {voEnabled && (
+                  <li>
+                    <span className="font-mono text-[#33E092]">03.</span>{' '}
+                    {ttsTarget === 'elevenlabs' ? (
+                      <>
+                        Tempel naskah VO bertag ke{' '}
+                        <strong className="font-medium text-zinc-200">
+                          ElevenLabs V4
+                        </strong>
+                        , ubah slider{' '}
+                        <strong className="font-medium text-[#33E092]">
+                          Stability menjadi {ELEVENLABS_V4_STABILITY_PERCENT}%
+                        </strong>{' '}
+                        (rentang Creative → Robust), generate audio, lalu{' '}
+                        <strong className="font-medium text-zinc-200">
+                          upload file audio VO ke chat Mode Tugas yang sama
+                        </strong>{' '}
+                        agar Gemini langsung merender video final{' '}
+                        <code className="font-mono text-zinc-200">.mp4</code>{' '}
+                        lengkap dengan SFX &amp; running text per kata.
+                      </>
+                    ) : (
+                      <>
+                        Generate audio VO dari naskah tersebut di layanan TTS
+                        pilihanmu, lalu{' '}
+                        <strong className="font-medium text-zinc-200">
+                          upload file audio VO ke chat Mode Tugas yang sama
+                        </strong>{' '}
+                        agar Gemini langsung merender video final{' '}
+                        <code className="font-mono text-zinc-200">.mp4</code>{' '}
+                        lengkap dengan SFX &amp; running text per kata.
+                      </>
+                    )}
+                  </li>
+                )}
+              </ol>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Phase 2 Follow-Up Prompt Card (when VO is enabled) */}
-      {voEnabled && (
+      {/* Phase 2 Follow-Up Prompt Card (only for Full Motion Graphic with VO enabled) */}
+      {!isHybridMode && voEnabled && (
         <div className="rounded-lg border border-zinc-800 bg-[#111114]/90 p-5">
           <div className="flex items-center justify-between gap-3">
             <div>

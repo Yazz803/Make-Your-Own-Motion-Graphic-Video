@@ -23,6 +23,12 @@ describe('studio-config localStorage persistence', () => {
       DEFAULT_STUDIO_CONFIG.targetAudience,
       QUICK_BRIEF_PRESETS[0].audience
     );
+    assert.equal(DEFAULT_STUDIO_CONFIG.productionMode, 'full-motion');
+    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.category, 'viral-hook');
+    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.balance, 'balanced');
+    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.clipFocusNote, '');
+    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.includeSfx, true);
+    assert.equal(DEFAULT_STUDIO_CONFIG.hybridClip.includeRunningText, true);
     assert.equal(DEFAULT_STUDIO_CONFIG.voiceOver.enabled, true);
     assert.equal(DEFAULT_STUDIO_CONFIG.voiceOver.ttsTarget, 'elevenlabs');
   });
@@ -34,7 +40,7 @@ describe('studio-config localStorage persistence', () => {
     assert.deepEqual(parseStudioConfig('[]'), DEFAULT_STUDIO_CONFIG);
   });
 
-  it('restores valid persisted settings including empty strings and false flags', () => {
+  it('restores valid persisted settings including hybrid mode, empty strings, and false flags', () => {
     const customStyle = MOTION_STYLES[MOTION_STYLES.length - 1];
     const saved = {
       styleId: customStyle.id,
@@ -42,6 +48,14 @@ describe('studio-config localStorage persistence', () => {
       durationSec: 60,
       topic: '',
       targetAudience: '',
+      productionMode: 'hybrid-clip',
+      hybridClip: {
+        category: 'deep-talk-philosophy',
+        balance: 'clip-heavy',
+        clipFocusNote: 'Fokus detik 00:10-00:25',
+        includeSfx: false,
+        includeRunningText: false,
+      },
       voiceOver: {
         enabled: false,
         language: 'en',
@@ -60,6 +74,35 @@ describe('studio-config localStorage persistence', () => {
     assert.deepEqual(parsed, saved);
   });
 
+  it('migrates legacy v1 snapshots without productionMode or hybridClip safely', () => {
+    const customStyle = MOTION_STYLES[1];
+    const legacySaved = {
+      styleId: customStyle.id,
+      aspectRatio: '16:9',
+      durationSec: 45,
+      topic: 'Topik lama tersimpan',
+      targetAudience: 'Penonton YouTube',
+      voiceOver: {
+        enabled: true,
+        language: 'id',
+        tone: 'enerjik',
+        ttsTarget: 'elevenlabs',
+        includeTimecodes: true,
+        includeIntonationCues: false,
+        includeSfx: true,
+        includeRunningText: true,
+      },
+      antiSlideEnforcement: true,
+      includeInlineStyleRules: false,
+    };
+
+    const parsed = parseStudioConfig(JSON.stringify(legacySaved));
+    assert.equal(parsed.styleId, customStyle.id);
+    assert.equal(parsed.topic, 'Topik lama tersimpan');
+    assert.equal(parsed.productionMode, 'full-motion');
+    assert.deepEqual(parsed.hybridClip, DEFAULT_STUDIO_CONFIG.hybridClip);
+  });
+
   it('sanitizes invalid fields individually while preserving valid sibling fields', () => {
     const validStyle = MOTION_STYLES[2];
     const partialCorrupt = {
@@ -68,6 +111,14 @@ describe('studio-config localStorage persistence', () => {
       durationSec: 999,
       topic: 'Topik kustom tersimpan',
       targetAudience: 12345,
+      productionMode: 'unknown-mode',
+      hybridClip: {
+        category: 'invalid-category',
+        balance: 'motion-heavy',
+        clipFocusNote: 999,
+        includeSfx: 'nope',
+        includeRunningText: false,
+      },
       voiceOver: {
         enabled: 'yes',
         language: 'en',
@@ -84,6 +135,21 @@ describe('studio-config localStorage persistence', () => {
     assert.equal(parsed.durationSec, DEFAULT_STUDIO_CONFIG.durationSec);
     assert.equal(parsed.topic, 'Topik kustom tersimpan');
     assert.equal(parsed.targetAudience, DEFAULT_STUDIO_CONFIG.targetAudience);
+    assert.equal(parsed.productionMode, DEFAULT_STUDIO_CONFIG.productionMode);
+    assert.equal(
+      parsed.hybridClip.category,
+      DEFAULT_STUDIO_CONFIG.hybridClip.category
+    );
+    assert.equal(parsed.hybridClip.balance, 'motion-heavy');
+    assert.equal(
+      parsed.hybridClip.clipFocusNote,
+      DEFAULT_STUDIO_CONFIG.hybridClip.clipFocusNote
+    );
+    assert.equal(
+      parsed.hybridClip.includeSfx,
+      DEFAULT_STUDIO_CONFIG.hybridClip.includeSfx
+    );
+    assert.equal(parsed.hybridClip.includeRunningText, false);
     assert.equal(
       parsed.voiceOver.enabled,
       DEFAULT_STUDIO_CONFIG.voiceOver.enabled

@@ -54,8 +54,12 @@ export default function SavedDraftsDrawer({
                 <p className="mt-0.5 text-xs text-zinc-400 tabular-nums">
                   {draft.skillHandle} · {draft.styleName} · {draft.aspectRatio}{' '}
                   · {draft.durationSec} dtk ·{' '}
-                  {draft.voEnabled ? '2-Tahap VO → MP4' : 'Langsung MP4'} ·{' '}
-                  {draft.createdAt}
+                  {draft.productionMode === 'hybrid-clip'
+                    ? `Hybrid (${draft.clipCategoryLabel ?? 'Video Clip'}) → MP4`
+                    : draft.voEnabled
+                      ? '2-Tahap VO → MP4'
+                      : 'Langsung MP4'}{' '}
+                  · {draft.createdAt}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
